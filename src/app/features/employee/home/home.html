@@ -37,13 +37,15 @@
         <span class="hero__month">{{ place.day.month }}</span>
       </div>
 
+      @let copy = withdrawCopy(a);
       <app-confirm-dialog
-        [heading]="'Withdraw from ' + a.title + '?'"
-        message="Your place goes back to the pool for someone else. You can still register for another activity before its cut-off."
-        confirmLabel="Withdraw"
-        tone="danger"
+        [heading]="copy.heading"
+        [message]="copy.message"
+        [confirmLabel]="copy.confirmLabel"
+        [tone]="copy.tone"
+        [busy]="busy()"
         [(open)]="withdrawOpen"
-        (confirmed)="confirmWithdraw()"
+        (confirmed)="confirmWithdraw(a)"
       />
     } @else {
       <div class="hero__body">

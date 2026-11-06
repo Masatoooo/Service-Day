@@ -67,9 +67,9 @@
                   Your place: <a [routerLink]="['/app/opportunities', s.current.id]">{{ s.current.title }}</a>
                 </p>
                 @if (s.switchHere?.ok) {
-                  <button type="button" class="btn btn--primary btn--block" (click)="pending.set('switch')">Switch here</button>
+                  <button type="button" class="btn btn--primary btn--block" (click)="pending.set('switch')">Switch to this activity</button>
                 } @else if (s.switchHere && !s.switchHere.ok) {
-                  <button type="button" class="btn btn--primary btn--block" disabled aria-describedby="action-reason">Switch here</button>
+                  <button type="button" class="btn btn--primary btn--block" disabled aria-describedby="action-reason">Switch to this activity</button>
                   <p class="locked-reason" id="action-reason"><svg lucideIcon="lock" [size]="16"></svg>{{ s.switchHere.reason }}</p>
                 }
               } @else {
@@ -103,9 +103,10 @@
           [message]="copy.message"
           [confirmLabel]="copy.confirmLabel"
           [tone]="copy.tone"
+          [busy]="busy()"
           [open]="true"
           (openChange)="setDialogOpen($event)"
-          (confirmed)="confirm()"
+          (confirmed)="confirm(s)"
         />
       }
     }

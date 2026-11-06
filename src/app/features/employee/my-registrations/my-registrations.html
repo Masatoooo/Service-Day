@@ -1,0 +1,101 @@
+@if (vm$ | async; as vm) {
+  @if (vm.place; as place) {
+    @let a = place.view;
+    <section class="surface-card current" aria-label="Your current place">
+      <app-page-header heading="Your current place" />
+      <div class="current__body">
+        <app-avatar [name]="a.ngo.name" [seed]="a.ngo.id" shape="tile" size="lg" />
+        <div class="current__text">
+          <a class="current__title" [routerLink]="['/app/opportunities', a.id]">{{ a.title }}</a>
+          <span class="text-small text-muted">{{ a.ngo.name }}</span>
+          <ul class="current__facts" role="list">
+            <li><svg lucideIcon="calendar-days" [size]="16"></svg>{{ a | activityDate: 'long' }}</li>
+            <li><svg lucideIcon="map-pin" [size]="16"></svg>{{ a.location }}</li>
+            <li><svg lucideIcon="clock" [size]="16"></svg>{{ a.cutoffAt | cutoffLabel: vm.now }}</li>
+          </ul>
+        </div>
+        <app-status-pill [availability]="a.availability" />
+      </div>
+      <div class="current__actions">
+        @if (place.checkInToday) {
+          <a class="btn btn--primary btn--sm" routerLink="/app/check-in"><svg lucideIcon="scan-qr-code" [size]="16"></svg>Check in</a>
+        }
+        @if (place.changes.ok) {
+          <a class="btn btn--secondary btn--sm" routerLink="/app/opportunities">Switch activity</a>
+          <button type="button" class="btn btn--ghost btn--sm" (click)="withdrawOpen.set(true)">Withdraw</button>
+        } @else {
+          <p class="locked-reason"><svg lucideIcon="lock" [size]="16"></svg>{{ place.changes.reason }} Your place is confirmed.</p>
+        }
+      </div>
+
+      @let copy = withdrawCopy(a);
+      <app-confirm-dialog
+        [heading]="copy.heading"
+        [message]="copy.message"
+        [confirmLabel]="copy.confirmLabel"
+        [tone]="copy.tone"
+        [busy]="busy()"
+        [(open)]="withdrawOpen"
+        (confirmed)="confirmWithdraw(a)"
+      />
+    </section>
+  } @else if (vm.rows.length) {
+    <section class="surface-card" aria-label="No current place">
+      <app-empty-state
+        icon="compass"
+        heading="You don't have a place right now"
+        message="Your earlier places are listed below. Pick a new activity while cut-offs are still open."
+      >
+        <a class="btn btn--primary btn--sm" routerLink="/app/opportunities">Browse opportunities</a>
+      </app-empty-state>
+    </section>
+  }
+
+  @if (vm.rows.length) {
+    <section class="surface-card stack" aria-label="History">
+      <app-page-header heading="History" description="Every place you've held this season, newest change first." />
+      <ol class="history" role="list">
+        @for (row of vm.rows; track row.id) {
+          <li class="history__row">
+            <span class="history__marker" [attr.data-status]="row.status" aria-hidden="true"></span>
+            <div class="history__text">
+              @if (row.activity) {
+                <a class="history__title" [routerLink]="['/app/opportunities', row.activity.id]">{{ row.title }}</a>
+                <span class="text-small text-muted">{{ row.activity.ngo.name }} · {{ row.activity | activityDate }}</span>
+              } @else {
+                <span class="history__title">{{ row.title }}</span>
+              }
+            </div>
+            <div class="history__meta">
+              <app-status-pill [label]="row.label" [tone]="row.tone" />
+              <span class="history__when tabular">{{ row.when }}</span>
+            </div>
+          </li>
+        }
+      </ol>
+    </section>
+  } @else {
+    <section class="surface-card" aria-label="No registrations yet">
+      <app-empty-state
+        icon="clipboard-list"
+        heading="You haven't registered for anything yet"
+        message="Pick one activity for Service Day. You can switch or withdraw any time until its cut-off."
+      >
+        <a class="btn btn--primary btn--sm" routerLink="/app/opportunities">Browse opportunities</a>
+      </app-empty-state>
+    </section>
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Registrations could not load">
+    <app-empty-state
+      icon="circle-exclamation-point"
+      heading="We couldn't load your registrations"
+      message="The Service Day server didn't answer. It will try again in a few seconds."
+    />
+  </section>
+} @else {
+  <div class="surface-card stack" aria-busy="true" aria-label="Loading your registrations">
+    <app-skeleton [lines]="2" />
+    <app-skeleton shape="block" height="72px" />
+  </div>
+}

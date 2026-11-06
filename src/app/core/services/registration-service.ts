@@ -60,11 +60,21 @@ export class RegistrationService {
   private readonly activities = inject(ActivityService);
   private readonly notifications = inject(NotificationService);
 
-  /** Current and past registrations of one employee, newest first. */
+  /**
+   * Current and past registrations of one employee, newest change first.
+   * A switch writes two rows in the same second, so on a tie the active place comes first.
+   */
   forUser(userId: string): Observable<Registration[]> {
+    const activeFirst = (r: Registration) => (r.status === 'registered' ? 0 : 1);
     return this.http
       .get<Registration[]>(this.api.url('registrations'), { params: { userId } })
-      .pipe(map((rows) => [...rows].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt))));
+      .pipe(
+        map((rows) =>
+          [...rows].sort(
+            (a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt) || activeFirst(a) - activeFirst(b),
+          ),
+        ),
+      );
   }
 
   /** The employee's one active place this season, or null. */

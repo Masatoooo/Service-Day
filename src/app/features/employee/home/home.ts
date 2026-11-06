@@ -1,9 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
-import { NotificationType } from '../../../core/models';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { finalize } from 'rxjs';
+import { ActivityView, NotificationType } from '../../../core/models';
 import { ActivityService } from '../../../core/services/activity-service';
 import { AuthService } from '../../../core/services/auth-service';
 import { EmployeeHomeService } from '../../../core/services/employee-home-service';
-import { ToastService } from '../../../core/services/toast-service';
+import { DialogCopy, RegistrationFlow } from '../registration-flow';
 
 /** One line icon per notice type (View concern only). */
 const NOTICE_ICON: Record<NotificationType, string> = {
@@ -18,7 +20,7 @@ const NOTICE_ICON: Record<NotificationType, string> = {
 
 /**
  * Employee home (/app). Controller: subscribes to the prepared home view
- * (EmployeeHomeService, live) and handles the withdraw confirmation.
+ * (EmployeeHomeService, live) and delegates Withdraw to RegistrationFlow.
  */
 @Component({
   selector: 'app-employee-home',
@@ -27,16 +29,31 @@ const NOTICE_ICON: Record<NotificationType, string> = {
   styleUrl: './home.css',
 })
 export class EmployeeHome {
-  private readonly toast = inject(ToastService);
+  private readonly flow = inject(RegistrationFlow);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly userId = inject(AuthService).session?.userId ?? '';
   protected readonly home$ = inject(EmployeeHomeService).home$(this.userId);
   protected readonly loadFailed$ = inject(ActivityService).loadFailed$;
   protected readonly noticeIcon = NOTICE_ICON;
   protected readonly withdrawOpen = signal(false);
+  protected readonly busy = signal(false);
 
-  /** Phase 4: nothing is saved yet (Phase 5 connects withdraw). */
-  protected confirmWithdraw(): void {
-    this.withdrawOpen.set(false);
-    this.toast.info('Nothing was saved: withdrawing is connected in the next build step.');
+  protected withdrawCopy(view: ActivityView): DialogCopy {
+    return this.flow.copy('withdraw', view, view);
+  }
+
+  protected confirmWithdraw(view: ActivityView): void {
+    if (this.busy()) return;
+    this.busy.set(true);
+    this.flow
+      .run('withdraw', view)
+      .pipe(
+        finalize(() => {
+          this.busy.set(false);
+          this.withdrawOpen.set(false);
+        }),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe();
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { differenceInCalendarDays, format, isSameDay } from 'date-fns';
-import { Observable, catchError, combineLatest, map, of, startWith } from 'rxjs';
-import { ActivityView, AppNotification, Availability } from '../models';
+import { Observable, catchError, combineLatest, filter, map, of, startWith, switchMap } from 'rxjs';
+import { ActivityView, AppNotification, Availability, Registration, RegistrationStatus } from '../models';
 import { RuleResult, canWithdraw } from '../rules';
 import { ActivityService } from './activity-service';
 import { NotificationService } from './notification-service';
@@ -32,6 +32,25 @@ export interface EmployeeHomeView {
   notifications: AppNotification[] | null;
 }
 
+/** One line in the My registrations history. */
+export interface HistoryRow {
+  id: string;
+  status: RegistrationStatus;
+  activity: ActivityView | null;
+  title: string;
+  label: string;
+  tone: 'success' | 'neutral' | 'danger-outline';
+  /** e.g. "Switched away 31 Oct, 14:10" */
+  when: string;
+}
+
+export interface MyRegistrationsView {
+  now: Date;
+  place: MyPlace | null;
+  /** Newest change first. */
+  rows: HistoryRow[];
+}
+
 /**
  * Everything the employee Home page shows, prepared from the live activity
  * stream (10 s) and the live inbox (15 s). The component only renders it.
@@ -58,14 +77,7 @@ export class EmployeeHomeService {
         const daysUntil = serviceDay ? differenceInCalendarDays(new Date(`${serviceDay}T00:00:00`), now) : null;
         return {
           now,
-          place: placeView
-            ? {
-                view: placeView,
-                changes: canWithdraw(placeView, now),
-                checkInToday: isSameDay(now, new Date(`${placeView.date}T00:00:00`)),
-                day: this.dayParts(placeView.date),
-              }
-            : null,
+          place: placeView ? this.toPlace(placeView, now) : null,
           openCount: bookable.length,
           slotsAvailable: bookable.reduce((sum, v) => sum + v.remaining, 0),
           serviceDay,
@@ -78,6 +90,56 @@ export class EmployeeHomeService {
         };
       }),
     );
+  }
+
+  /**
+   * My registrations: current place + full history (registered / switched / withdrawn).
+   * Re-reads the employee's registrations whenever the live activity snapshot updates,
+   * so the page changes right after an action without a reload.
+   */
+  registrations$(userId: string): Observable<MyRegistrationsView> {
+    return this.activities.snapshot$.pipe(
+      switchMap((snapshot) =>
+        this.registrations.forUser(userId).pipe(
+          map((rows) => {
+            const views = this.activities.toViews(snapshot, userId);
+            const byId = new Map(views.map((v) => [v.id, v]));
+            const placeView = this.registrations.placeIn(views, snapshot, userId);
+            return {
+              now: snapshot.now,
+              place: placeView ? this.toPlace(placeView, snapshot.now) : null,
+              rows: rows.map((r) => this.toHistoryRow(r, byId.get(r.activityId) ?? null)),
+            };
+          }),
+          catchError(() => of(null)),
+        ),
+      ),
+      filter((view): view is MyRegistrationsView => view !== null),
+    );
+  }
+
+  private toPlace(view: ActivityView, now: Date): MyPlace {
+    return {
+      view,
+      changes: canWithdraw(view, now),
+      checkInToday: isSameDay(now, new Date(`${view.date}T00:00:00`)),
+      day: this.dayParts(view.date),
+    };
+  }
+
+  private toHistoryRow(registration: Registration, activity: ActivityView | null): HistoryRow {
+    const at = (iso: string) => format(new Date(iso), 'd MMM, HH:mm');
+    const base = { id: registration.id, status: registration.status, activity, title: activity?.title ?? 'Removed activity' };
+    if (registration.status === 'switched') {
+      return { ...base, label: 'Switched', tone: 'neutral', when: `Switched away ${at(registration.updatedAt)}` };
+    }
+    if (registration.status === 'withdrawn') {
+      return { ...base, label: 'Withdrawn', tone: 'neutral', when: `Withdrawn ${at(registration.updatedAt)}` };
+    }
+    if (activity?.status === 'cancelled') {
+      return { ...base, label: 'Activity cancelled', tone: 'danger-outline', when: `Registered ${at(registration.registeredAt)}` };
+    }
+    return { ...base, label: 'Current', tone: 'success', when: `Registered ${at(registration.registeredAt)}` };
   }
 
   private dayParts(date: string): MyPlace['day'] {
