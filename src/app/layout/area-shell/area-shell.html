@@ -1,10 +1,14 @@
 @if (session$ | async; as session) {
   @if (topbar$ | async; as topbar) {
+    @let bell = inbox$ | async;
     <app-shell
       [session]="session"
       [heading]="topbar.heading"
       [subheading]="topbar.subheading"
-      [unreadCount]="(unread$ | async) ?? 0"
+      [unreadCount]="bell?.unread ?? 0"
+      [notices]="bell?.latest ?? null"
+      [now]="bell?.now ?? now"
+      (markAllRead)="markAllRead()"
       (signOut)="signOut()"
     >
       <router-outlet />

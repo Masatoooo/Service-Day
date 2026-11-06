@@ -1,0 +1,11 @@
+:host {
+  display: block;
+}
+
+.center {
+  --stack-gap: var(--space-6);
+}
+
+.panel:focus-visible {
+  border-radius: var(--radius-input);
+}

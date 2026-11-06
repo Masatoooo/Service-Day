@@ -1,0 +1,47 @@
+@if (items(); as list) {
+  <button
+    #trigger
+    type="button"
+    class="icon-btn bell"
+    [class.is-open]="isOpen()"
+    [attr.aria-label]="label()"
+    aria-haspopup="dialog"
+    [attr.aria-expanded]="isOpen()"
+    [attr.aria-controls]="panelId"
+    [attr.popovertarget]="panelId"
+  >
+    <svg lucideIcon="bell"></svg>
+    @if (unreadCount() > 0) {
+      <span class="bell__badge tabular" aria-hidden="true">{{ badge() }}</span>
+    }
+  </button>
+
+  <section #panel [id]="panelId" class="panel" popover aria-labelledby="notification-panel-heading" (toggle)="onToggle($event)">
+    <header class="panel__head">
+      <h2 id="notification-panel-heading">Notifications</h2>
+      @if (unreadCount() > 0) {
+        <button type="button" class="btn btn--ghost btn--sm" (click)="markAllRead.emit()">Mark all as read</button>
+      }
+    </header>
+    @if (list.length) {
+      <ul class="panel__list" role="list">
+        @for (item of list; track item.notice.id) {
+          <li>
+            <a class="panel__item" [routerLink]="inboxPath()" (click)="close()">
+              <app-notice-item [notice]="item.notice" [now]="now()" [unread]="item.unread" [detailed]="false" />
+            </a>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="panel__empty">Nothing yet. Updates about your activity will show up here.</p>
+    }
+    <footer class="panel__foot">
+      <a class="btn btn--secondary btn--sm" [routerLink]="inboxPath()" (click)="close()">Open all notifications</a>
+    </footer>
+  </section>
+} @else {
+  <a class="icon-btn bell" [routerLink]="inboxPath()" [attr.aria-label]="label()">
+    <svg lucideIcon="bell"></svg>
+  </a>
+}

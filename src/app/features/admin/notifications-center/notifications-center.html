@@ -1,0 +1,10 @@
+<section class="surface-card stack center" aria-label="Notification centre">
+  <app-tabs label="Notification centre" idPrefix="nc" [tabs]="tabs" [selected]="tab()" (selectedChange)="select($event)" />
+  <div role="tabpanel" class="panel" [id]="'nc-panel-' + tab()" [attr.aria-labelledby]="'nc-tab-' + tab()" tabindex="0">
+    @switch (tab()) {
+      @case ('schedule') { <app-schedule-tab /> }
+      @case ('broadcast') { <app-broadcast-tab (sent)="select('history')" /> }
+      @case ('history') { <app-history-tab /> }
+    }
+  </div>
+</section>

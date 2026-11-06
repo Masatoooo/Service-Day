@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { format } from 'date-fns';
-import { Observable, Subject, forkJoin, map, merge, of, startWith, switchMap, tap, timer } from 'rxjs';
-import { Activity, AppNotification, Audience, Ngo, NotificationType, Registration } from '../models';
+import { BehaviorSubject, EMPTY, Observable, Subject, catchError, combineLatest, forkJoin, map, of, shareReplay, startWith, switchMap, tap, timer } from 'rxjs';
+import { Activity, AppNotification, Audience, Ngo, NotificationType, Registration, User } from '../models';
 import { activityStart } from '../rules';
 import { ActivityService } from './activity-service';
 import { ApiUrlService } from './api-url-service';
@@ -34,6 +34,30 @@ export interface BroadcastInput {
   type?: NotificationType;
   activityId?: string | null;
   ngoId?: string | null;
+  /** Send personal copies to exactly these people (e.g. staff picked on the Participation page). */
+  recipientIds?: string[];
+}
+
+/** Who a broadcast reaches, before it is sent (for the composer's confirm step). */
+export type AudienceTarget = Pick<BroadcastInput, 'audience' | 'activityId' | 'ngoId' | 'recipientIds'>;
+
+/** One original notice in the admin History, with how many people it reached and who sent it. */
+export interface HistoryRow {
+  notice: AppNotification;
+  recipientCount: number;
+  sender: string;
+}
+
+/** A notice in someone's inbox and whether they have read it. */
+export interface InboxItem {
+  notice: AppNotification;
+  unread: boolean;
+}
+
+export interface InboxView {
+  items: InboxItem[];
+  unread: number;
+  now: Date;
 }
 
 export interface BroadcastResult {
@@ -59,6 +83,11 @@ export class NotificationService {
   private readonly users = inject(UserService);
   private readonly activities = inject(ActivityService);
   private readonly refresh$ = new Subject<void>();
+  /** One shared live inbox per user, so the bell and the inbox page don't poll twice. */
+  private readonly inboxViews = new Map<string, Observable<InboxView>>();
+  private readonly loadFailedSubject = new BehaviorSubject(false);
+  /** True while the latest inbox / history poll failed (pages show an error state; polling continues). */
+  readonly loadFailed$ = this.loadFailedSubject.asObservable();
 
   refresh(): void {
     this.refresh$.next();
@@ -105,14 +134,16 @@ export class NotificationService {
    * recipient with `broadcastId` = original id. All-staff and NGO notices stay single.
    */
   broadcast(input: BroadcastInput): Observable<BroadcastResult> {
-    const original$ = this.create({ ...input, type: input.type ?? 'broadcast' });
-    return forkJoin({ original: original$, recipients: this.recipientsFor(input) }).pipe(
-      switchMap(({ original, recipients }) => {
+    const { recipientIds: _ids, ...notice } = input;
+    const original$ = this.create({ ...notice, type: input.type ?? 'broadcast' });
+    return forkJoin({ original: original$, recipients: this.recipientsFor(input), reach: this.recipientCount(input) }).pipe(
+      switchMap(({ original, recipients, reach }) => {
+        // All-staff and NGO notices stay one record, so their reach comes from the audience.
         if (recipients.length === 0) {
-          return of({ original, recipientCount: 0 });
+          return of({ original, recipientCount: reach });
         }
         const copies = recipients.map((recipientId) =>
-          this.create({ ...input, type: original.type, audience: 'user', recipientId, broadcastId: original.id }),
+          this.create({ ...notice, type: original.type, audience: 'user', recipientId, broadcastId: original.id }),
         );
         return forkJoin(copies).pipe(map(() => ({ original, recipientCount: recipients.length })));
       }),
@@ -124,6 +155,38 @@ export class NotificationService {
     return this.http
       .get<AppNotification[]>(this.api.url('notifications'))
       .pipe(map((all) => this.newestFirst(all.filter((n) => n.broadcastId === null))));
+  }
+
+  /** History rows (originals only) with recipient counts and sender names, re-polled like the inbox. */
+  historyLive$(): Observable<HistoryRow[]> {
+    const lookups$ = forkJoin({
+      employees: this.users.employees(),
+      admins: this.http.get<User[]>(this.api.url('users'), { params: { role: 'admin' } }),
+    }).pipe(shareReplay(1));
+    const all$ = this.refresh$.pipe(
+      startWith(undefined),
+      switchMap(() => timer(0, INBOX_POLL_MS)),
+      switchMap(() => this.keepPolling(this.http.get<AppNotification[]>(this.api.url('notifications')))),
+    );
+    return combineLatest([all$, lookups$]).pipe(
+      map(([all, { employees, admins }]) => {
+        const copies = new Map<string, number>();
+        all.filter((n) => n.broadcastId).forEach((n) => copies.set(n.broadcastId!, (copies.get(n.broadcastId!) ?? 0) + 1));
+        const names = new Map(admins.map((a) => [a.id, a.name]));
+        return this.newestFirst(all.filter((n) => n.broadcastId === null)).map((notice) => ({
+          notice,
+          recipientCount: this.reach(notice, copies.get(notice.id) ?? 0, employees.length),
+          sender: notice.sentBy === 'system' ? 'System' : (names.get(notice.sentBy) ?? 'Admin'),
+        }));
+      }),
+    );
+  }
+
+  /** How many people a broadcast would reach right now. */
+  recipientCount(target: AudienceTarget): Observable<number> {
+    if (target.audience === 'all-staff') return this.users.employees().pipe(map((e) => e.length));
+    if (target.audience === 'ngo') return of(target.ngoId ? 1 : 0);
+    return this.recipientsFor(target).pipe(map((ids) => ids.length));
   }
 
   // ---- Inbox ----
@@ -141,8 +204,24 @@ export class NotificationService {
     return this.refresh$.pipe(
       startWith(undefined),
       switchMap(() => timer(0, INBOX_POLL_MS)),
-      switchMap(() => this.inbox(userId)),
+      switchMap(() => this.keepPolling(this.inbox(userId))),
     );
+  }
+
+  /** Live inbox with read state per item (shared by the bell and the inbox page). */
+  inboxView$(userId: string): Observable<InboxView> {
+    let view$ = this.inboxViews.get(userId);
+    if (!view$) {
+      view$ = this.inboxLive$(userId).pipe(
+        map((notices) => {
+          const items = notices.map((notice) => ({ notice, unread: !notice.readBy.includes(userId) }));
+          return { items, unread: items.filter((i) => i.unread).length, now: this.clock.now() };
+        }),
+        shareReplay({ bufferSize: 1, refCount: true }),
+      );
+      this.inboxViews.set(userId, view$);
+    }
+    return view$;
   }
 
   unreadCount$(userId: string): Observable<number> {
@@ -168,12 +247,33 @@ export class NotificationService {
     );
   }
 
+  /** A failed poll is skipped (ErrorInterceptor shows the toast) so the next one can retry. */
+  private keepPolling<T>(request$: Observable<T>): Observable<T> {
+    return request$.pipe(
+      tap(() => this.loadFailedSubject.next(false)),
+      catchError(() => {
+        this.loadFailedSubject.next(true);
+        return EMPTY;
+      }),
+    );
+  }
+
+  /** Per-user copies when there are any; otherwise what the audience implies. */
+  private reach(notice: AppNotification, copies: number, staff: number): number {
+    if (copies > 0) return copies;
+    if (notice.audience === 'all-staff') return staff;
+    return notice.audience === 'user' || notice.audience === 'ngo' ? 1 : 0;
+  }
+
   private toUser(userId: string, type: NotificationType, activity: Activity, title: string, message: string): Observable<AppNotification> {
     return this.create({ type, audience: 'user', recipientId: userId, activityId: activity.id, title, message });
   }
 
   /** Who gets a personal copy: unregistered staff, or one activity's participants. */
-  private recipientsFor(input: BroadcastInput): Observable<string[]> {
+  private recipientsFor(input: AudienceTarget): Observable<string[]> {
+    if (input.recipientIds) {
+      return of([...new Set(input.recipientIds)]);
+    }
     if (input.audience === 'unregistered') {
       return forkJoin({ employees: this.users.employees(), snapshot: this.activities.snapshotOnce() }).pipe(
         map(({ employees, snapshot }) => {

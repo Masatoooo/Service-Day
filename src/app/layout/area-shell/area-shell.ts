@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { Observable, combineLatest, filter, map, of, startWith, switchMap } from 'rxjs';
 import { Role, Session } from '../../core/models';
 import { AuthService } from '../../core/services/auth-service';
-import { NotificationService } from '../../core/services/notification-service';
+import { InboxItem, NotificationService } from '../../core/services/notification-service';
 import { ToastService } from '../../core/services/toast-service';
 
 /** Route `data` read by the shell to fill the top bar. */
@@ -18,6 +19,13 @@ const GREETING_SUBHEADING: Record<Role, string> = {
   employee: 'Pick an activity, keep your place, and check in on the day.',
   admin: 'See how Service Day is filling up and who still needs a nudge.',
 };
+
+/** What the bell shows: unread count and the latest five notices. */
+interface BellView {
+  unread: number;
+  latest: InboxItem[];
+  now: Date;
+}
 
 interface TopbarText {
   heading: string;
@@ -49,6 +57,8 @@ export class AreaShell {
   private readonly route = inject(ActivatedRoute);
   private readonly toast = inject(ToastService);
   private readonly notifications = inject(NotificationService);
+  private readonly destroyRef = inject(DestroyRef);
+  protected readonly now = new Date();
 
   protected readonly session$ = this.auth.session$;
 
@@ -62,10 +72,23 @@ export class AreaShell {
     map(([session, data]) => this.topbarText(session, data)),
   );
 
-  /** Employees see their unread count on the bell (polls every 15 s). */
-  protected readonly unread$ = this.session$.pipe(
-    switchMap((session) => (session?.role === 'employee' ? this.notifications.unreadCount$(session.userId) : of(0))),
+  /** Employees: unread count + latest 5 for the bell (shared live inbox, polls every 15 s). Admins: null. */
+  protected readonly inbox$: Observable<BellView | null> = this.session$.pipe(
+    switchMap((session) =>
+      session?.role === 'employee'
+        ? this.notifications.inboxView$(session.userId).pipe(map((view) => ({ unread: view.unread, latest: view.items.slice(0, 5), now: view.now })))
+        : of(null),
+    ),
   );
+
+  protected markAllRead(): void {
+    const userId = this.auth.session?.userId;
+    if (!userId) return;
+    this.notifications
+      .markAllRead(userId)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((count) => count && this.toast.success(count === 1 ? 'Marked 1 notice as read.' : `Marked ${count} notices as read.`));
+  }
 
   protected signOut(): void {
     this.auth.logout();

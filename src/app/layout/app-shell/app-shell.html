@@ -31,6 +31,9 @@
       [session]="session()"
       [inboxPath]="inboxPath()"
       [unreadCount]="unreadCount()"
+      [notices]="notices()"
+      [now]="now()"
+      (markAllRead)="markAllRead.emit()"
       [menuOpen]="navOpen()"
       (menuToggle)="navOpen.set(true)"
     />

@@ -1,0 +1,34 @@
+@if (vm$ | async; as vm) {
+  <div class="stack history">
+    <header>
+      <h2>Sent notices</h2>
+      <p class="text-small text-muted">{{ vm.total }} notices this season, from the system and the Service Day team. Personal copies of a broadcast count as one row.</p>
+    </header>
+    @if (vm.filters.length > 1) {
+      <app-pill-filter label="Filter by type" [options]="vm.filters" [selected]="type()" (selectedChange)="setType($event)" />
+    }
+    @if (vm.rows.length) {
+      <ul class="history__list" role="list">
+        @for (row of vm.rows; track row.notice.id) {
+          <li class="history__item">
+            <app-notice-item [notice]="row.notice" [now]="vm.now">
+              <span notice-meta>· {{ audienceLabel[row.notice.audience] }}</span>
+              <span notice-meta class="tabular">· {{ row.recipientCount === 1 ? '1 recipient' : row.recipientCount + ' recipients' }}</span>
+              <span notice-meta>· Sent by {{ row.sender }}</span>
+            </app-notice-item>
+          </li>
+        }
+      </ul>
+    } @else if (vm.total) {
+      <app-empty-state icon="search-x" heading="No notices of this type" message="Pick another type, or show every notice.">
+        <button type="button" class="btn btn--secondary btn--sm" (click)="setType(null)">Show all</button>
+      </app-empty-state>
+    } @else {
+      <app-empty-state icon="megaphone" heading="Nothing sent yet" message="Confirmations, reminders and broadcasts appear here as soon as they go out." />
+    }
+  </div>
+} @else if (loadFailed$ | async) {
+  <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the history" message="The Service Day server didn't answer. It will try again in a few seconds." />
+} @else {
+  <app-skeleton [lines]="6" />
+}

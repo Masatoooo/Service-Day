@@ -12,6 +12,7 @@ import { EmptyState } from './components/empty-state/empty-state';
 import { Gauge } from './components/gauge/gauge';
 import { KpiCard } from './components/kpi-card/kpi-card';
 import { MenuButton } from './components/menu-button/menu-button';
+import { NoticeItem } from './components/notice-item/notice-item';
 import { PageHeader } from './components/page-header/page-header';
 import { PillFilter } from './components/pill-filter/pill-filter';
 import { SearchField } from './components/search-field/search-field';
@@ -35,6 +36,7 @@ const COMPONENTS = [
   Gauge,
   KpiCard,
   MenuButton,
+  NoticeItem,
   PageHeader,
   PillFilter,
   SearchField,

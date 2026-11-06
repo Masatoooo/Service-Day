@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, forkJoin, map, tap } from 'rxjs';
+import { Observable, forkJoin, map, of, tap } from 'rxjs';
 import { ReminderSettings } from '../models';
 import { ReminderPreview, upcomingReminders } from '../rules';
 import { ActivityService } from './activity-service';
@@ -26,10 +26,10 @@ export class ReminderSettingsService {
       .pipe(tap(() => this.activities.refresh()));
   }
 
-  /** The next reminders the schedule would send (PLAN §5 rule 9). */
+  /** The next reminders the schedule would send (PLAN §5 rule 9). Pass unsaved settings to preview them. */
   upcoming(limit = 10, settings?: ReminderSettings): Observable<ReminderPreview[]> {
-    return forkJoin({ saved: this.get(), activities: this.activities.list() }).pipe(
-      map(({ saved, activities }) => upcomingReminders(activities, settings ?? saved, this.clock.now(), limit)),
+    return forkJoin({ saved: settings ? of(settings) : this.get(), activities: this.activities.list() }).pipe(
+      map(({ saved, activities }) => upcomingReminders(activities, saved, this.clock.now(), limit)),
     );
   }
 }

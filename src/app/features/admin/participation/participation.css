@@ -1,0 +1,121 @@
+:host {
+  display: block;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.dist {
+  flex: 1 1 380px;
+  min-width: 0;
+}
+
+.dist h2 {
+  font: var(--text-h2);
+}
+
+/* Distribution bars: label line above a thin track (Flexbox column). */
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.bar-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.bar-row__label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-1) var(--space-3);
+}
+
+.bar {
+  height: 8px;
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width var(--duration) var(--ease-out);
+}
+
+.hint {
+  margin-top: calc(-1 * var(--space-2));
+}
+
+.cell-check {
+  width: 44px;
+}
+
+.check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-strong);
+  cursor: pointer;
+}
+
+.data-table tr.is-selected td {
+  background: var(--accent-soft);
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+.row-title {
+  color: var(--ink);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.row-title:hover {
+  text-decoration: underline;
+}
+
+.block {
+  display: block;
+}
+
+.cell-fill {
+  width: 200px;
+}
+
+@media (max-width: 599px) {
+  .cell-check {
+    width: auto;
+  }
+
+  .cell-fill {
+    width: auto;
+  }
+
+  .cell-fill app-slot-meter {
+    flex: 1 1 160px;
+  }
+
+  .data-table tr.is-selected {
+    background: var(--accent-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar__fill {
+    transition: none;
+  }
+}

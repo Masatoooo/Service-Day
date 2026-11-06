@@ -38,22 +38,6 @@
   gap: var(--space-3);
 }
 
-.topbar__bell {
-  position: relative;
-  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
-}
-
-.topbar__dot {
-  position: absolute;
-  top: 9px;
-  right: 10px;
-  width: 8px;
-  height: 8px;
-  border-radius: var(--radius-control);
-  background: var(--accent);
-  box-shadow: 0 0 0 2px var(--surface);
-}
-
 /* Profile chip: a pill with the initials avatar, name and role. */
 .profile {
   display: flex;

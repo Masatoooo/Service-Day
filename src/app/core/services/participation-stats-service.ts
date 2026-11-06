@@ -1,13 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { subDays } from 'date-fns';
+import { differenceInCalendarDays, subDays } from 'date-fns';
 import { Observable, combineLatest, map, shareReplay } from 'rxjs';
 import { ActivityView, PublicUser, Registration } from '../models';
-import { formatCutoff } from '../rules';
+import { activityStart, formatCutoff } from '../rules';
 import { ActivitySnapshot, ActivityService } from './activity-service';
 import { UserService } from './user-service';
 
-/** Below this share of slots taken, an open activity "needs attention". */
+/** Below this share of slots taken, an open activity "needs attention"… */
 const LOW_FILL = 0.25;
+/** …but only while there is still time to fill it (PLAN §3: "> 7 days left"). */
+const LOW_FILL_MIN_DAYS = 7;
 
 export interface Kpis {
   slotsOffered: number;
@@ -16,6 +18,9 @@ export interface Kpis {
   participationPercent: number;
   registeredStaff: number;
   totalStaff: number;
+  /** Published activities in total, and those still taking sign-ups. */
+  publishedActivities: number;
+  openActivities: number;
 }
 
 /** Ready for a bar chart: one label per NGO, two series. */
@@ -32,7 +37,10 @@ export interface DepartmentRow {
   percent: number;
 }
 
+export type AttentionKind = 'last-slots' | 'closing-soon' | 'low-fill';
+
 export interface AttentionItem {
+  kind: AttentionKind;
   activity: ActivityView;
   reason: string;
 }
@@ -53,6 +61,8 @@ export interface ParticipationOverview {
   needsAttention: AttentionItem[];
   recent: RecentRegistration[];
   weekly: { thisWeek: number; lastWeek: number };
+  /** The snapshot's clock, for relative times ("2 days ago") on the same poll. */
+  now: Date;
 }
 
 /** Public numbers for the sign-in page: what this season offers. */
@@ -118,14 +128,17 @@ export class ParticipationStatsService {
         participationPercent: percent(registeredStaff, employees.length),
         registeredStaff,
         totalStaff: employees.length,
+        publishedActivities: published.length,
+        openActivities: published.filter((v) => ['open', 'last-slots', 'closing-soon'].includes(v.availability)).length,
       },
       fillByNgo: this.fillByNgo(published),
       byDepartment: this.byDepartment(employees, placed),
       unregistered: employees.filter((e) => !placed.has(e.id)),
       utilisation: [...published].sort((a, b) => b.taken / b.maxSlots - a.taken / a.maxSlots),
-      needsAttention: this.needsAttention(published),
+      needsAttention: this.needsAttention(published, snapshot.now),
       recent: this.recent(snapshot, employees),
       weekly: this.weekly(snapshot.activeRegistrations, snapshot.now),
+      now: snapshot.now,
     };
   }
 
@@ -152,18 +165,24 @@ export class ParticipationStatsService {
     });
   }
 
-  private needsAttention(published: ActivityView[]): AttentionItem[] {
+  /** Last slots, closing soon, and low fill with time left — most urgent first. */
+  private needsAttention(published: ActivityView[], now: Date): AttentionItem[] {
     const items: AttentionItem[] = [];
     for (const view of published) {
       if (view.availability === 'last-slots') {
-        items.push({ activity: view, reason: view.remaining === 1 ? '1 slot left' : `${view.remaining} slots left` });
+        items.push({ kind: 'last-slots', activity: view, reason: view.remaining === 1 ? '1 place left' : `${view.remaining} places left` });
       } else if (view.availability === 'closing-soon') {
-        items.push({ activity: view, reason: `Closes ${formatCutoff(view.cutoffAt)}` });
-      } else if (view.availability === 'open' && view.taken / view.maxSlots < LOW_FILL) {
-        items.push({ activity: view, reason: `Low fill: ${view.taken} of ${view.maxSlots} taken` });
+        items.push({ kind: 'closing-soon', activity: view, reason: `Registration closes ${formatCutoff(view.cutoffAt)}` });
+      } else if (
+        view.availability === 'open' &&
+        view.taken / view.maxSlots < LOW_FILL &&
+        differenceInCalendarDays(activityStart(view), now) > LOW_FILL_MIN_DAYS
+      ) {
+        items.push({ kind: 'low-fill', activity: view, reason: `Only ${view.taken} of ${view.maxSlots} places taken` });
       }
     }
-    return items;
+    const order: AttentionKind[] = ['closing-soon', 'last-slots', 'low-fill'];
+    return items.sort((a, b) => order.indexOf(a.kind) - order.indexOf(b.kind));
   }
 
   private recent(snapshot: ActivitySnapshot, employees: PublicUser[], limit = 5): RecentRegistration[] {

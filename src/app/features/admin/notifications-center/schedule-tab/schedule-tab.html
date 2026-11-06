@@ -1,0 +1,85 @@
+@if (loading()) {
+  <app-skeleton [lines]="6" />
+} @else {
+  <div class="layout">
+    <form class="stack settings" [formGroup]="form" (ngSubmit)="save()" novalidate aria-labelledby="schedule-heading">
+      <header>
+        <h2 id="schedule-heading">Reminder schedule</h2>
+        <p class="text-small text-muted">Registered staff get a reminder before their activity. In this version the schedule is previewed, not sent.</p>
+      </header>
+
+      <label class="switch">
+        <input type="checkbox" role="switch" formControlName="enabled" />
+        Send reminders before each activity
+      </label>
+
+      <fieldset class="field" [disabled]="!form.controls.enabled.value">
+        <legend class="field__label">Days before the activity</legend>
+        <ul class="chips" role="list">
+          @for (days of offsets(); track days) {
+            <li class="chip">
+              <span class="tabular">{{ days }} {{ days === 1 ? 'day' : 'days' }}</span>
+              <button type="button" class="chip__remove" (click)="removeOffset(days)" [attr.aria-label]="'Remove the reminder ' + days + (days === 1 ? ' day' : ' days') + ' before'">
+                <svg lucideIcon="x" [size]="14"></svg>
+              </button>
+            </li>
+          }
+        </ul>
+        <div class="add-offset">
+          <label class="visually-hidden" for="s-new-offset">Add a reminder, days before</label>
+          <input id="s-new-offset" class="input" type="number" min="1" [max]="maxOffset" placeholder="e.g. 14" [formControl]="newOffset" (keydown.enter)="$event.preventDefault(); addOffset()" aria-describedby="s-offset-error" />
+          <button type="button" class="btn btn--secondary btn--sm" (click)="addOffset()"><svg lucideIcon="plus" [size]="16"></svg>Add</button>
+        </div>
+        @if (offsetError(); as m) { <p class="field__error" id="s-offset-error" role="alert">{{ m }}</p> }
+      </fieldset>
+
+      <div class="row">
+        <div class="field">
+          <label class="field__label" for="s-time">Send at</label>
+          <input id="s-time" class="input" type="time" formControlName="sendTime" />
+        </div>
+        <div class="field">
+          <label class="field__label" for="s-threshold">"Last slots" when places left are at most</label>
+          <input id="s-threshold" class="input" type="number" min="0" max="20" formControlName="lastSlotsThreshold" aria-describedby="s-threshold-hint" />
+          @if (form.controls.lastSlotsThreshold.invalid) {
+            <p class="field__error">Enter a number from 0 to 20.</p>
+          } @else {
+            <p class="field__hint" id="s-threshold-hint">Activities at or below this show "Last slots" to employees and in Needs attention.</p>
+          }
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn btn--primary" [disabled]="saving() || form.invalid || !(form.dirty || offsetsChanged())" [attr.aria-busy]="saving()">
+          {{ saving() ? 'Saving…' : 'Save schedule' }}
+        </button>
+        @if (!(form.dirty || offsetsChanged())) {
+          <span class="text-small text-muted">No unsaved changes.</span>
+        }
+      </div>
+    </form>
+
+    <aside class="sunken-tile stack preview" aria-labelledby="preview-heading">
+      <h3 id="preview-heading">Next reminders</h3>
+      @if (preview$ | async; as items) {
+        @if (items.length) {
+          <ol class="preview__list" role="list">
+            @for (r of items; track r.activityId + r.offsetDays) {
+              <li class="preview__item">
+                <span class="preview__when tabular">{{ r.when }}</span>
+                <span class="text-small">{{ r.activityTitle }}</span>
+                <span class="text-small text-muted">{{ r.offsetDays }} {{ r.offsetDays === 1 ? 'day' : 'days' }} before · {{ r.sendAt | relativeTime: now }}</span>
+              </li>
+            }
+          </ol>
+        } @else if (!form.controls.enabled.value) {
+          <p class="text-small text-muted">Reminders are off. Nothing will be sent.</p>
+        } @else {
+          <p class="text-small text-muted">No reminders are due: every published activity is closer than the earliest reminder.</p>
+        }
+      } @else {
+        <app-skeleton [lines]="4" />
+      }
+    </aside>
+  </div>
+}

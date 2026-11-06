@@ -1,0 +1,14 @@
+<div class="chart" [style.height.px]="height()">
+  <canvas baseChart type="bar" [data]="data()" [options]="options" role="img" aria-label="Fill by NGO: places taken against capacity. The table below has the same numbers."></canvas>
+</div>
+<table class="visually-hidden">
+  <caption>Places taken and capacity per NGO</caption>
+  <thead>
+    <tr><th scope="col">NGO</th><th scope="col">Taken</th><th scope="col">Capacity</th></tr>
+  </thead>
+  <tbody>
+    @for (label of dataset().labels; track label; let i = $index) {
+      <tr><th scope="row">{{ label }}</th><td>{{ dataset().taken[i] }}</td><td>{{ dataset().capacity[i] }}</td></tr>
+    }
+  </tbody>
+</table>

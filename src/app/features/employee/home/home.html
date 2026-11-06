@@ -109,15 +109,8 @@
         @if (notices.length) {
           <ul class="notices" role="list">
             @for (notice of notices; track notice.id) {
-              <li class="notice" [class.is-unread]="!notice.readBy.includes(userId)">
-                <span class="notice__icon"><svg [lucideIcon]="noticeIcon[notice.type]" [size]="16"></svg></span>
-                <span class="notice__text">
-                  <span class="notice__title">{{ notice.title }}</span>
-                  <span class="notice__time">{{ notice.createdAt | relativeTime: home.now }}</span>
-                </span>
-                @if (!notice.readBy.includes(userId)) {
-                  <span class="notice__dot"><span class="visually-hidden">Unread</span></span>
-                }
+              <li>
+                <app-notice-item [notice]="notice" [now]="home.now" [unread]="!notice.readBy.includes(userId)" [detailed]="false" />
               </li>
             }
           </ul>

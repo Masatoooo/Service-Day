@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+/* The canvas fills this box (maintainAspectRatio: false); height grows with the NGO count. */
+.chart {
+  position: relative;
+  width: 100%;
+}

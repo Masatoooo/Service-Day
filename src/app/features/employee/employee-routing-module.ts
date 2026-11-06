@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AreaShell, ShellRouteData } from '../../layout/area-shell/area-shell';
 import { ActivityDetail } from './activity-detail/activity-detail';
 import { EmployeeHome } from './home/home';
+import { Inbox } from './inbox/inbox';
 import { MyRegistrations } from './my-registrations/my-registrations';
 import { Opportunities } from './opportunities/opportunities';
 
@@ -34,6 +35,15 @@ const routes: Routes = [
         data: {
           heading: 'My registrations',
           subheading: 'Your place for Service Day and every change you made this season.',
+        } satisfies ShellRouteData,
+      },
+      {
+        path: 'inbox',
+        component: Inbox,
+        title: 'Notifications · Service Day',
+        data: {
+          heading: 'Notifications',
+          subheading: 'Everything the Service Day team has sent you.',
         } satisfies ShellRouteData,
       },
       {

@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.history {
+  --stack-gap: var(--space-5);
+}
+
+h2 {
+  font: var(--text-h2);
+}
+
+.history__list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Box model: padding inside each row, hairline between rows. */
+.history__item {
+  padding: var(--space-4) 0;
+  border-bottom: var(--border-width) solid var(--hairline);
+}
+
+.history__item:first-child {
+  padding-top: 0;
+}
+
+.history__item:last-child {
+  border-bottom: 0;
+}

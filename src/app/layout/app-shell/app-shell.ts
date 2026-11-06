@@ -2,6 +2,7 @@ import { Component, DestroyRef, computed, inject, input, output, signal } from '
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { fromEvent } from 'rxjs';
 import { Session } from '../../core/models';
+import { InboxItem } from '../../core/services/notification-service';
 import { HOME_BY_ROLE, INBOX_BY_ROLE, NAV_BY_ROLE } from '../nav-config';
 
 /** Must match the breakpoint in app-shell.css and topbar.css. */
@@ -24,6 +25,10 @@ export class AppShell {
   readonly heading = input.required<string>();
   readonly subheading = input<string>();
   readonly unreadCount = input(0);
+  /** Latest notices for the bell dropdown (employees only). */
+  readonly notices = input<InboxItem[] | null>(null);
+  readonly now = input<Date>(new Date());
+  readonly markAllRead = output<void>();
   /** Id of <main>, target of the skip link (must be unique on the page). */
   readonly contentId = input('main-content');
   /** Styleguide: fit inside a frame instead of filling the viewport. */

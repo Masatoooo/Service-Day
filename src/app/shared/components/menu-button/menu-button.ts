@@ -1,4 +1,5 @@
 import { Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { placeUnder } from '../../popover-position';
 
 export interface MenuItem {
   id: string;
@@ -11,7 +12,7 @@ let nextId = 0;
 /**
  * "More actions" button with a small menu, built on the native Popover API:
  * the browser gives Esc and click-outside to close and returns focus to the button.
- * This class only places the menu under the button and handles arrow keys.
+ * This class only places the menu under the button (placeUnder) and handles arrow keys.
  * Usage: <app-menu-button label="More actions for X" [items]="items" (selected)="run($event)" />
  */
 @Component({
@@ -36,7 +37,7 @@ export class MenuButton {
     const open = (event as ToggleEvent).newState === 'open';
     this.isOpen.set(open);
     if (open) {
-      this.place();
+      placeUnder(this.trigger().nativeElement, this.menu().nativeElement);
       this.menuItems()[0]?.focus();
       // A fixed-position menu would drift away from its row: close it on scroll or resize.
       window.addEventListener('scroll', this.close, { capture: true, once: true, passive: true });
@@ -68,17 +69,6 @@ export class MenuButton {
     } else if (event.key === 'Tab') {
       this.close();
     }
-  }
-
-  /** Right-aligned under the button; above it when there is no room below. */
-  private place(): void {
-    const button = this.trigger().nativeElement.getBoundingClientRect();
-    const menu = this.menu().nativeElement;
-    const { width, height } = menu.getBoundingClientRect();
-    const gap = 6;
-    const below = button.bottom + gap + height <= window.innerHeight - gap;
-    menu.style.top = `${below ? button.bottom + gap : Math.max(gap, button.top - gap - height)}px`;
-    menu.style.left = `${Math.max(gap, Math.min(button.right - width, window.innerWidth - width - gap))}px`;
   }
 
   private menuItems(): HTMLElement[] {

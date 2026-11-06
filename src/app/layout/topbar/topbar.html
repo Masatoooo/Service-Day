@@ -18,12 +18,13 @@
   </div>
 
   <div class="topbar__actions">
-    <a class="icon-btn topbar__bell" [routerLink]="inboxPath()" [attr.aria-label]="bellLabel()">
-      <svg lucideIcon="bell"></svg>
-      @if (unreadCount() > 0) {
-        <span class="topbar__dot" aria-hidden="true"></span>
-      }
-    </a>
+    <app-notification-bell
+      [inboxPath]="inboxPath()"
+      [unreadCount]="unreadCount()"
+      [items]="notices()"
+      [now]="now()"
+      (markAllRead)="markAllRead.emit()"
+    />
     <div class="profile">
       <app-avatar [name]="session().name" [seed]="session().userId" size="sm" />
       <span class="profile__text">

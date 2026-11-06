@@ -1,0 +1,153 @@
+:host {
+  display: block;
+}
+
+/* Page rhythm: rows of cards stacked with the same gap as cards inside a row. */
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.card-head h2 {
+  font: var(--text-h2);
+}
+
+.delta {
+  color: var(--success);
+  font-weight: var(--weight-medium);
+}
+
+/* ── Fill by NGO legend ── */
+.legend {
+  display: flex;
+  gap: var(--space-4);
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.legend__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-control);
+}
+
+.legend__swatch--taken {
+  background: var(--accent);
+}
+
+.legend__swatch--capacity {
+  background: var(--hairline);
+}
+
+/* ── Participation card: gauge, then two week tiles side by side ── */
+.participation {
+  justify-content: space-between;
+}
+
+.icon-btn--quiet {
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+}
+
+.tiles {
+  display: flex;
+  gap: var(--space-3);
+}
+
+.tile {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.tile__value {
+  font: var(--text-h1);
+}
+
+.is-up {
+  color: var(--success);
+}
+
+.is-down {
+  color: var(--danger);
+}
+
+/* ── Row 3: attention list is narrower than the recent table ── */
+.attention {
+  flex: 1 1 360px;
+  min-width: 0;
+}
+
+.recent {
+  flex: 1.5 1 440px;
+  min-width: 0;
+}
+
+.attention__list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Each item: text grows, pill + action stay on the right; wraps on narrow cards. */
+.attention__item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: var(--border-width) solid var(--hairline);
+}
+
+.attention__item:last-child {
+  border-bottom: 0;
+}
+
+.attention__text {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.attention__title {
+  color: var(--ink);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.attention__title:hover {
+  text-decoration: underline;
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.person__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.nowrap {
+  white-space: nowrap;
+}

@@ -1,0 +1,67 @@
+:host {
+  display: block;
+}
+
+/* Composer (grows) beside the inbox preview; the preview stacks below on narrow screens. */
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.compose {
+  flex: 3 1 420px;
+  min-width: 0;
+  --stack-gap: var(--space-5);
+}
+
+.preview {
+  flex: 2 1 280px;
+  min-width: 0;
+  --stack-gap: var(--space-3);
+}
+
+h2 {
+  font: var(--text-h2);
+}
+
+h3 {
+  font: var(--text-h3);
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.is-over {
+  color: var(--danger);
+}
+
+/* Two radio cards per line on the composer's narrower column. */
+.choices .choice {
+  flex-basis: 220px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The preview sits on a white card like the real inbox row. */
+.preview__card {
+  padding: var(--space-4);
+  border-radius: var(--radius-tile);
+  background: var(--surface);
+}

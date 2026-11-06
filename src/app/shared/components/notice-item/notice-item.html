@@ -1,0 +1,22 @@
+<div class="notice" [class.is-unread]="unread()" [class.is-urgent]="notice().urgent">
+  <span class="notice__icon" aria-hidden="true"><svg [lucideIcon]="icon()" [size]="16"></svg></span>
+  <div class="notice__body">
+    <p class="notice__title">
+      @if (notice().urgent) {
+        <span class="notice__urgent">Urgent</span>
+      }
+      {{ notice().title }}
+    </p>
+    @if (detailed()) {
+      <p class="notice__message">{{ notice().message }}</p>
+    }
+    <p class="notice__meta">
+      <time [attr.datetime]="notice().createdAt">{{ notice().createdAt | relativeTime: now() }}</time>
+      <ng-content select="[notice-meta]" />
+    </p>
+    <ng-content />
+  </div>
+  @if (unread()) {
+    <span class="notice__dot"><span class="visually-hidden">Unread</span></span>
+  }
+</div>

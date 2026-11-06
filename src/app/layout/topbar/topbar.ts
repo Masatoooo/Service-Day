@@ -1,5 +1,6 @@
 import { Component, computed, input, output } from '@angular/core';
 import { Session } from '../../core/models';
+import { InboxItem } from '../../core/services/notification-service';
 
 /**
  * Top bar card: page greeting/title on the left; notifications and the
@@ -17,13 +18,14 @@ export class Topbar {
   readonly session = input.required<Session>();
   readonly inboxPath = input.required<string>();
   readonly unreadCount = input(0);
+  /** Latest notices for the bell dropdown (employees); null = the bell is a plain link. */
+  readonly notices = input<InboxItem[] | null>(null);
+  readonly now = input<Date>(new Date());
+  readonly markAllRead = output<void>();
   readonly menuOpen = input(false);
   readonly menuToggle = output<void>();
 
   protected readonly roleLabel = computed(() =>
     this.session().role === 'admin' ? 'Admin' : this.session().department,
-  );
-  protected readonly bellLabel = computed(() =>
-    this.unreadCount() > 0 ? `Notifications, ${this.unreadCount()} unread` : 'Notifications',
   );
 }

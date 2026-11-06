@@ -429,7 +429,7 @@ Letter-spacing: −0.01em on h1/kpi only. Numbers tabular. No uppercase labels; 
 
 ### 8.7 Charts
 
-`chart.js` via `ng2-charts`. If ng2-charts is not compatible with Angular 22, wrap `chart.js` directly in a small `ChartComponent` in SharedModule and log the decision. Colors come from tokens (read with `getComputedStyle`). Bars: taken = `--accent`, remaining capacity = `--surface-sunken`. No 3D, no gradients, gridlines in `--hairline`, legends only when > 1 series.
+`chart.js` via `ng2-charts`. If ng2-charts is not compatible with Angular 22, wrap `chart.js` directly in a small `ChartComponent` in SharedModule and log the decision. Colors come from tokens (read with `getComputedStyle`). Bars: taken = `--accent`, capacity track = `--hairline` (`--surface-sunken` is almost invisible on a white card). No 3D, no gradients, gridlines in `--hairline`, legends only when > 1 series.
 
 ---
 

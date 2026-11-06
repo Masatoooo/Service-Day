@@ -1,6 +1,156 @@
-<section class="surface-card" aria-label="Overview">
-  <app-page-header
-    heading="Overview"
-    description="Slots offered and taken, staff participation and the activities that need attention will appear here."
-  />
-</section>
+@if (vm$ | async; as o) {
+  <div class="overview">
+    <!-- Row 1: key numbers (flex-wrap: 4 across → 2 → 1). -->
+    <section class="card-row" aria-label="Key numbers">
+      <div class="kpi-slot">
+        <app-kpi-card label="Slots offered" [value]="o.kpis.slotsOffered" icon="ticket">
+          Across {{ o.kpis.publishedActivities }} published activities
+        </app-kpi-card>
+      </div>
+      <div class="kpi-slot">
+        <app-kpi-card label="Slots taken" [value]="o.kpis.slotsTaken" icon="circle-check" tone="success">
+          <span class="delta tabular">+{{ o.weekly.thisWeek }}</span> in the last 7 days
+        </app-kpi-card>
+      </div>
+      <div class="kpi-slot">
+        <app-kpi-card label="Slots remaining" [value]="o.kpis.slotsRemaining" icon="hourglass" tone="warning">
+          In {{ o.kpis.openActivities }} activities still taking sign-ups
+        </app-kpi-card>
+      </div>
+      <div class="kpi-slot">
+        <app-kpi-card label="Staff participation" [value]="o.kpis.participationPercent" unit="%" icon="users" tone="info">
+          {{ o.kpis.registeredStaff }} of {{ o.kpis.totalStaff }} staff have a place
+        </app-kpi-card>
+      </div>
+    </section>
+
+    <!-- Row 2 (primary): where places are going, and how many people have joined. -->
+    <div class="card-row">
+      <section class="surface-card col-main stack" aria-labelledby="fill-heading">
+        <header class="card-head">
+          <div>
+            <h2 id="fill-heading">Fill by NGO</h2>
+            <p class="text-small text-muted">Places taken against capacity, published activities only.</p>
+          </div>
+          <ul class="legend" role="list">
+            <li><span class="legend__swatch legend__swatch--taken" aria-hidden="true"></span>Taken</li>
+            <li><span class="legend__swatch legend__swatch--capacity" aria-hidden="true"></span>Capacity</li>
+          </ul>
+        </header>
+        @if (o.fillByNgo.labels.length) {
+          <app-fill-chart [dataset]="o.fillByNgo" />
+        } @else {
+          <app-empty-state icon="chart-column" heading="No published activities yet" message="Publish an activity and its NGO appears here with places taken against capacity.">
+            <a class="btn btn--secondary btn--sm" routerLink="/admin/activities">Go to activities</a>
+          </app-empty-state>
+        }
+      </section>
+
+      <section class="surface-card col-side stack participation" aria-labelledby="participation-heading">
+        <header class="card-head">
+          <h2 id="participation-heading">Staff participation</h2>
+          <a class="icon-btn icon-btn--quiet" routerLink="/admin/participation" aria-label="Open participation details">
+            <svg lucideIcon="arrow-up-right"></svg>
+          </a>
+        </header>
+        <app-gauge [value]="o.kpis.participationPercent" label="of staff have a place" />
+        <div class="tiles">
+          <div class="sunken-tile tile">
+            <span class="text-small text-muted">This week</span>
+            <span class="tile__value tabular">{{ o.weekly.thisWeek }}</span>
+            <span class="text-small" [class.is-up]="o.weeklyDelta > 0" [class.is-down]="o.weeklyDelta < 0">
+              {{ o.weeklyDelta > 0 ? '+' + o.weeklyDelta : o.weeklyDelta }} vs last week
+            </span>
+          </div>
+          <div class="sunken-tile tile">
+            <span class="text-small text-muted">Last week</span>
+            <span class="tile__value tabular">{{ o.weekly.lastWeek }}</span>
+            <span class="text-small text-muted">sign-ups</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 3 (secondary): what to act on, and who signed up last. -->
+    <div class="card-row">
+      <section class="surface-card stack attention" aria-labelledby="attention-heading">
+        <header class="card-head">
+          <h2 id="attention-heading">Needs attention</h2>
+          <span class="text-small text-muted tabular">{{ o.needsAttention.length }} {{ o.needsAttention.length === 1 ? 'activity' : 'activities' }}</span>
+        </header>
+        @if (o.needsAttention.length) {
+          <ul class="attention__list" role="list">
+            @for (item of o.needsAttention; track item.activity.id) {
+              @let action = attentionAction[item.kind];
+              <li class="attention__item">
+                <div class="attention__text">
+                  <a class="attention__title" [routerLink]="['/admin/activities', item.activity.id]">{{ item.activity.title }}</a>
+                  <span class="text-small text-muted">{{ item.activity.ngo.name }} · {{ item.reason }}</span>
+                </div>
+                <app-status-pill [label]="action.pill" [tone]="action.tone" />
+                <a
+                  class="btn btn--secondary btn--sm attention__action"
+                  routerLink="/admin/notifications"
+                  [queryParams]="{ tab: 'broadcast', preset: item.kind, activityId: item.activity.id }"
+                >{{ action.label }}</a>
+              </li>
+            }
+          </ul>
+        } @else {
+          <app-empty-state icon="circle-check" heading="Nothing needs attention" message="No activity is closing within 48 hours, down to its last places, or under a quarter full." />
+        }
+      </section>
+
+      <section class="surface-card stack recent" aria-labelledby="recent-heading">
+        <header class="card-head">
+          <h2 id="recent-heading">Recent registrations</h2>
+          <a class="btn btn--ghost btn--sm" routerLink="/admin/participation">All staff</a>
+        </header>
+        @if (o.recent.length) {
+          <table class="data-table">
+            <caption class="visually-hidden">The five most recent registrations</caption>
+            <thead>
+              <tr>
+                <th scope="col">Employee</th>
+                <th scope="col">Activity</th>
+                <th scope="col">When</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of o.recent; track r.name + r.registeredAt) {
+                <tr>
+                  <td>
+                    <span class="person">
+                      <app-avatar [name]="r.name" [seed]="r.name" size="sm" />
+                      <span class="person__text"><span>{{ r.name }}</span><span class="text-small text-muted">{{ r.department }}</span></span>
+                    </span>
+                  </td>
+                  <td data-label="Activity" class="text-small">{{ r.activityTitle }}</td>
+                  <td data-label="When" class="text-small text-muted nowrap">{{ r.registeredAt | relativeTime: o.now }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <app-empty-state icon="users" heading="No registrations yet" message="As soon as someone signs up, they appear here." />
+        }
+      </section>
+    </div>
+  </div>
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Overview could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the overview" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="overview" aria-busy="true" aria-label="Loading overview">
+    <div class="card-row">
+      @for (i of [1, 2, 3, 4]; track i) {
+        <div class="kpi-slot surface-card"><app-skeleton [lines]="2" /></div>
+      }
+    </div>
+    <div class="card-row">
+      <div class="surface-card col-main"><app-skeleton [lines]="7" /></div>
+      <div class="surface-card col-side"><app-skeleton [lines]="7" /></div>
+    </div>
+  </div>
+}

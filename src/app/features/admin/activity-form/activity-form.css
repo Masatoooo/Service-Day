@@ -56,51 +56,6 @@
   flex: 2 1 220px;
 }
 
-.textarea {
-  min-height: 112px;
-  padding-top: var(--space-3);
-  padding-bottom: var(--space-3);
-  resize: vertical;
-}
-
-.choices {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.choice {
-  display: flex;
-  flex: 1 1 240px;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  border-radius: var(--radius-tile);
-  background: var(--surface-sunken);
-  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
-  cursor: pointer;
-}
-
-.choice:has(input:checked) {
-  background: var(--accent-soft);
-  box-shadow: inset 0 0 0 var(--border-width) var(--accent);
-}
-
-.choice input {
-  margin-top: 3px;
-  accent-color: var(--accent-strong);
-}
-
-.choice > span {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.choice strong {
-  font-weight: var(--weight-medium);
-}
-
 .actions {
   display: flex;
   flex-wrap: wrap;

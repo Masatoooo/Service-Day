@@ -1,0 +1,48 @@
+@if (vm$ | async; as vm) {
+  <section class="surface-card stack inbox" aria-label="Your notices">
+    <app-page-header
+      [heading]="vm.unread ? (vm.unread === 1 ? '1 unread notice' : vm.unread + ' unread notices') : 'You\'re all caught up'"
+      description="Confirmations, reminders and updates from the Service Day team, newest first."
+    >
+      @if (vm.unread) {
+        <button type="button" class="btn btn--secondary btn--sm" (click)="markAllRead()" [disabled]="busy()">Mark all as read</button>
+      }
+    </app-page-header>
+
+    @if (vm.total) {
+      <app-pill-filter label="Show" [options]="vm.filters" [allowNone]="false" [selected]="vm.show" (selectedChange)="setShow($event)" />
+    }
+
+    @if (vm.shown.length) {
+      <ul class="inbox__list" role="list" aria-live="polite">
+        @for (item of vm.shown; track item.notice.id) {
+          <li class="inbox__item" [class.is-unread]="item.unread">
+            <app-notice-item [notice]="item.notice" [now]="vm.now" [unread]="item.unread">
+              @if (item.unread) {
+                <div class="inbox__actions">
+                  <button type="button" class="btn btn--ghost btn--sm" (click)="markRead(item)" [disabled]="busy()" [attr.aria-label]="'Mark as read: ' + item.notice.title">
+                    Mark as read
+                  </button>
+                </div>
+              }
+            </app-notice-item>
+          </li>
+        }
+      </ul>
+    } @else if (vm.total) {
+      <app-empty-state icon="circle-check" heading="No unread notices" message="Everything here has been read. Older notices are under All.">
+        <button type="button" class="btn btn--secondary btn--sm" (click)="setShow('all')">Show all {{ vm.total }}</button>
+      </app-empty-state>
+    } @else {
+      <app-empty-state icon="inbox" heading="No notices yet" message="When you register, switch or withdraw, the confirmation lands here. Reminders before Service Day do too.">
+        <a class="btn btn--primary btn--sm" routerLink="/app/opportunities">Browse opportunities</a>
+      </app-empty-state>
+    }
+  </section>
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Notices could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load your notices" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="surface-card stack" aria-busy="true" aria-label="Loading notices"><app-skeleton [lines]="6" /></div>
+}

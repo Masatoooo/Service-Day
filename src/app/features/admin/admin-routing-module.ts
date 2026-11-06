@@ -6,6 +6,8 @@ import { ActivitiesList } from './activities-list/activities-list';
 import { ActivityAdminDetail } from './activity-admin-detail/activity-admin-detail';
 import { ActivityForm } from './activity-form/activity-form';
 import { Ngos } from './ngos/ngos';
+import { NotificationsCenter } from './notifications-center/notifications-center';
+import { Participation } from './participation/participation';
 import { AdminOverview } from './overview/overview';
 
 const activityData = (subheading: string): ShellRouteData => ({ heading: 'Activities', subheading });
@@ -48,6 +50,18 @@ const routes: Routes = [
         component: Ngos,
         title: 'NGOs · Service Day',
         data: { heading: 'NGOs', subheading: 'The partner organisations behind every activity.' } satisfies ShellRouteData,
+      },
+      {
+        path: 'participation',
+        component: Participation,
+        title: 'Participation · Service Day',
+        data: { heading: 'Participation', subheading: 'Who has a place, where places are going, and who still needs a nudge.' } satisfies ShellRouteData,
+      },
+      {
+        path: 'notifications',
+        component: NotificationsCenter,
+        title: 'Notifications · Service Day',
+        data: { heading: 'Notifications', subheading: 'Reminder schedule, broadcasts and everything sent so far.' } satisfies ShellRouteData,
       },
     ],
   },

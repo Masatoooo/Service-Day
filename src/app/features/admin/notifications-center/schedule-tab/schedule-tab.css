@@ -1,0 +1,130 @@
+:host {
+  display: block;
+}
+
+/* Settings form (grows) beside the preview tile; stacks on narrow screens. */
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.settings {
+  flex: 3 1 420px;
+  min-width: 0;
+  --stack-gap: var(--space-5);
+}
+
+.preview {
+  flex: 2 1 280px;
+  min-width: 0;
+  --stack-gap: var(--space-3);
+}
+
+h2 {
+  font: var(--text-h2);
+}
+
+h3 {
+  font: var(--text-h3);
+}
+
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+fieldset:disabled {
+  opacity: 0.55;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.row > .field {
+  flex: 1 1 200px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* Chip: pill with the value and a small remove button (box model: padding, no border). */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.chip__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-control);
+  color: var(--accent-strong);
+}
+
+.chip__remove:hover {
+  background: var(--surface);
+}
+
+.add-offset {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.add-offset .input {
+  max-width: 140px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.preview__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.preview__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-width) solid var(--hairline);
+}
+
+.preview__item:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.preview__when {
+  font-weight: var(--weight-medium);
+}

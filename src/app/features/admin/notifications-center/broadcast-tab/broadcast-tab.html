@@ -1,0 +1,108 @@
+@let v = value();
+<div class="layout">
+  <form class="stack compose" [formGroup]="form" (ngSubmit)="review()" novalidate aria-labelledby="broadcast-heading">
+    <header>
+      <h2 id="broadcast-heading">New broadcast</h2>
+      <p class="text-small text-muted">Unregistered staff and activity participants each get a personal copy in their notifications.</p>
+    </header>
+
+    <fieldset class="field">
+      <legend class="field__label">Send to</legend>
+      <div class="choices" role="radiogroup" aria-label="Send to">
+        <label class="choice"><input type="radio" value="all-staff" formControlName="audience" /><span><strong>All staff</strong><span class="text-small text-muted">Everyone at Halden & Co.</span></span></label>
+        <label class="choice"><input type="radio" value="unregistered" formControlName="audience" /><span><strong>Staff without a place</strong><span class="text-small text-muted">People who haven't registered yet.</span></span></label>
+        <label class="choice"><input type="radio" value="activity" formControlName="audience" /><span><strong>Participants of an activity</strong><span class="text-small text-muted">Everyone registered on one activity.</span></span></label>
+        <label class="choice"><input type="radio" value="ngo" formControlName="audience" /><span><strong>An NGO contact</strong><span class="text-small text-muted">Recorded in History; NGOs have no inbox here.</span></span></label>
+      </div>
+    </fieldset>
+
+    @if (v.audience === 'activity') {
+      <div class="field">
+        <label class="field__label" for="b-activity">Activity</label>
+        <div class="input-wrap">
+          <select id="b-activity" class="input" formControlName="activityId" [attr.aria-invalid]="error('target') ? 'true' : null" aria-describedby="b-target-error">
+            <option value="" disabled>Choose an activity</option>
+            @for (a of activities$ | async; track a.id) {
+              <option [value]="a.id">{{ a.title }} · {{ a.taken }} registered</option>
+            }
+          </select>
+          <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+        </div>
+      </div>
+    }
+    @if (v.audience === 'ngo') {
+      <div class="field">
+        <label class="field__label" for="b-ngo">NGO</label>
+        <div class="input-wrap">
+          <select id="b-ngo" class="input" formControlName="ngoId" [attr.aria-invalid]="error('target') ? 'true' : null" aria-describedby="b-target-error">
+            <option value="" disabled>Choose an NGO</option>
+            @for (n of ngos$ | async; track n.id) {
+              <option [value]="n.id">{{ n.name }} · {{ n.contactName }}</option>
+            }
+          </select>
+          <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+        </div>
+      </div>
+    }
+    @if (error('target'); as m) { <p class="field__error" id="b-target-error">{{ m }}</p> }
+
+    <div class="field">
+      <label class="field__label" for="b-title">Title</label>
+      <input id="b-title" class="input" formControlName="title" [attr.aria-invalid]="error('title') ? 'true' : null" aria-describedby="b-title-error" />
+      @if (error('title'); as m) { <p class="field__error" id="b-title-error">{{ m }}</p> }
+    </div>
+
+    <div class="field">
+      <div class="label-row">
+        <label class="field__label" for="b-message">Message</label>
+        <span class="text-small tabular" id="b-count" [class.is-over]="v.message.length > messageMax" [class.text-muted]="v.message.length <= messageMax">
+          {{ v.message.length }} / {{ messageMax }}
+        </span>
+      </div>
+      <textarea id="b-message" class="input textarea" rows="5" formControlName="message" [attr.aria-invalid]="error('message') ? 'true' : null" aria-describedby="b-count b-message-error"></textarea>
+      @if (error('message'); as m) { <p class="field__error" id="b-message-error">{{ m }}</p> }
+    </div>
+
+    <label class="switch">
+      <input type="checkbox" role="switch" formControlName="urgent" />
+      Mark as urgent
+    </label>
+
+    <div class="actions">
+      <button type="submit" class="btn btn--primary"><svg lucideIcon="megaphone" [size]="16"></svg>Review and send</button>
+      @let count = recipients();
+      @if (count === undefined) {
+        <span class="text-small text-muted">Counting recipients…</span>
+      } @else if (count) {
+        <span class="text-small text-muted tabular">Reaches {{ v.audience === 'ngo' ? '1 NGO contact' : count === 1 ? '1 person' : count + ' people' }}</span>
+      } @else {
+        <span class="text-small text-muted">Nobody matches this audience yet.</span>
+      }
+    </div>
+  </form>
+
+  <aside class="sunken-tile stack preview" aria-labelledby="b-preview-heading">
+    <h3 id="b-preview-heading">How it looks in the inbox</h3>
+    <div class="preview__card">
+      <app-notice-item
+        [notice]="{ type: type(), title: v.title || 'Your title appears here', message: v.message || 'Your message appears here.', urgent: v.urgent, createdAt: createdAt }"
+        [now]="now"
+        [unread]="true"
+      />
+    </div>
+  </aside>
+</div>
+
+@if (confirmOpen()) {
+  @let count = recipients() ?? 0;
+  <app-confirm-dialog
+    [heading]="'Send to ' + (v.audience === 'ngo' ? 'the NGO contact' : count === 1 ? '1 person' : count + ' people') + '?'"
+    [message]="'“' + v.title + '” goes out now' + (v.urgent ? ' as urgent' : '') + '. It can\'t be unsent, and it will be listed under History.'"
+    confirmLabel="Send now"
+    cancelLabel="Keep editing"
+    [busy]="busy()"
+    [open]="true"
+    (openChange)="closeConfirm($event)"
+    (confirmed)="send()"
+  />
+}

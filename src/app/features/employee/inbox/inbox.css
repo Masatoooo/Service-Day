@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.inbox {
+  --stack-gap: var(--space-5);
+}
+
+.inbox__list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Box model: padding inside each row, a hairline between rows. */
+.inbox__item {
+  padding: var(--space-4) 0;
+  border-bottom: var(--border-width) solid var(--hairline);
+}
+
+.inbox__item:first-child {
+  padding-top: 0;
+}
+
+.inbox__item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* The ghost button's own padding would indent it: pull it back so its text lines up. */
+.inbox__actions {
+  display: flex;
+  margin-left: calc(-1 * var(--space-4));
+}

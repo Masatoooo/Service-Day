@@ -1,22 +1,11 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { finalize } from 'rxjs';
-import { ActivityView, NotificationType } from '../../../core/models';
+import { ActivityView } from '../../../core/models';
 import { ActivityService } from '../../../core/services/activity-service';
 import { AuthService } from '../../../core/services/auth-service';
 import { EmployeeHomeService } from '../../../core/services/employee-home-service';
 import { DialogCopy, RegistrationFlow } from '../registration-flow';
-
-/** One line icon per notice type (View concern only). */
-const NOTICE_ICON: Record<NotificationType, string> = {
-  registration: 'circle-check',
-  switch: 'arrow-left-right',
-  withdrawal: 'log-out',
-  'activity-update': 'info',
-  reminder: 'clock',
-  broadcast: 'megaphone',
-  'last-slots': 'hourglass',
-};
 
 /**
  * Employee home (/app). Controller: subscribes to the prepared home view
@@ -34,7 +23,6 @@ export class EmployeeHome {
   protected readonly userId = inject(AuthService).session?.userId ?? '';
   protected readonly home$ = inject(EmployeeHomeService).home$(this.userId);
   protected readonly loadFailed$ = inject(ActivityService).loadFailed$;
-  protected readonly noticeIcon = NOTICE_ICON;
   protected readonly withdrawOpen = signal(false);
   protected readonly busy = signal(false);
 

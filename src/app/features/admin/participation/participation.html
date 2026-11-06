@@ -1,0 +1,167 @@
+@if (vm$ | async; as vm) {
+  <div class="page">
+    <!-- Distribution: two cards of equal weight, side by side on desktop. -->
+    <div class="card-row">
+      <section class="surface-card stack dist" aria-labelledby="dept-heading">
+        <header>
+          <h2 id="dept-heading">By department</h2>
+          <p class="text-small text-muted">Share of each team with a place. {{ vm.kpis.registeredStaff }} of {{ vm.kpis.totalStaff }} staff overall.</p>
+        </header>
+        <ul class="bars" role="list">
+          @for (row of vm.byDepartment; track row.department) {
+            <li class="bar-row">
+              <div class="bar-row__label">
+                <span>{{ row.department }}</span>
+                <span class="text-small text-muted tabular">{{ row.registered }} of {{ row.total }} · {{ row.percent }}%</span>
+              </div>
+              <div class="bar" role="img" [attr.aria-label]="row.department + ': ' + row.percent + '% have a place'">
+                <span class="bar__fill" [style.width.%]="row.percent"></span>
+              </div>
+            </li>
+          }
+        </ul>
+      </section>
+
+      <section class="surface-card stack dist" aria-labelledby="ngo-heading">
+        <header>
+          <h2 id="ngo-heading">By NGO</h2>
+          <p class="text-small text-muted">Places taken against capacity on each NGO's published activities.</p>
+        </header>
+        @if (vm.byNgo.length) {
+          <ul class="bars" role="list">
+            @for (row of vm.byNgo; track row.name) {
+              <li class="bar-row">
+                <div class="bar-row__label">
+                  <span>{{ row.name }}</span>
+                  <span class="text-small text-muted tabular">{{ row.taken }} of {{ row.capacity }} · {{ row.percent }}%</span>
+                </div>
+                <div class="bar" role="img" [attr.aria-label]="row.name + ': ' + row.taken + ' of ' + row.capacity + ' places taken'">
+                  <span class="bar__fill" [style.width.%]="row.percent"></span>
+                </div>
+              </li>
+            }
+          </ul>
+        } @else {
+          <app-empty-state icon="heart-handshake" heading="No published activities" message="Publish an activity to see how its NGO fills up." />
+        }
+      </section>
+    </div>
+
+    <!-- Unregistered staff: the list admins act on. -->
+    <section class="surface-card stack" aria-label="Staff without a place">
+      <app-page-header
+        [heading]="vm.unregistered.length + (vm.unregistered.length === 1 ? ' person has' : ' people have') + ' no place yet'"
+        description="Select people and send them a reminder. It appears in their notifications straight away."
+      >
+        <button type="button" class="btn btn--primary btn--sm" [disabled]="!selectedCount()" (click)="confirmOpen.set(true)">
+          <svg lucideIcon="bell" [size]="16"></svg>Send reminder{{ selectedCount() ? ' (' + selectedCount() + ')' : '' }}
+        </button>
+      </app-page-header>
+      @if (!selectedCount() && vm.unregistered.length) {
+        <p class="text-small text-muted hint">Select at least one person to send a reminder.</p>
+      }
+
+      @if (vm.unregistered.length) {
+        <app-search-field label="Search staff without a place" placeholder="Search by name, department or email" [(value)]="query" />
+        @if (vm.shown.length) {
+          <table class="data-table">
+            <caption class="visually-hidden">Staff without a place, {{ vm.shown.length }} shown</caption>
+            <thead>
+              <tr>
+                <th scope="col" class="cell-check">
+                  <input type="checkbox" class="check" [checked]="allSelected(vm.shown)" (change)="toggleAll(vm.shown)" aria-label="Select everyone shown" />
+                </th>
+                <th scope="col">Name</th>
+                <th scope="col">Department</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (e of vm.shown; track e.id) {
+                <tr [class.is-selected]="isSelected(e.id)">
+                  <td class="cell-check">
+                    <input type="checkbox" class="check" [id]="'pick-' + e.id" [checked]="isSelected(e.id)" (change)="toggle(e.id)" />
+                  </td>
+                  <td>
+                    <label class="person" [for]="'pick-' + e.id">
+                      <app-avatar [name]="e.name" [seed]="e.id" size="sm" />{{ e.name }}
+                    </label>
+                  </td>
+                  <td data-label="Department" class="text-small">{{ e.department }}</td>
+                  <td data-label="Email" class="text-small text-muted">{{ e.email }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <app-empty-state icon="search-x" heading="Nobody matches that search" [message]="'No one without a place matches \'' + query() + '\'.'">
+            <button type="button" class="btn btn--secondary btn--sm" (click)="query.set('')">Clear search</button>
+          </app-empty-state>
+        }
+      } @else {
+        <app-empty-state icon="circle-check" heading="Everyone has a place" message="Every employee is registered for an activity this season." />
+      }
+    </section>
+
+    <!-- Utilisation per activity. -->
+    <section class="surface-card stack" aria-label="Utilisation by activity">
+      <app-page-header heading="Utilisation by activity" description="Published activities, fullest first." />
+      @if (vm.utilisation.length) {
+        <table class="data-table">
+          <caption class="visually-hidden">Places taken per published activity</caption>
+          <thead>
+            <tr>
+              <th scope="col">Activity</th>
+              <th scope="col">Date</th>
+              <th scope="col">Fill</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of vm.utilisation; track row.view.id) {
+              @let a = row.view;
+              <tr>
+                <td>
+                  <a class="row-title" [routerLink]="['/admin/activities', a.id]">{{ a.title }}</a>
+                  <span class="text-small text-muted block">{{ a.ngo.name }}</span>
+                </td>
+                <td data-label="Date" class="text-small">{{ a | activityDate }}</td>
+                <td data-label="Fill" class="cell-fill">
+                  <app-slot-meter [taken]="a.taken" [capacity]="a.maxSlots" [muted]="a.availability === 'closed'" />
+                </td>
+                <td data-label="Status"><app-status-pill [availability]="a.availability" /></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <app-empty-state icon="calendar-days" heading="No published activities" message="Utilisation appears once activities are published." />
+      }
+    </section>
+  </div>
+
+  @if (confirmOpen()) {
+    <app-confirm-dialog
+      [heading]="'Send a reminder to ' + (selectedCount() === 1 ? '1 person' : selectedCount() + ' people') + '?'"
+      message="Each of them gets a notice asking them to pick an activity, with the number of places still open. You can see it later under Notifications → History."
+      confirmLabel="Send reminder"
+      cancelLabel="Not now"
+      [busy]="busy()"
+      [open]="true"
+      (openChange)="closeConfirm($event)"
+      (confirmed)="sendReminder(vm.unregistered, vm.kpis)"
+    />
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Participation could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load participation" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="page" aria-busy="true" aria-label="Loading participation">
+    <div class="card-row">
+      <div class="surface-card dist"><app-skeleton [lines]="7" /></div>
+      <div class="surface-card dist"><app-skeleton [lines]="7" /></div>
+    </div>
+    <div class="surface-card"><app-skeleton [lines]="8" /></div>
+  </div>
+}
