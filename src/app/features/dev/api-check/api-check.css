@@ -1,0 +1,77 @@
+/* Flexbox: count tiles wrap, each grows from a 150px basis. */
+.api__counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.api__counts > * {
+  display: flex;
+  flex: 1 1 150px;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.api__counts dt {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.api__counts dd {
+  margin: 0;
+  font: var(--text-h2);
+}
+
+/* The table scrolls inside its own container on narrow screens (dev page only). */
+.api__table-wrap {
+  overflow-x: auto;
+}
+
+.api__table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.api__table th {
+  padding: var(--space-3) var(--space-3);
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  text-align: left;
+}
+
+.api__table th:first-child {
+  border-radius: var(--radius-input) 0 0 var(--radius-input);
+}
+
+.api__table th:last-child {
+  border-radius: 0 var(--radius-input) var(--radius-input) 0;
+}
+
+.api__table td {
+  padding: var(--space-3);
+  border-bottom: var(--border-width) solid var(--hairline);
+  vertical-align: top;
+}
+
+.api__table td:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.api__title {
+  font-weight: var(--weight-medium);
+}
+
+.api__match {
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  color: var(--success);
+}
+
+.api__match.is-miss {
+  color: var(--danger);
+}

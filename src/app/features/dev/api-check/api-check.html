@@ -1,0 +1,77 @@
+<section class="surface-card stack api" aria-label="API check">
+  <app-page-header
+    heading="API check"
+    description="Live data from the json-server mock API through the core services. The table re-polls every 10 seconds."
+  />
+
+  @if (counts$ | async; as counts) {
+    @if (counts === 'error') {
+      <app-empty-state
+        icon="circle-exclamation-point"
+        heading="The mock API isn't answering"
+        message="Start it with npm run api (or npm run dev), then reload this page."
+      />
+    } @else {
+      <dl class="api__counts">
+        <div class="sunken-tile"><dt>Employees</dt><dd class="tabular">{{ counts.employees }}</dd></div>
+        <div class="sunken-tile"><dt>With a place</dt><dd class="tabular">{{ counts.registered }} · {{ counts.participation }}%</dd></div>
+        <div class="sunken-tile"><dt>NGOs</dt><dd class="tabular">{{ counts.ngos }}</dd></div>
+        <div class="sunken-tile"><dt>Notices sent</dt><dd class="tabular">{{ counts.notices }}</dd></div>
+        <div class="sunken-tile"><dt>Upcoming reminders</dt><dd class="tabular">{{ counts.upcomingReminders }}</dd></div>
+        <div class="sunken-tile"><dt>Aisha's unread</dt><dd class="tabular">{{ counts.aishaUnread }}</dd></div>
+      </dl>
+    }
+  } @else {
+    <div class="api__counts" aria-busy="true">
+      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+        <app-skeleton shape="block" height="64px" />
+      }
+    </div>
+  }
+
+  <div class="api__table-wrap">
+    <table class="api__table">
+      <caption class="visually-hidden">Live availability of every activity</caption>
+      <thead>
+        <tr>
+          <th scope="col">Activity</th>
+          <th scope="col">Date</th>
+          <th scope="col">Slots</th>
+          <th scope="col">Cut-off</th>
+          <th scope="col">Live</th>
+          <th scope="col">Expected</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (view of views$ | async; track view.id) {
+          <tr>
+            <td>
+              <span class="api__title">{{ view.title }}</span>
+              <span class="text-small text-muted">{{ view.ngo.name }}</span>
+              @if (view.checkInCode) {
+                <span class="text-small text-muted">Code {{ view.checkInCode }} · {{ checkInUrl(view.checkInCode) }}</span>
+              }
+            </td>
+            <td class="tabular">{{ view.date }} {{ view.startTime }}</td>
+            <td class="tabular">{{ view.taken }}/{{ view.maxSlots }}</td>
+            <td class="text-small">{{ view.cutoffAt | cutoffLabel: now }}</td>
+            <td><app-status-pill [availability]="view.availability" /></td>
+            <td>
+              @if (expected[view.id]; as want) {
+                <span class="api__match" [class.is-miss]="want !== view.availability">
+                  {{ want === view.availability ? 'Matches' : 'Expected ' + (want | availabilityLabel) }}
+                </span>
+              } @else {
+                <span class="text-small text-muted">New</span>
+              }
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6"><app-skeleton [lines]="3" /></td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
