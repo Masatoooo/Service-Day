@@ -1,0 +1,10 @@
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/auth-service';
+
+/** Signed-in only. Otherwise → /login?returnUrl=<where they were going>. */
+export const authGuard: CanActivateFn = (_route, state) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  return auth.session ? true : router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+};

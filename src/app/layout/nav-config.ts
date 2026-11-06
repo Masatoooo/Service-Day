@@ -1,4 +1,6 @@
-import { Role } from '../core/models';
+import { HOME_BY_ROLE, Role } from '../core/models';
+
+export { HOME_BY_ROLE };
 
 /** One sidebar entry. `icon` is a Lucide name registered in shared/icons.ts. */
 export interface NavItem {
@@ -31,11 +33,6 @@ export const ADMIN_NAV: readonly NavItem[] = [
 export const NAV_BY_ROLE: Record<Role, readonly NavItem[]> = {
   employee: EMPLOYEE_NAV,
   admin: ADMIN_NAV,
-};
-
-export const HOME_BY_ROLE: Record<Role, string> = {
-  employee: '/app',
-  admin: '/admin',
 };
 
 export const INBOX_BY_ROLE: Record<Role, string> = {

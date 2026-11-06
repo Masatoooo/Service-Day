@@ -37,10 +37,10 @@
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-control);
   background: var(--surface);
-  box-shadow: var(--shadow-overlay);
   transform: translateY(-200%);
 }
 
 .skip-link:focus-visible {
+  box-shadow: var(--shadow-overlay);
   transform: none;
 }

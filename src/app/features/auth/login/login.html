@@ -1,0 +1,87 @@
+<header class="auth-form__header">
+  <h1>Sign in</h1>
+  <p class="text-muted">Use your Halden &amp; Co. work email.</p>
+</header>
+
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <div class="field">
+    <label class="field__label" for="login-email">Work email</label>
+    <input
+      id="login-email"
+      class="input"
+      type="email"
+      autocomplete="username"
+      formControlName="email"
+      [attr.aria-invalid]="error('email') ? 'true' : null"
+      [attr.aria-describedby]="error('email') ? 'login-email-error' : null"
+    />
+    @if (error('email'); as message) {
+      <p class="field__error" id="login-email-error">
+        <svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}
+      </p>
+    }
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="login-password">Password</label>
+    <div class="input-wrap">
+      <input
+        id="login-password"
+        class="input"
+        autocomplete="current-password"
+        formControlName="password"
+        [type]="showPassword() ? 'text' : 'password'"
+        [attr.aria-invalid]="error('password') ? 'true' : null"
+        [attr.aria-describedby]="error('password') ? 'login-password-error' : null"
+      />
+      <button
+        type="button"
+        class="input-wrap__action"
+        [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'"
+        [attr.aria-pressed]="showPassword()"
+        (click)="showPassword.set(!showPassword())"
+      >
+        <svg [lucideIcon]="showPassword() ? 'eye-off' : 'eye'"></svg>
+      </button>
+    </div>
+    @if (error('password'); as message) {
+      <p class="field__error" id="login-password-error">
+        <svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}
+      </p>
+    }
+  </div>
+
+  @if (formError(); as message) {
+    <p class="form-alert" role="alert">
+      <svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}
+    </p>
+  }
+
+  <button id="login-submit" type="submit" class="btn btn--primary btn--block" [disabled]="submitting()" [attr.aria-busy]="submitting()">
+    {{ submitting() ? 'Signing in…' : 'Sign in' }}
+  </button>
+</form>
+
+<p class="auth-form__switch">New to Service Day? <a routerLink="/register">Create an account</a></p>
+
+<details class="demo">
+  <summary class="demo__summary">
+    Demo accounts
+    <svg class="demo__chevron" lucideIcon="chevron-down"></svg>
+  </summary>
+  <ul class="demo__list" role="list">
+    @for (account of demoAccounts; track account.email) {
+      <li class="demo__item">
+        <app-avatar [name]="account.name" [seed]="account.email" size="sm" />
+        <div class="demo__text">
+          <span class="demo__name">{{ account.name }} <span class="demo__role">{{ account.role }}</span></span>
+          <span class="demo__situation">{{ account.situation }}</span>
+        </div>
+        <button type="button" class="btn btn--secondary btn--sm" [attr.aria-label]="'Use ' + account.name + '’s account'" (click)="useAccount(account)">
+          Use
+        </button>
+      </li>
+    }
+  </ul>
+  <p class="demo__note">Employees: Volunteer#1 · Admin: Admin#2026 · mock data only</p>
+</details>

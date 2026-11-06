@@ -1,0 +1,119 @@
+<header class="auth-form__header">
+  <h1>Create your account</h1>
+  <p class="text-muted">For Halden &amp; Co. employees. Admin accounts are set up by People &amp; Culture.</p>
+</header>
+
+<form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <div class="field">
+    <label class="field__label" for="register-name">Full name</label>
+    <input
+      id="register-name"
+      class="input"
+      autocomplete="name"
+      formControlName="name"
+      [attr.aria-invalid]="error('name') ? 'true' : null"
+      [attr.aria-describedby]="error('name') ? 'register-name-error' : null"
+    />
+    @if (error('name'); as message) {
+      <p class="field__error" id="register-name-error"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
+    }
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="register-email">Work email</label>
+    <input
+      id="register-email"
+      class="input"
+      type="email"
+      autocomplete="email"
+      placeholder="firstname.lastname@halden.co"
+      formControlName="email"
+      [attr.aria-invalid]="error('email') ? 'true' : null"
+      [attr.aria-describedby]="error('email') ? 'register-email-error' : 'register-email-status'"
+    />
+    @if (error('email'); as message) {
+      <p class="field__error" id="register-email-error"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
+    } @else {
+      <p class="field__hint" id="register-email-status" aria-live="polite">
+        {{ form.controls.email.pending ? 'Checking this email…' : 'Must end in @halden.co.' }}
+      </p>
+    }
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="register-department">Department</label>
+    <div class="input-wrap">
+      <select
+        id="register-department"
+        class="input"
+        formControlName="department"
+        [attr.aria-invalid]="error('department') ? 'true' : null"
+        [attr.aria-describedby]="error('department') ? 'register-department-error' : null"
+      >
+        <option value="" disabled>Choose your department</option>
+        @for (department of departments; track department) {
+          <option [value]="department">{{ department }}</option>
+        }
+      </select>
+      <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+    </div>
+    @if (error('department'); as message) {
+      <p class="field__error" id="register-department-error"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
+    }
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="register-password">Password</label>
+    <div class="input-wrap">
+      <input
+        id="register-password"
+        class="input"
+        autocomplete="new-password"
+        formControlName="password"
+        [type]="showPassword() ? 'text' : 'password'"
+        [attr.aria-invalid]="error('password') ? 'true' : null"
+        [attr.aria-describedby]="error('password') ? 'register-password-error' : 'register-password-hint'"
+      />
+      <button
+        type="button"
+        class="input-wrap__action"
+        [attr.aria-label]="showPassword() ? 'Hide passwords' : 'Show passwords'"
+        [attr.aria-pressed]="showPassword()"
+        (click)="showPassword.set(!showPassword())"
+      >
+        <svg [lucideIcon]="showPassword() ? 'eye-off' : 'eye'"></svg>
+      </button>
+    </div>
+    @if (error('password'); as message) {
+      <p class="field__error" id="register-password-error"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
+    } @else {
+      <p class="field__hint" id="register-password-hint">At least 8 characters, including a number.</p>
+    }
+  </div>
+
+  <div class="field">
+    <label class="field__label" for="register-confirm">Confirm password</label>
+    <input
+      id="register-confirm"
+      class="input"
+      autocomplete="new-password"
+      formControlName="confirm"
+      [type]="showPassword() ? 'text' : 'password'"
+      [attr.aria-invalid]="error('confirm') ? 'true' : null"
+      [attr.aria-describedby]="error('confirm') ? 'register-confirm-error' : null"
+    />
+    @if (error('confirm'); as message) {
+      <p class="field__error" id="register-confirm-error"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
+    }
+  </div>
+
+  @if (formError(); as message) {
+    <p class="form-alert" role="alert"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
+  }
+
+  <button type="submit" class="btn btn--primary btn--block" [disabled]="submitting()" [attr.aria-busy]="submitting()">
+    {{ submitting() ? 'Creating your account…' : 'Create account' }}
+  </button>
+</form>
+
+<p class="auth-form__switch">Already have an account? <a routerLink="/login">Sign in</a></p>

@@ -1,0 +1,13 @@
+@if (session$ | async; as session) {
+  @if (topbar$ | async; as topbar) {
+    <app-shell
+      [session]="session"
+      [heading]="topbar.heading"
+      [subheading]="topbar.subheading"
+      [unreadCount]="(unread$ | async) ?? 0"
+      (signOut)="signOut()"
+    >
+      <router-outlet />
+    </app-shell>
+  }
+}

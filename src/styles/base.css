@@ -56,6 +56,12 @@ button {
   padding: 0;
 }
 
+/* <router-outlet> renders nothing itself (the page is its sibling), so it must not
+   take part in Flexbox layout: as an empty flex item it would add an extra gap. */
+router-outlet {
+  display: none;
+}
+
 ul[role='list'],
 ol[role='list'] {
   list-style: none;
@@ -237,6 +243,100 @@ html:has(dialog[open]) {
 .input:focus-visible {
   border-color: var(--accent-strong);
   outline-offset: 0;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.input[aria-invalid='true'] {
+  border-color: var(--danger);
+}
+
+/* ---- Form fields: label, control, hint, error stacked with Flexbox ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field__label {
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+}
+
+.field__hint {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font: var(--text-small);
+  color: var(--danger);
+}
+
+.field__error svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+/* A control with a button or icon sitting inside its right edge (password toggle, select arrow). */
+.input-wrap {
+  position: relative;
+  display: flex;
+}
+
+.input-wrap > .input {
+  padding-right: 48px;
+}
+
+.input-wrap__action {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-input);
+  color: var(--ink-muted);
+  transform: translateY(-50%);
+}
+
+.input-wrap__action:hover {
+  background: var(--hairline);
+  color: var(--ink);
+}
+
+select.input {
+  appearance: none;
+  cursor: pointer;
+}
+
+.input-wrap__icon {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  color: var(--ink-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+/* Form-level message (e.g. the server can't be reached). */
+.form-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-input);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font: var(--text-small);
 }
 
 /* ---- Reduced motion: keep opacity changes, drop movement ---- */

@@ -7,3 +7,9 @@ export interface Session {
   role: Role;
   department: string;
 }
+
+/** Where each role lands after sign-in (and when it opens the wrong area). */
+export const HOME_BY_ROLE: Record<Role, string> = {
+  employee: '/app',
+  admin: '/admin',
+};

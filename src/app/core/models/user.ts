@@ -14,3 +14,16 @@ export interface User {
 
 /** A user as shown in lists: everything except the password. */
 export type PublicUser = Omit<User, 'password'>;
+
+export const DEPARTMENTS: readonly string[] = [
+  'Customer Success',
+  'Engineering',
+  'Finance',
+  'Legal',
+  'Marketing',
+  'Operations',
+  'People & Culture',
+];
+
+/** Self-registration is for Halden & Co. staff only. */
+export const WORK_EMAIL_DOMAIN = '@halden.co';

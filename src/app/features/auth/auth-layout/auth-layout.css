@@ -1,0 +1,155 @@
+/* Flexbox split: brand panel (left) and form column (right), each flex: 1.
+   Box model: the page padding is the same 16px inset as the app shell. */
+.auth {
+  display: flex;
+  gap: var(--shell-inset);
+  min-height: 100dvh;
+  padding: var(--shell-inset);
+}
+
+.auth__brand {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--space-8);
+  max-width: 640px;
+  padding: var(--space-7) var(--space-8);
+}
+
+.auth__wordmark {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.auth__wordmark:hover {
+  color: var(--ink);
+}
+
+.auth__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-input);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.auth__wordmark-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth__name {
+  font: var(--text-h2);
+  font-weight: var(--weight-strong);
+  letter-spacing: var(--tracking-tight);
+}
+
+.auth__by {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+/* margin-block: auto centres the pitch vertically between wordmark and season numbers. */
+.auth__pitch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-block: auto;
+}
+
+.auth__headline {
+  max-width: 14ch;
+  font: var(--text-kpi);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+.auth__lede {
+  max-width: 46ch;
+  color: var(--ink-muted);
+}
+
+.auth__season {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 420px;
+}
+
+.auth__season-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 var(--space-1);
+  color: var(--ink-muted);
+}
+
+.auth__season-line strong {
+  color: var(--ink);
+  font-weight: var(--weight-medium);
+}
+
+.auth__season-date {
+  flex-basis: 100%;
+  color: var(--ink);
+}
+
+/* The form column centres the card; the card is the only white surface on the page. */
+.auth__main {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+}
+
+.auth__card {
+  width: min(460px, 100%);
+  padding: var(--space-8);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+/* Tablet and phone: brand on top (compact), form below. */
+@media (max-width: 899px) {
+  .auth {
+    flex-direction: column;
+  }
+
+  .auth__brand {
+    flex: none;
+    gap: var(--space-5);
+    max-width: none;
+    padding: var(--space-4) var(--space-2) 0;
+  }
+
+  .auth__pitch {
+    margin-block: 0;
+  }
+
+  .auth__headline {
+    max-width: 22ch;
+    font: var(--text-h1);
+  }
+
+  .auth__main {
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 599px) {
+  .auth__lede,
+  .auth__season {
+    display: none;
+  }
+
+  .auth__card {
+    padding: var(--card-padding);
+  }
+}

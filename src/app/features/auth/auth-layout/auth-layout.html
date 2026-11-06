@@ -1,0 +1,48 @@
+<a class="skip-link" href="#auth-form">Skip to the form</a>
+
+<div class="auth">
+  <aside class="auth__brand" aria-label="About Service Day">
+    <a class="auth__wordmark" routerLink="/login">
+      <span class="auth__mark" aria-hidden="true">
+        <svg lucideIcon="hand-heart" [size]="22"></svg>
+      </span>
+      <span class="auth__wordmark-text">
+        <span class="auth__name">Service Day</span>
+        <span class="auth__by">by Halden &amp; Co.</span>
+      </span>
+    </a>
+
+    <div class="auth__pitch">
+      <p class="auth__headline">Choose where you'll spend Service Day.</p>
+      <p class="auth__lede">
+        Halden &amp; Co.'s volunteering day with partner NGOs around Kuala Lumpur. Pick one activity, change your mind
+        until its cut-off, and check in on the day with a QR code.
+      </p>
+    </div>
+
+    @if (season$ | async; as season) {
+      @if (season !== 'error') {
+        <section class="auth__season" aria-label="This season">
+          <p class="auth__season-line">
+            <strong class="tabular">{{ season.activityCount }}</strong> activities from
+            <strong class="tabular">{{ season.ngoCount }}</strong> NGOs this season
+            @if (season.serviceDayLabel) {
+              <span class="auth__season-date">Service Day is {{ season.serviceDayLabel }}</span>
+            }
+          </p>
+          <app-slot-meter [taken]="season.placesTaken" [capacity]="season.placesOffered" />
+        </section>
+      }
+    } @else {
+      <div class="auth__season" aria-busy="true">
+        <app-skeleton [lines]="2" />
+      </div>
+    }
+  </aside>
+
+  <main class="auth__main" id="auth-form" tabindex="-1">
+    <div class="auth__card">
+      <router-outlet />
+    </div>
+  </main>
+</div>

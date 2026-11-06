@@ -10,7 +10,7 @@ Claude Code appends to this file at the end of every phase. Newest entry at the 
 | 0b | Product & design context (impeccable init) | done | docs: add PRODUCT.md and DESIGN.md via impeccable init |
 | 1 | Design system, modules, shell | done | feat(ui): design tokens, shared components and app shell |
 | 2 | Models, seed, rules, services | done | feat(core): models, seed data, business rules and data services |
-| 3 | Authentication | not started | |
+| 3 | Authentication | done | feat(auth): login, register, session and role guards |
 | 4 | Employee browsing | not started | |
 | 5 | Employee registration flows | not started | |
 | 6 | Admin activities & NGOs | not started | |
@@ -57,6 +57,13 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - 2026-11-06 — Interceptors: ErrorInterceptor registered before LatencyInterceptor (outermost). The error toast for the same message is shown at most once per 10 s, so a stopped API doesn't spam toasts every poll.
 - 2026-11-06 — `environment.publicAppUrl` added (base URL inside QR codes).
 - 2026-11-06 — Initial bundle budget warning raised from 500 kB to 600 kB (error stays 1 MB). The initial chunk is the Angular baseline (core, router, forms exported by SharedModule, http, zone.js) at 500.16 kB / 111 kB transferred; feature code is lazy-loaded.
+- 2026-11-06 — Auth: `AuthService.session$` is a BehaviorSubject restored from localStorage key `service-day.session` (validated on read; only id, name, role, department — never the password). Login/register failures are `AuthError { field, message }`, shown under the matching field; a previous server error is cleared on the next submit.
+- 2026-11-06 — Guards are functional `CanActivateFn`s in `core/guards/` (auth with returnUrl, guest + homeRedirect, `roleGuard(role)` with an info toast). `HOME_BY_ROLE` moved to `core/models/session.ts` so guards don't import from layout.
+- 2026-11-06 — `AreaShell` (LayoutModule) is the routed parent of `/app` and `/admin`: it wraps AppShell around `<router-outlet>`, reads top-bar text from route data (`greeting: true` → "Hi, {first}. Welcome back." + role subtitle), shows the employee's unread count (15 s poll) and handles sign out.
+- 2026-11-06 — AuthModule is mounted at `''` with its own `login` / `register` child routes (guestGuard on children). Unknown URLs fall through to `**`; NotFound renders inside the shell when signed in, as a card otherwise.
+- 2026-11-06 — Validators in `core/validators/account-validators.ts`: `workEmailValidator`, `containsNumberValidator`, cross-field `matchingFieldsValidator`, async `emailAvailableValidator` (400 ms timer = debounce, cancelled per keystroke). Register waits for a pending email check before submitting.
+- 2026-11-06 — Brand panel numbers come from `ParticipationStatsService.seasonSummary()` (one-off fetch): published activities, NGOs, places taken/offered, Service Day = date most published activities share. Hidden quietly if the API is down.
+- 2026-11-06 — Global `router-outlet { display: none }`: the outlet element is an empty flex item in the shell's content column and added a phantom gap.
 - 2026-11-06 — Extra rule helpers beyond PLAN §5: `validateActivityEdit`, `canDeleteActivity`, `canDeleteNgo` (rule 6), `reminder.rules.ts` (rule 9), `normalizeCheckInCode` / `isValidCheckInCode`.
 
 ## Known issues
@@ -67,7 +74,8 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - No Chromium installed for Playwright, so Phase 0 was verified with `curl` only (app HTML 200, `/users` → `[]`).
 - `docs/PROMPTS.md` Phase 0b still quotes `#B9501A`; the current value is `#B24D19` (PLAN §8.1 wins).
 - DESIGN.md is a seed: after Phase 1 builds `tokens.css` and the shell, run `/impeccable document` to sync it with the real code and generate `.impeccable/design.json`. (Still open after Phase 1; the added tokens are not in DESIGN.md yet.)
-- Initial bundle is 500 kB raw / 111 kB transferred (budget warning now 600 kB, see Decisions). Keep chart.js inside the lazy AdminModule.
+- Initial bundle is 577 kB raw / 125 kB transferred (budget warning 600 kB). It grew in Phase 3 because AreaShell lives in the eager LayoutModule and pulls in the notification/activity services and date-fns. If later phases cross 600 kB, move AreaShell into a small module imported only by the lazy Employee/Admin modules. Keep chart.js inside the lazy AdminModule.
+- The mock login compares plain-text passwords in the browser (passwords are visible via GET /users). Acceptable for Assignment 1 only; Assignment 2 moves auth to the server.
 - Services are verified through the styleguide API check panel (reads, live polling, availability A–I) and the rule specs. The write paths (register / switch / withdraw, broadcast expansion, mark read, check-in, generate code) are not exercised end-to-end yet; Phases 5–8 use them through the UI.
 - After a seed, the API check shows "Closing soon" for Lunch Service only until T+1 12:00, and Memory Lane is "today" only on the seed day. Run `npm run db:reset` before each demo/recording.
 - `/styleguide` renders two shell previews, so the dev page has two `<main>` elements. Dev-only; the real app renders one shell.
@@ -113,3 +121,10 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - Verified: `npx ng build` ✓ (no warnings) · `npx ng test` ✓ 50/50 (4 files) · `npm run db:reset` table matches PLAN §6.3 A–I · json-server v1 filters / POST id / PUT singular / PATCH checked with curl · API check panel in Chromium: 9/9 activities "Matches", counts 64 employees, 50 placed (78%), 7 NGOs, 12 notices, 18 upcoming reminders, Aisha 3 unread; no console errors; no horizontal scroll at 1440 / 390 · no `HttpClient` outside `core/`, no `any`.
 - Decisions: see *Decisions* (64 employees, 7 NGOs, active-registration definition, timestamps, guard, service graph, interceptors, budget).
 - Known issues / follow-ups: write paths verified only by rules + type checks so far (see *Known issues*).
+
+### Phase 3 — Authentication (2026-11-06)
+- Built: AuthService (login, register as employee, logout, `session$` from localStorage), guards (auth + returnUrl, guest, homeRedirect, role), account validators (work email, number, cross-field confirm, debounced async email check), lazy AuthModule (split AuthLayout with live season numbers + season slot meter, Login with show/hide password, field-specific errors, busy button, native `<details>` demo-accounts panel with "Use"; Register with all validators), AreaShell routed shell with greeting + role subtitle, unread bell and sign out, EmployeeModule `/app` and AdminModule `/admin` placeholder pages (shell + page header), root redirect by role, NotFound inside the shell when signed in.
+- Files: `src/app/core/{services/auth-service.ts,guards/*,validators/*,models/{session,user}.ts,services/participation-stats-service.ts}`, `src/app/layout/{area-shell/*,not-found/*,layout-module.ts,nav-config.ts}`, `src/app/features/{auth,employee,admin}/**`, `src/app/app-routing-module.ts`, `src/app/shared/icons.ts`, `src/styles/{base,utilities}.css`.
+- Verified: `npx ng build` ✓ (no warnings) · `npx ng test` ✓ 50/50 · Playwright suite on a fresh seed, 24/24: all five demo accounts land on the right home with "Hi, {first}. Welcome back."; Aisha's bell reads "3 unread"; wrong password → "That password doesn't match." (focus moves to the field); unknown email → "We couldn't find an account with that email."; non-@halden.co, taken email (async), short password and mismatch messages; new registration (Lina Hartono) signs in to /app and the stored session has no password; reload keeps the session; employee → /admin redirected to /app with an explanatory toast; signed-in → /login and /register go home; unknown URL renders inside the shell; signed-out /admin → login with returnUrl, then back to /admin; no page errors; login and register at 390 px without horizontal scroll. Screenshots checked at 1440 and 390. Fixed during testing: stale server error blocked a retry with another email; phantom gap from `<router-outlet>`; skip-link shadow peeking at the top-left.
+- Decisions: see *Decisions* (session storage, AuthError, functional guards, AreaShell, auth routing, validators, season summary, router-outlet).
+- Known issues / follow-ups: initial bundle 577 kB (see *Known issues*); placeholder home/overview pages until Phases 4 and 7.

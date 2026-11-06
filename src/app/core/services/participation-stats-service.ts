@@ -55,6 +55,16 @@ export interface ParticipationOverview {
   weekly: { thisWeek: number; lastWeek: number };
 }
 
+/** Public numbers for the sign-in page: what this season offers. */
+export interface SeasonSummary {
+  activityCount: number;
+  ngoCount: number;
+  placesTaken: number;
+  placesOffered: number;
+  /** The date most published activities share ('YYYY-MM-DD'), or null. */
+  serviceDay: string | null;
+}
+
 const percent = (part: number, whole: number) => (whole ? Math.round((part / whole) * 100) : 0);
 
 /**
@@ -70,6 +80,25 @@ export class ParticipationStatsService {
     const employees$ = this.users.employees().pipe(shareReplay(1));
     return combineLatest([this.activities.snapshot$, employees$]).pipe(
       map(([snapshot, employees]) => this.compute(snapshot, employees)),
+    );
+  }
+
+  /** One-off fetch (no polling) for the auth pages' brand panel. */
+  seasonSummary(): Observable<SeasonSummary> {
+    return this.activities.snapshotOnce().pipe(
+      map((snapshot) => {
+        const published = this.activities.toViews(snapshot).filter((v) => v.status === 'published');
+        const perDate = new Map<string, number>();
+        published.forEach((v) => perDate.set(v.date, (perDate.get(v.date) ?? 0) + 1));
+        const serviceDay = [...perDate.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+        return {
+          activityCount: published.length,
+          ngoCount: new Set(published.map((v) => v.ngoId)).size,
+          placesTaken: published.reduce((sum, v) => sum + Math.min(v.taken, v.maxSlots), 0),
+          placesOffered: published.reduce((sum, v) => sum + v.maxSlots, 0),
+          serviceDay,
+        };
+      }),
     );
   }
 
