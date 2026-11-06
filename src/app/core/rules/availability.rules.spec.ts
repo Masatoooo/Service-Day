@@ -4,8 +4,11 @@ import {
   canDeleteNgo,
   canRegister,
   canSwitch,
+  canUnpublish,
   canWithdraw,
   getAvailability,
+  isCutoffBeforeStart,
+  isEndAfterStart,
   validateActivityEdit,
 } from './availability.rules';
 
@@ -179,6 +182,25 @@ describe('admin edits (rule 6)', () => {
   it('blocks deleting an activity with registrations', () => {
     expect(canDeleteActivity(3)).toMatchObject({ ok: false, code: 'has-registrations' });
     expect(canDeleteActivity(0)).toEqual({ ok: true });
+  });
+
+  it('keeps a cancelled activity that had registrations, with its own reason', () => {
+    expect(canDeleteActivity(3, 'cancelled')).toEqual({
+      ok: false,
+      code: 'has-registrations',
+      reason: '3 people had places when it was cancelled. Keep it so their history stays accurate.',
+    });
+  });
+
+  it('blocks unpublishing an activity people are registered for', () => {
+    expect(canUnpublish(1)).toMatchObject({ ok: false, reason: '1 person already registered. Cancel the activity instead so they are told.' });
+    expect(canUnpublish(0)).toEqual({ ok: true });
+  });
+
+  it('checks end-after-start and cut-off-before-start separately', () => {
+    expect(isEndAfterStart('09:00', '09:00')).toBe(false);
+    expect(isEndAfterStart('09:00', '12:00')).toBe(true);
+    expect(isCutoffBeforeStart({ date: '2026-11-21', startTime: '09:00', cutoffAt: '2026-11-21T08:59:00' })).toBe(true);
   });
 
   it('blocks deleting an NGO that still has activities', () => {

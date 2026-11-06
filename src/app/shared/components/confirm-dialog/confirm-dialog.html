@@ -14,16 +14,18 @@
     <button type="button" class="btn btn--ghost" autofocus (click)="open.set(false)">
       {{ cancelLabel() }}
     </button>
-    <button
-      type="button"
-      class="btn"
-      [class.btn--primary]="tone() === 'default'"
-      [class.btn--danger]="tone() === 'danger'"
-      [disabled]="busy()"
-      [attr.aria-busy]="busy()"
-      (click)="confirmed.emit()"
-    >
-      {{ busy() ? 'Working…' : confirmLabel() }}
-    </button>
+    @if (confirmLabel()) {
+      <button
+        type="button"
+        class="btn"
+        [class.btn--primary]="tone() === 'default'"
+        [class.btn--danger]="tone() === 'danger'"
+        [disabled]="busy()"
+        [attr.aria-busy]="busy()"
+        (click)="confirmed.emit()"
+      >
+        {{ busy() ? 'Working…' : confirmLabel() }}
+      </button>
+    }
   </footer>
 </dialog>

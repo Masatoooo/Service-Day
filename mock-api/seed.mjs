@@ -482,3 +482,13 @@ console.log(line(header));
 console.log('|' + widths.map((w) => '-'.repeat(w + 2)).join('|') + '|');
 rows.forEach((r) => console.log(line(r)));
 console.log(`[seed] check-in code for ${F.title}: ${F.checkInCode}`);
+
+// json-server keeps the database in memory and saves it with an atomic rename, after
+// which it no longer notices outside changes to db.json. If the API is running, the
+// new data is only loaded after a restart (and its next write would overwrite this seed).
+try {
+  await fetch('http://localhost:3000/reminderSettings', { signal: AbortSignal.timeout(500) });
+  console.log('\n[seed] The mock API is running on :3000. Stop "npm run dev" (Ctrl+C) and start it again so it loads this data.');
+} catch {
+  // API not running: nothing to do.
+}

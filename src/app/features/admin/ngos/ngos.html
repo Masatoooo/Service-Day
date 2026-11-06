@@ -1,0 +1,103 @@
+@if (rows$ | async; as rows) {
+  <section class="surface-card stack list" aria-label="NGOs">
+    <app-page-header [heading]="rows.length + (rows.length === 1 ? ' partner NGO' : ' partner NGOs')" description="An NGO can only be deleted once it has no activities.">
+      <button type="button" class="btn btn--primary btn--sm" (click)="open('new')"><svg lucideIcon="plus" [size]="16"></svg>New NGO</button>
+    </app-page-header>
+
+    @if (rows.length) {
+      <ul class="ngos" role="list">
+        @for (row of rows; track row.ngo.id) {
+          <li class="ngo">
+            <app-avatar [name]="row.ngo.name" [seed]="row.ngo.id" shape="tile" size="lg" />
+            <div class="ngo__main">
+              <div class="ngo__name">
+                <h3>{{ row.ngo.name }}</h3>
+                <app-status-pill [label]="row.ngo.verified ? 'Verified' : 'Not verified'" [tone]="row.ngo.verified ? 'success' : 'neutral'" />
+              </div>
+              <span class="text-small text-muted">{{ row.ngo.focusArea }}</span>
+              <p class="ngo__description">{{ row.ngo.description }}</p>
+              <span class="text-small">
+                {{ row.ngo.contactName }} · <a [href]="'mailto:' + row.ngo.contactEmail">{{ row.ngo.contactEmail }}</a>
+              </span>
+            </div>
+            <div class="ngo__side">
+              <span class="ngo__count tabular">
+                {{ row.activityCount }}
+                <span class="text-small text-muted">{{ row.activityCount === 1 ? 'activity' : 'activities' }}</span>
+              </span>
+              <div class="ngo__actions">
+                <button type="button" class="btn btn--secondary btn--sm" (click)="open(row.ngo)" [attr.aria-label]="'Edit ' + row.ngo.name">Edit</button>
+                <button type="button" class="btn btn--ghost btn--sm danger-text" (click)="deleting.set(row)" [attr.aria-label]="'Delete ' + row.ngo.name">Delete</button>
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <app-empty-state icon="heart-handshake" heading="No NGOs yet" message="Add the partner organisations first, then create their activities.">
+        <button type="button" class="btn btn--primary btn--sm" (click)="open('new')">New NGO</button>
+      </app-empty-state>
+    }
+  </section>
+
+  @if (deleting(); as row) {
+    @let check = deleteCheck(row);
+    <app-confirm-dialog
+      [heading]="check.ok ? 'Delete ' + row.ngo.name + '?' : 'You can\'t delete ' + row.ngo.name"
+      [message]="check.ok ? 'It has no activities. It disappears from the list for everyone. This can\'t be undone.' : check.reason"
+      [confirmLabel]="check.ok ? 'Delete NGO' : ''"
+      [cancelLabel]="check.ok ? 'Keep it' : 'OK'"
+      [tone]="check.ok ? 'danger' : 'default'"
+      [busy]="busy()"
+      [open]="true"
+      (openChange)="closeDelete($event)"
+      (confirmed)="confirmDelete(row)"
+    />
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="NGOs could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the NGOs" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="surface-card stack" aria-busy="true" aria-label="Loading NGOs"><app-skeleton [lines]="6" /></div>
+}
+
+<app-drawer [heading]="editing() === 'new' ? 'New NGO' : 'Edit NGO'" [open]="editing() !== null" (openChange)="setDrawerOpen($event)">
+  <form id="ngo-form" class="stack ngo-form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <div class="field">
+      <label class="field__label" for="n-name">Name</label>
+      <input id="n-name" class="input" formControlName="name" [attr.aria-invalid]="error('name') ? 'true' : null" aria-describedby="n-name-error" />
+      @if (error('name'); as m) { <p class="field__error" id="n-name-error">{{ m }}</p> }
+    </div>
+    <div class="field">
+      <label class="field__label" for="n-focus">Focus area</label>
+      <input id="n-focus" class="input" formControlName="focusArea" [attr.aria-invalid]="error('focusArea') ? 'true' : null" aria-describedby="n-focus-error" />
+      @if (error('focusArea'); as m) { <p class="field__error" id="n-focus-error">{{ m }}</p> }
+    </div>
+    <div class="field">
+      <label class="field__label" for="n-description">Description</label>
+      <textarea id="n-description" class="input ngo-form__textarea" rows="4" formControlName="description" [attr.aria-invalid]="error('description') ? 'true' : null" aria-describedby="n-description-error"></textarea>
+      @if (error('description'); as m) { <p class="field__error" id="n-description-error">{{ m }}</p> }
+    </div>
+    <div class="field">
+      <label class="field__label" for="n-contact">Contact person</label>
+      <input id="n-contact" class="input" formControlName="contactName" [attr.aria-invalid]="error('contactName') ? 'true' : null" aria-describedby="n-contact-error" />
+      @if (error('contactName'); as m) { <p class="field__error" id="n-contact-error">{{ m }}</p> }
+    </div>
+    <div class="field">
+      <label class="field__label" for="n-email">Contact email</label>
+      <input id="n-email" class="input" type="email" formControlName="contactEmail" [attr.aria-invalid]="error('contactEmail') ? 'true' : null" aria-describedby="n-email-error" />
+      @if (error('contactEmail'); as m) { <p class="field__error" id="n-email-error">{{ m }}</p> }
+    </div>
+    <label class="switch">
+      <input type="checkbox" role="switch" formControlName="verified" />
+      Verified partner
+    </label>
+  </form>
+  <div drawer-footer>
+    <button type="button" class="btn btn--ghost" (click)="editing.set(null)">Cancel</button>
+    <button type="submit" form="ngo-form" class="btn btn--primary" [disabled]="busy()" [attr.aria-busy]="busy()">
+      {{ busy() ? 'Saving…' : editing() === 'new' ? 'Add NGO' : 'Save NGO' }}
+    </button>
+  </div>
+</app-drawer>

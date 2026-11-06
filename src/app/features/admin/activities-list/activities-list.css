@@ -1,0 +1,141 @@
+:host {
+  display: block;
+}
+
+.list {
+  --stack-gap: var(--space-5);
+  /* The table adapts to the card's width, not the window's (container query below). */
+  container: activities / inline-size;
+}
+
+/* Filter row: search grows, selects share the rest (Flexbox wrap). */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.filters__search {
+  flex: 2 1 260px;
+}
+
+.filters__select {
+  flex: 1 1 160px;
+}
+
+.row-title {
+  display: block;
+  color: var(--ink);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.row-title:hover {
+  text-decoration: underline;
+}
+
+.cell-activity > span,
+.cell-schedule > span {
+  display: block;
+}
+
+.cell-schedule > span + span {
+  margin-top: 2px;
+}
+
+.cell-fill {
+  width: 170px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1);
+}
+
+/* ── Narrower cards (tablet, laptop with the sidebar): each row becomes a
+   two-line Flexbox row instead of six squeezed columns.
+   Line 1: activity · status · actions   Line 2: schedule · fill            */
+@container activities (max-width: 880px) {
+  .data-table,
+  .data-table tbody {
+    display: block;
+  }
+
+  .data-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .data-table tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    /* Box model: vertical padding inside the row, a hairline between rows. */
+    padding: var(--space-4) 0;
+    border-bottom: var(--border-width) solid var(--hairline);
+  }
+
+  .data-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .data-table td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  .cell-activity {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .cell-status {
+    order: 2;
+  }
+
+  .cell-actions {
+    order: 3;
+  }
+
+  /* An empty full-width flex item forces the line break before schedule + fill. */
+  .data-table tr::after {
+    content: '';
+    order: 4;
+    flex-basis: 100%;
+    /* Cancel one of the two row gaps this empty line adds. */
+    margin-bottom: calc(-1 * var(--space-2));
+  }
+
+  .cell-schedule {
+    order: 5;
+    flex: 1 1 220px;
+  }
+
+  .cell-fill {
+    order: 6;
+    flex: 0 1 220px;
+    width: auto;
+  }
+}
+
+/* Phone-width cards: the title gets its own line; status and actions share the next. */
+@container activities (max-width: 520px) {
+  .cell-activity {
+    flex-basis: 100%;
+  }
+
+  .cell-actions {
+    margin-left: auto;
+  }
+
+  .cell-fill {
+    flex: 1 1 100%;
+  }
+}

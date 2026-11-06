@@ -1,0 +1,87 @@
+.list {
+  --stack-gap: var(--space-5);
+}
+
+.ngos {
+  display: flex;
+  flex-direction: column;
+}
+
+/* One NGO per row: avatar, details (grows), count + actions. Wraps on phones. */
+.ngo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding: var(--space-5) 0;
+  border-top: var(--border-width) solid var(--hairline);
+}
+
+.ngo__main {
+  display: flex;
+  flex: 1 1 320px;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.ngo__name {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ngo__description {
+  max-width: var(--measure);
+  margin-block: var(--space-1);
+  color: var(--ink-muted);
+  font: var(--text-small);
+}
+
+.ngo__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.ngo__count {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  font: var(--text-h2);
+}
+
+.ngo__actions {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.danger-text {
+  color: var(--danger);
+}
+
+.danger-text:hover {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.ngo-form {
+  --stack-gap: var(--space-4);
+}
+
+.ngo-form__textarea {
+  min-height: 104px;
+  padding-top: var(--space-3);
+  resize: vertical;
+}
+
+@media (max-width: 599px) {
+  .ngo__side {
+    flex: 1 1 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

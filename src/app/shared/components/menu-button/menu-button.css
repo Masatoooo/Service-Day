@@ -1,0 +1,82 @@
+:host {
+  display: inline-flex;
+}
+
+.trigger {
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+}
+
+.trigger.is-open {
+  background: var(--surface-sunken);
+  color: var(--ink);
+}
+
+/* Popover: overrides the browser's centred default; the class sets top/left. */
+.menu {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  min-width: 180px;
+  /* Box model: padding around the items, items carry their own padding. */
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-tile);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-overlay);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    display var(--duration-fast) allow-discrete,
+    overlay var(--duration-fast) allow-discrete;
+}
+
+.menu:popover-open {
+  display: flex;
+  flex-direction: column;
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .menu:popover-open {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.menu__item {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-input);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  text-align: left;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.menu__item:hover,
+.menu__item:focus-visible {
+  background: var(--surface-sunken);
+}
+
+.menu__item--danger {
+  color: var(--danger);
+}
+
+.menu__item--danger:hover,
+.menu__item--danger:focus-visible {
+  background: var(--danger-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu {
+    transition: none;
+  }
+}

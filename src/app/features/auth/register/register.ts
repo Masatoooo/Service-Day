@@ -2,7 +2,7 @@ import { Component, DestroyRef, ElementRef, inject, signal } from '@angular/core
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { filter, finalize, take } from 'rxjs';
+import { finalize } from 'rxjs';
 import { DEPARTMENTS } from '../../../core/models';
 import { AuthError, AuthService } from '../../../core/services/auth-service';
 import { ToastService } from '../../../core/services/toast-service';
@@ -13,6 +13,7 @@ import {
   matchingFieldsValidator,
   workEmailValidator,
 } from '../../../core/validators/account-validators';
+import { whenSettled } from '../../../core/validators/when-settled';
 
 type Field = 'name' | 'email' | 'department' | 'password' | 'confirm';
 
@@ -69,8 +70,8 @@ export class Register {
     this.formError.set(null);
     if (this.form.pending) {
       // The email check is still running: submit again once it has an answer.
-      this.form.statusChanges
-        .pipe(filter((s) => s !== 'PENDING'), take(1), takeUntilDestroyed(this.destroyRef))
+      whenSettled(this.form)
+        .pipe(takeUntilDestroyed(this.destroyRef))
         .subscribe(() => this.submit());
       return;
     }

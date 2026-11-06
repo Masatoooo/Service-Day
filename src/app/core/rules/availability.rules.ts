@@ -82,13 +82,22 @@ export function canWithdraw(current: Activity, now: Date): RuleResult {
 /** Fields an admin edits that rule 6 checks. */
 export type ActivityEditInput = Pick<Activity, 'date' | 'startTime' | 'endTime' | 'maxSlots' | 'cutoffAt'>;
 
+/** 'HH:mm' strings compare correctly as text. */
+export function isEndAfterStart(startTime: string, endTime: string): boolean {
+  return endTime > startTime;
+}
+
+export function isCutoffBeforeStart(input: Pick<Activity, 'date' | 'startTime' | 'cutoffAt'>): boolean {
+  return new Date(input.cutoffAt).getTime() < activityStart(input).getTime();
+}
+
 /** Rule 6: admin edit validation. Returns human messages; empty means valid. */
 export function validateActivityEdit(input: ActivityEditInput, taken: number): string[] {
   const errors: string[] = [];
-  if (input.endTime <= input.startTime) {
+  if (!isEndAfterStart(input.startTime, input.endTime)) {
     errors.push('The end time must be after the start time.');
   }
-  if (new Date(input.cutoffAt).getTime() >= activityStart(input).getTime()) {
+  if (!isCutoffBeforeStart(input)) {
     errors.push('The cut-off must be before the activity starts.');
   }
   if (input.maxSlots < 1) {
@@ -99,11 +108,27 @@ export function validateActivityEdit(input: ActivityEditInput, taken: number): s
   return errors;
 }
 
-/** Rule 6: an activity with active registrations is cancelled (participants notified), not deleted. */
-export function canDeleteActivity(taken: number): RuleResult {
+const people = (n: number) => (n === 1 ? '1 person' : `${n} people`);
+
+/**
+ * Rule 6: an activity with registrations is cancelled (participants notified), not deleted.
+ * A cancelled one keeps its registrations so people's history stays accurate.
+ */
+export function canDeleteActivity(taken: number, status: Activity['status'] = 'published'): RuleResult {
+  if (taken > 0 && status === 'cancelled') {
+    return blocked('has-registrations', `${people(taken)} had places when it was cancelled. Keep it so their history stays accurate.`);
+  }
   if (taken > 0) {
-    const people = taken === 1 ? '1 person is' : `${taken} people are`;
-    return blocked('has-registrations', `${people} registered. Cancel the activity instead so they are notified.`);
+    const verb = taken === 1 ? 'is' : 'are';
+    return blocked('has-registrations', `${people(taken)} ${verb} registered. Cancel the activity instead so they are notified.`);
+  }
+  return ALLOWED;
+}
+
+/** Unpublishing would hide a place people already hold; cancel instead so they hear about it. */
+export function canUnpublish(taken: number): RuleResult {
+  if (taken > 0) {
+    return blocked('has-registrations', `${people(taken)} already registered. Cancel the activity instead so they are told.`);
   }
   return ALLOWED;
 }

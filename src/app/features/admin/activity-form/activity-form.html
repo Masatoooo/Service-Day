@@ -1,0 +1,134 @@
+<nav class="back" aria-label="Breadcrumb">
+  <a [routerLink]="id ? ['/admin/activities', id] : '/admin/activities'">
+    <svg lucideIcon="arrow-left" [size]="16"></svg>{{ id ? 'Back to the activity' : 'All activities' }}
+  </a>
+</nav>
+
+@if (loading()) {
+  <div class="surface-card stack" aria-busy="true" aria-label="Loading activity"><app-skeleton [lines]="6" /></div>
+} @else {
+  <form class="surface-card form" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <app-page-header
+      [level]="2"
+      [heading]="id ? 'Edit ' + (existing()?.title ?? 'activity') : 'New activity'"
+      [description]="existing()?.taken ? existing()!.taken + ' people are registered. If you change details they rely on, they get a notice.' : 'Fields marked as required must be filled before you can save.'"
+    />
+
+    <fieldset class="section">
+      <legend>Basics</legend>
+      <div class="row">
+        <div class="field grow">
+          <label class="field__label" for="f-ngo">NGO</label>
+          <div class="input-wrap">
+            <select id="f-ngo" class="input" formControlName="ngoId" [attr.aria-invalid]="error('ngoId') ? 'true' : null" aria-describedby="f-ngo-error">
+              <option value="" disabled>Choose an NGO</option>
+              @for (ngo of ngos$ | async; track ngo.id) {
+                <option [value]="ngo.id">{{ ngo.name }}</option>
+              }
+            </select>
+            <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+          </div>
+          @if (error('ngoId'); as m) { <p class="field__error" id="f-ngo-error">{{ m }}</p> }
+        </div>
+        <div class="field grow">
+          <label class="field__label" for="f-type">Service type</label>
+          <div class="input-wrap">
+            <select id="f-type" class="input" formControlName="serviceType" [attr.aria-invalid]="error('serviceType') ? 'true' : null" aria-describedby="f-type-error">
+              <option value="" disabled>Choose a type</option>
+              @for (type of serviceTypes; track type) {
+                <option [value]="type">{{ type }}</option>
+              }
+            </select>
+            <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+          </div>
+          @if (error('serviceType'); as m) { <p class="field__error" id="f-type-error">{{ m }}</p> }
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="f-title">Title</label>
+        <input id="f-title" class="input" formControlName="title" [attr.aria-invalid]="error('title') ? 'true' : null" aria-describedby="f-title-error" />
+        @if (error('title'); as m) { <p class="field__error" id="f-title-error">{{ m }}</p> }
+      </div>
+      <div class="field">
+        <label class="field__label" for="f-description">Description</label>
+        <textarea id="f-description" class="input textarea" rows="4" formControlName="description" [attr.aria-invalid]="error('description') ? 'true' : null" aria-describedby="f-description-error f-description-hint"></textarea>
+        @if (error('description'); as m) { <p class="field__error" id="f-description-error">{{ m }}</p> }
+        @else { <p class="field__hint" id="f-description-hint">What volunteers will do, what to bring, and anything they should know.</p> }
+      </div>
+      <div class="field">
+        <label class="field__label" for="f-location">Location</label>
+        <input id="f-location" class="input" formControlName="location" [attr.aria-invalid]="error('location') ? 'true' : null" aria-describedby="f-location-error" />
+        @if (error('location'); as m) { <p class="field__error" id="f-location-error">{{ m }}</p> }
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Schedule</legend>
+      <div class="row">
+        <div class="field grow">
+          <label class="field__label" for="f-date">Date</label>
+          <input id="f-date" class="input" type="date" formControlName="date" [attr.aria-invalid]="error('date') ? 'true' : null" aria-describedby="f-date-error" />
+          @if (error('date'); as m) { <p class="field__error" id="f-date-error">{{ m }}</p> }
+        </div>
+        <div class="field">
+          <label class="field__label" for="f-start">Starts</label>
+          <input id="f-start" class="input" type="time" formControlName="startTime" [attr.aria-invalid]="error('startTime') ? 'true' : null" aria-describedby="f-start-error" />
+          @if (error('startTime'); as m) { <p class="field__error" id="f-start-error">{{ m }}</p> }
+        </div>
+        <div class="field">
+          <label class="field__label" for="f-end">Ends</label>
+          <input id="f-end" class="input" type="time" formControlName="endTime" [attr.aria-invalid]="error('endTime') ? 'true' : null" aria-describedby="f-end-error" />
+          @if (error('endTime'); as m) { <p class="field__error" id="f-end-error">{{ m }}</p> }
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Capacity &amp; cut-off</legend>
+      <div class="row">
+        <div class="field">
+          <label class="field__label" for="f-slots">Max slots</label>
+          <input id="f-slots" class="input" type="number" min="1" max="500" formControlName="maxSlots" [attr.aria-invalid]="error('maxSlots') ? 'true' : null" aria-describedby="f-slots-error" />
+          @if (error('maxSlots'); as m) { <p class="field__error" id="f-slots-error">{{ m }}</p> }
+          @else if (form.controls.maxSlots.pending) { <p class="field__hint" aria-live="polite">Checking current registrations…</p> }
+        </div>
+        <div class="field grow">
+          <label class="field__label" for="f-cutoff-date">Registration closes on</label>
+          <input id="f-cutoff-date" class="input" type="date" formControlName="cutoffDate" [attr.aria-invalid]="error('cutoffDate') ? 'true' : null" aria-describedby="f-cutoff-date-error" />
+          @if (error('cutoffDate'); as m) { <p class="field__error" id="f-cutoff-date-error">{{ m }}</p> }
+        </div>
+        <div class="field">
+          <label class="field__label" for="f-cutoff-time">at</label>
+          <input id="f-cutoff-time" class="input" type="time" formControlName="cutoffTime" [attr.aria-invalid]="error('cutoffTime') ? 'true' : null" aria-describedby="f-cutoff-time-error" />
+          @if (error('cutoffTime'); as m) { <p class="field__error" id="f-cutoff-time-error">{{ m }}</p> }
+        </div>
+      </div>
+      <p class="field__hint">After the cut-off, employees can't register, switch or withdraw.</p>
+    </fieldset>
+
+    <fieldset class="section">
+      <legend>Visibility</legend>
+      @if (existing()?.status === 'cancelled') {
+        <p class="locked-reason"><svg lucideIcon="lock" [size]="16"></svg>This activity is cancelled. Its details can be corrected, but it stays cancelled.</p>
+      } @else {
+        <div class="choices" role="radiogroup" aria-label="Visibility">
+          <label class="choice">
+            <input type="radio" value="draft" formControlName="status" />
+            <span><strong>Draft</strong><span class="text-small text-muted">Only admins can see it.</span></span>
+          </label>
+          <label class="choice">
+            <input type="radio" value="published" formControlName="status" />
+            <span><strong>Published</strong><span class="text-small text-muted">Employees see it within 10 seconds and can register.</span></span>
+          </label>
+        </div>
+      }
+    </fieldset>
+
+    <div class="actions">
+      <a class="btn btn--ghost" [routerLink]="id ? ['/admin/activities', id] : '/admin/activities'">Cancel</a>
+      <button type="submit" class="btn btn--primary" [disabled]="saving()" [attr.aria-busy]="saving()">
+        {{ saving() ? 'Saving…' : id ? 'Save changes' : 'Create activity' }}
+      </button>
+    </div>
+  </form>
+}

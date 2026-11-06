@@ -16,6 +16,7 @@ let nextId = 0;
 export class ConfirmDialog {
   readonly heading = input.required<string>();
   readonly message = input.required<string>();
+  /** Empty string = no confirm button: the dialog only explains (e.g. why something is blocked). */
   readonly confirmLabel = input('Confirm');
   readonly cancelLabel = input('Cancel');
   readonly tone = input<'default' | 'danger'>('default');

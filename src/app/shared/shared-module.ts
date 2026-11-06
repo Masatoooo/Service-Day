@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { LucideDynamicIcon, provideLucideConfig, provideLucideIcons } from '@lucide/angular';
 
@@ -12,6 +11,7 @@ import { Drawer } from './components/drawer/drawer';
 import { EmptyState } from './components/empty-state/empty-state';
 import { Gauge } from './components/gauge/gauge';
 import { KpiCard } from './components/kpi-card/kpi-card';
+import { MenuButton } from './components/menu-button/menu-button';
 import { PageHeader } from './components/page-header/page-header';
 import { PillFilter } from './components/pill-filter/pill-filter';
 import { SearchField } from './components/search-field/search-field';
@@ -34,6 +34,7 @@ const COMPONENTS = [
   EmptyState,
   Gauge,
   KpiCard,
+  MenuButton,
   PageHeader,
   PillFilter,
   SearchField,
@@ -51,11 +52,14 @@ const PIPES = [ActivityDatePipe, AvailabilityLabelPipe, CutoffLabelPipe, Initial
  * Declares presentation components and pipes, and re-exports the Angular
  * modules features need, so a feature imports just SharedModule.
  * LucideDynamicIcon is a third-party standalone component, imported and re-exported.
+ * ReactiveFormsModule is NOT exported here: the root shell imports SharedModule, so
+ * forms would land in the initial bundle. Only AuthModule and AdminModule (the
+ * pages with forms) import it themselves.
  */
 @NgModule({
   declarations: [...COMPONENTS, ...PIPES],
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, LucideDynamicIcon],
-  exports: [CommonModule, ReactiveFormsModule, RouterModule, LucideDynamicIcon, ...COMPONENTS, ...PIPES],
+  imports: [CommonModule, RouterModule, LucideDynamicIcon],
+  exports: [CommonModule, RouterModule, LucideDynamicIcon, ...COMPONENTS, ...PIPES],
   providers: [
     provideLucideIcons(...APP_ICONS),
     // Thin line icons (PLAN §8.6): stroke 1.75, 18px by default.

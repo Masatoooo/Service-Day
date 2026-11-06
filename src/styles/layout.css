@@ -61,6 +61,80 @@
   min-width: 0;
 }
 
+/* Data table: quiet header on a sunken pill, hairline row dividers.
+   Below 600px each row becomes a stacked block; cells show their column name
+   from data-label (Flexbox row: label left, value right). */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  padding: var(--space-3);
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.data-table th:first-child {
+  border-radius: var(--radius-input) 0 0 var(--radius-input);
+}
+
+.data-table th:last-child {
+  border-radius: 0 var(--radius-input) var(--radius-input) 0;
+}
+
+.data-table td {
+  padding: var(--space-3);
+  border-bottom: var(--border-width) solid var(--hairline);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+@media (max-width: 599px) {
+  .data-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .data-table,
+  .data-table tbody,
+  .data-table tr,
+  .data-table td {
+    display: block;
+  }
+
+  .data-table tr {
+    padding: var(--space-3) 0;
+    border-bottom: var(--border-width) solid var(--hairline);
+  }
+
+  .data-table td {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding: var(--space-1) 0;
+    border: 0;
+  }
+
+  .data-table td[data-label]::before {
+    content: attr(data-label);
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+}
+
 /* Inner tile: a sunken block inside a card (stats, previews). */
 .sunken-tile {
   background: var(--surface-sunken);

@@ -1,0 +1,119 @@
+@if (vm$ | async; as vm) {
+  <section class="surface-card stack list" aria-label="Activities">
+    <app-page-header [heading]="vm.total + (vm.total === 1 ? ' activity' : ' activities') + ' this season'" description="Drafts and cancelled ones included. Employees only see published activities.">
+      <a class="btn btn--primary btn--sm" routerLink="/admin/activities/new"><svg lucideIcon="plus" [size]="16"></svg>New activity</a>
+    </app-page-header>
+
+    <div class="filters" role="search">
+      <app-search-field class="filters__search" label="Search activities" placeholder="Search by title, NGO or place" [value]="vm.filters.query" (valueChange)="setFilter('query', $event)" />
+      <div class="input-wrap filters__select">
+        <label class="visually-hidden" for="af-status">Status</label>
+        <select id="af-status" class="input" (change)="setFilter('status', inputValue($event))">
+          <option value="all" [selected]="vm.filters.status === 'all'">All statuses</option>
+          <option value="published" [selected]="vm.filters.status === 'published'">Published</option>
+          <option value="draft" [selected]="vm.filters.status === 'draft'">Draft</option>
+          <option value="cancelled" [selected]="vm.filters.status === 'cancelled'">Cancelled</option>
+        </select>
+        <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+      </div>
+      <div class="input-wrap filters__select">
+        <label class="visually-hidden" for="af-ngo">NGO</label>
+        <select id="af-ngo" class="input" (change)="setFilter('ngoId', inputValue($event))">
+          <option value="all" [selected]="vm.filters.ngoId === 'all'">All NGOs</option>
+          @for (ngo of vm.ngos; track ngo.id) {
+            <option [value]="ngo.id" [selected]="vm.filters.ngoId === ngo.id">{{ ngo.name }}</option>
+          }
+        </select>
+        <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+      </div>
+      <div class="input-wrap filters__select">
+        <label class="visually-hidden" for="af-type">Service type</label>
+        <select id="af-type" class="input" (change)="setFilter('type', inputValue($event))">
+          <option value="all" [selected]="vm.filters.type === 'all'">All types</option>
+          @for (type of serviceTypes; track type) {
+            <option [value]="type" [selected]="vm.filters.type === type">{{ type }}</option>
+          }
+        </select>
+        <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+      </div>
+    </div>
+
+    @if (vm.rows.length) {
+      <table class="data-table">
+        <caption class="visually-hidden">Activities, {{ vm.rows.length }} shown</caption>
+        <thead>
+          <tr>
+            <th scope="col">Activity</th>
+            <th scope="col">Schedule and cut-off</th>
+            <th scope="col">Fill</th>
+            <th scope="col">Status</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of vm.rows; track row.view.id) {
+            @let a = row.view;
+            <tr>
+              <td class="cell-activity">
+                <a class="row-title" [routerLink]="['/admin/activities', a.id]">{{ a.title }}</a>
+                <span class="text-small text-muted">{{ a.ngo.name }}</span>
+              </td>
+              <td class="cell-schedule text-small">
+                <span class="tabular">{{ a | activityDate }}</span>
+                <span class="text-muted">{{ a.cutoffAt | cutoffLabel: vm.now }}</span>
+              </td>
+              <td class="cell-fill">
+                <app-slot-meter [taken]="a.taken" [capacity]="a.maxSlots" [muted]="a.availability === 'closed' || a.status !== 'published'" />
+              </td>
+              <td class="cell-status">
+                @if (a.status === 'published') {
+                  <app-status-pill [availability]="a.availability" />
+                } @else {
+                  <app-status-pill [availability]="a.status" />
+                }
+              </td>
+              <td class="cell-actions">
+                <div class="actions">
+                  @if (a.status === 'draft') {
+                    <button type="button" class="btn btn--secondary btn--sm" (click)="publish(a)" [disabled]="busy()" [attr.aria-label]="'Publish ' + a.title">Publish</button>
+                  }
+                  <a class="btn btn--ghost btn--sm" [routerLink]="['/admin/activities', a.id, 'edit']" [attr.aria-label]="'Edit ' + a.title">Edit</a>
+                  <app-menu-button [label]="'More actions for ' + a.title" [items]="row.menu" (selected)="onMenu(a, $event)" />
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else if (vm.filtered) {
+      <app-empty-state icon="search-x" heading="No activities match these filters" message="Try another status or NGO, or clear the filters to see all activities.">
+        <button type="button" class="btn btn--secondary btn--sm" (click)="clearFilters()">Clear filters</button>
+      </app-empty-state>
+    } @else {
+      <app-empty-state icon="calendar-days" heading="No activities yet" message="Create the first activity for this Service Day. Save it as a draft until the NGO confirms.">
+        <a class="btn btn--primary btn--sm" routerLink="/admin/activities/new">New activity</a>
+      </app-empty-state>
+    }
+  </section>
+
+  @if (pending(); as p) {
+    @let d = dialogFor(p);
+    <app-confirm-dialog
+      [heading]="d.heading"
+      [message]="d.message"
+      [confirmLabel]="d.confirmLabel"
+      [cancelLabel]="d.cancelLabel"
+      [tone]="d.tone"
+      [busy]="busy()"
+      [open]="true"
+      (openChange)="closeDialog($event)"
+      (confirmed)="confirm(p)"
+    />
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Activities could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the activities" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="surface-card stack" aria-busy="true" aria-label="Loading activities"><app-skeleton [lines]="8" /></div>
+}

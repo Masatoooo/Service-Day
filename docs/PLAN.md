@@ -283,8 +283,10 @@ AppModule
  ├─ LayoutModule      AppShell, Sidebar, Topbar, NotificationBell, NotFound
  └─ AppRoutingModule  lazy → AuthModule | EmployeeModule | AdminModule
                                    └── each imports SharedModule
-SharedModule  exports CommonModule, ReactiveFormsModule, RouterModule, the @lucide/angular icons in use,
+SharedModule  exports CommonModule, RouterModule, the @lucide/angular icons in use,
               shared components, pipes
+AuthModule, AdminModule  also import ReactiveFormsModule (the only areas with forms),
+              so @angular/forms stays out of the initial bundle
 ```
 
 ### 7.2 Folder structure

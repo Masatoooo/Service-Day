@@ -1,0 +1,102 @@
+<nav class="back" aria-label="Breadcrumb">
+  <a routerLink="/admin/activities"><svg lucideIcon="arrow-left" [size]="16"></svg>All activities</a>
+</nav>
+
+@if (vm$ | async; as vm) {
+  @if (vm.view; as a) {
+    <div class="card-row">
+      <article class="surface-card col-main stack info" [attr.aria-labelledby]="'admin-activity-' + a.id">
+        <header class="info__head">
+          <span class="info__ngo"><app-avatar [name]="a.ngo.name" [seed]="a.ngo.id" shape="tile" size="sm" />{{ a.ngo.name }}</span>
+          @if (a.status === 'published') {
+            <app-status-pill [availability]="a.availability" />
+          } @else {
+            <app-status-pill [availability]="a.status" />
+          }
+        </header>
+        <h2 class="info__title" [id]="'admin-activity-' + a.id">{{ a.title }}</h2>
+        <ul class="info__facts" role="list">
+          <li><svg lucideIcon="calendar-days"></svg>{{ a | activityDate: 'long' }}</li>
+          <li><svg lucideIcon="map-pin"></svg>{{ a.location }}</li>
+          <li><svg lucideIcon="tag"></svg>{{ a.serviceType }}</li>
+          <li><svg lucideIcon="clock"></svg>{{ a.cutoffAt | cutoffLabel: vm.now }}</li>
+        </ul>
+        <p class="info__description">{{ a.description }}</p>
+        <div class="info__actions">
+          <a class="btn btn--primary btn--sm" [routerLink]="['/admin/activities', a.id, 'edit']">Edit activity</a>
+          <a
+            class="btn btn--secondary btn--sm"
+            routerLink="/admin/notifications"
+            [queryParams]="{ tab: 'broadcast', audience: 'activity', activityId: a.id }"
+          ><svg lucideIcon="megaphone" [size]="16"></svg>Notify participants</a>
+          <a class="btn btn--secondary btn--sm" routerLink="/admin/check-ins" [queryParams]="{ activity: a.id }">
+            <svg lucideIcon="qr-code" [size]="16"></svg>Open check-in
+          </a>
+        </div>
+      </article>
+
+      <aside class="col-side stack">
+        <section class="surface-card stack" aria-label="Fill">
+          <h3>Fill</h3>
+          <app-slot-meter [taken]="a.taken" [capacity]="a.maxSlots" [muted]="a.availability === 'closed' || a.status !== 'published'" />
+          <dl class="numbers">
+            <div><dt>Registered</dt><dd class="tabular">{{ a.taken }}</dd></div>
+            <div><dt>Places left</dt><dd class="tabular">{{ a.remaining }}</dd></div>
+            <div><dt>Checked in</dt><dd class="tabular">{{ vm.checkedIn }}</dd></div>
+          </dl>
+        </section>
+      </aside>
+    </div>
+
+    <section class="surface-card stack" aria-label="Participants">
+      <app-page-header heading="Participants" [description]="vm.participants.length ? 'Everyone with a place on this activity right now.' : ''" />
+      @if (vm.participants.length) {
+        <table class="data-table">
+          <caption class="visually-hidden">Participants of {{ a.title }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Department</th>
+              <th scope="col">Registered</th>
+              <th scope="col">Check-in</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of vm.participants; track p.registrationId) {
+              <tr>
+                <td><span class="person"><app-avatar [name]="p.name" [seed]="p.registrationId" size="sm" />{{ p.name }}</span></td>
+                <td data-label="Department" class="text-small">{{ p.department }}</td>
+                <td data-label="Registered" class="text-small tabular">{{ p.registeredAt | relativeTime: vm.now }}</td>
+                <td data-label="Check-in">
+                  @if (p.checkedInAt) {
+                    <app-status-pill [label]="p.late ? 'Late' : 'Checked in'" [tone]="p.late ? 'warning' : 'success'" />
+                  } @else {
+                    <span class="text-small text-muted">Not yet</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <app-empty-state
+          icon="users"
+          heading="Nobody has registered yet"
+          [message]="a.status === 'draft' ? 'Publish the activity so employees can see it and sign up.' : 'Employees can register until the cut-off. New sign-ups appear here within 10 seconds.'"
+        />
+      }
+    </section>
+  } @else {
+    <section class="surface-card" aria-label="Activity not found">
+      <app-empty-state icon="search-x" heading="We couldn't find this activity" message="It may have been deleted. The activities list shows everything that exists.">
+        <a class="btn btn--primary btn--sm" routerLink="/admin/activities">All activities</a>
+      </app-empty-state>
+    </section>
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Activity could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load this activity" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="surface-card stack" aria-busy="true" aria-label="Loading activity"><app-skeleton [lines]="6" /></div>
+}

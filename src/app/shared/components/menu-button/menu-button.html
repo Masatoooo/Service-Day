@@ -1,0 +1,20 @@
+<button
+  #trigger
+  type="button"
+  class="icon-btn trigger"
+  [class.is-open]="isOpen()"
+  [attr.aria-label]="label()"
+  aria-haspopup="menu"
+  [attr.aria-expanded]="isOpen()"
+  [attr.aria-controls]="menuId"
+  [attr.popovertarget]="menuId"
+>
+  <svg lucideIcon="ellipsis"></svg>
+</button>
+<div #menu [id]="menuId" class="menu" popover role="menu" [attr.aria-label]="label()" (toggle)="onToggle($event)" (keydown)="onKeydown($event)">
+  @for (item of items(); track item.id) {
+    <button type="button" role="menuitem" class="menu__item" [class.menu__item--danger]="item.tone === 'danger'" tabindex="-1" (click)="choose(item)">
+      {{ item.label }}
+    </button>
+  }
+</div>
