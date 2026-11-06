@@ -1,0 +1,129 @@
+:host {
+  display: block;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+/* Picker card: select and hint side by side, wrapping on narrow screens. */
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-6);
+}
+
+.picker__field {
+  flex: 1 1 320px;
+  max-width: 520px;
+}
+
+.picker__hint {
+  flex: 1 1 240px;
+  padding-bottom: var(--space-2);
+}
+
+h2 {
+  font: var(--text-h2);
+}
+
+/* QR card is narrower than the arrivals list. */
+.qr-card {
+  flex: 1 1 320px;
+  max-width: 420px;
+  min-width: 0;
+  align-items: center;
+  text-align: center;
+}
+
+.qr-card > header {
+  align-self: stretch;
+}
+
+/* Box model: a white quiet zone around the code, on a sunken tile so it reads as a sticker. */
+.qr {
+  display: flex;
+  padding: var(--space-4);
+  border-radius: var(--radius-tile);
+  background: var(--surface-sunken);
+}
+
+.qr :is(canvas, img) {
+  display: block;
+  border-radius: var(--radius-input);
+}
+
+/* The 8-character code, large and split in two groups so it can be read aloud. */
+.code {
+  display: flex;
+  gap: var(--space-3);
+  font: var(--text-kpi);
+  letter-spacing: 0.06em;
+}
+
+.link {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.qr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.arrivals {
+  flex: 2 1 480px;
+  min-width: 0;
+}
+
+.arrivals__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* Four counters in a row (2 × 2 on phones). */
+.counters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.counter {
+  display: flex;
+  flex: 1 1 110px;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.counter dt {
+  color: var(--ink-muted);
+  font: var(--text-small);
+}
+
+.counter dd {
+  font: var(--text-h1);
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+@media (max-width: 599px) {
+  .qr-card {
+    max-width: none;
+  }
+
+  .code {
+    font: var(--text-h1);
+  }
+}

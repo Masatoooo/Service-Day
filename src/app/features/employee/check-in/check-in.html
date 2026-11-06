@@ -1,0 +1,71 @@
+@switch (state().kind) {
+  @case ('working') {
+    <section class="surface-card result" aria-live="polite" aria-busy="true">
+      <span class="result__icon"><svg lucideIcon="scan-qr-code" [size]="28"></svg></span>
+      <h2>Checking you in…</h2>
+      <p class="text-muted">One moment while we find your place.</p>
+    </section>
+  }
+  @case ('done') {
+    @if (state(); as s) {
+      @if (s.kind === 'done') {
+        <section class="surface-card result result--success" role="status">
+          <span class="result__icon"><svg lucideIcon="circle-check" [size]="28"></svg></span>
+          <h2>You're checked in</h2>
+          <p class="result__activity">{{ s.activity.title }}</p>
+          <p class="text-muted">
+            Arrived at <span class="tabular">{{ s.time }}</span>.
+            @if (s.late) {
+              That's more than 15 minutes after the {{ s.activity.startTime }} start, so it's marked late. No problem, the team knows you're here.
+            } @else {
+              Right on time. Find the Service Day team at the entrance for your briefing.
+            }
+          </p>
+          <div class="result__actions">
+            <a class="btn btn--primary" routerLink="/app">Back to home</a>
+            <a class="btn btn--ghost" routerLink="/app/registrations">My registrations</a>
+          </div>
+        </section>
+      }
+    }
+  }
+  @default {
+    <section class="surface-card stack entry" aria-labelledby="ci-heading">
+      @if (state(); as s) {
+        @if (s.kind === 'refused') {
+          <div class="notice-box" [attr.data-tone]="s.tone" role="alert">
+            <svg [lucideIcon]="s.tone === 'info' ? 'circle-check' : 'circle-exclamation-point'" [size]="20"></svg>
+            <div>
+              <p class="notice-box__title">{{ s.heading }}</p>
+              <p class="text-small">{{ s.reason }}</p>
+            </div>
+          </div>
+        }
+      }
+      <header>
+        <h2 id="ci-heading">Check in with a code</h2>
+        <p class="text-small text-muted">Scanning the QR code at the venue checks you in straight away. If you can't scan it, type the {{ codeLength }} characters printed under it.</p>
+      </header>
+      <form class="entry__form" (submit)="submit($event)" novalidate>
+        <div class="field entry__field">
+          <label class="field__label" for="ci-code">Check-in code</label>
+          <input
+            id="ci-code"
+            class="input code-input tabular"
+            [value]="typed()"
+            (input)="onType($event)"
+            maxlength="9"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            placeholder="e.g. EQPC2U3D"
+            [attr.aria-invalid]="formError() ? 'true' : null"
+            aria-describedby="ci-code-error"
+          />
+          @if (formError(); as m) { <p class="field__error" id="ci-code-error">{{ m }}</p> }
+        </div>
+        <button type="submit" class="btn btn--primary"><svg lucideIcon="scan-qr-code" [size]="18"></svg>Check in</button>
+      </form>
+    </section>
+  }
+}

@@ -17,7 +17,9 @@
         <app-status-pill [availability]="a.availability" />
       </div>
       <div class="current__actions">
-        @if (place.checkInToday) {
+        @if (place.checkedInAt) {
+            <app-status-pill [label]="'Checked in at ' + place.checkedInAt" tone="success" />
+          } @else if (place.checkInToday) {
           <a class="btn btn--primary btn--sm" routerLink="/app/check-in"><svg lucideIcon="scan-qr-code" [size]="16"></svg>Check in</a>
         }
         @if (place.changes.ok) {

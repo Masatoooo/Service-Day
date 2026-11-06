@@ -1,0 +1,148 @@
+@if (options$ | async; as options) {
+  @if (options.length) {
+    <div class="page">
+      <section class="surface-card picker" aria-label="Choose an activity">
+        <div class="field picker__field">
+          <label class="field__label" for="ci-activity">Activity</label>
+          <div class="input-wrap">
+            <select id="ci-activity" class="input" (change)="select(inputValue($event))">
+              @for (o of options; track o.id) {
+                <option [value]="o.id" [selected]="o.id === selectedId()">{{ o.label }}</option>
+              }
+            </select>
+            <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+          </div>
+        </div>
+        <p class="text-small text-muted picker__hint">Activities happening today are listed first. Check-in is open all day on the activity's date.</p>
+      </section>
+
+      @if (vm$ | async; as vm) {
+        <div class="card-row">
+          <!-- QR panel: what volunteers scan at the venue. -->
+          <section class="surface-card stack qr-card" aria-labelledby="qr-heading">
+            <header>
+              <h2 id="qr-heading">{{ vm.activity.title }}</h2>
+              <p class="text-small text-muted">{{ vm.when }}</p>
+            </header>
+            @if (vm.activity.checkInCode; as code) {
+              <div class="qr">
+                <qrcode
+                  [qrdata]="vm.url ?? ''"
+                  [width]="232"
+                  [margin]="2"
+                  elementType="canvas"
+                  errorCorrectionLevel="M"
+                  [colorDark]="qrDark"
+                  [colorLight]="qrLight"
+                  [ariaLabel]="'QR code linking to ' + vm.url"
+                />
+              </div>
+              <p class="code tabular" [attr.aria-label]="'Check-in code ' + code.split('').join(' ')">
+                <span>{{ code.slice(0, 4) }}</span><span>{{ code.slice(4) }}</span>
+              </p>
+              <p class="text-small text-muted link">{{ vm.url }}</p>
+              @if (!vm.today) {
+                <p class="locked-reason"><svg lucideIcon="clock" [size]="16"></svg>Check-in opens on the day itself. You can print the code now.</p>
+              }
+              <div class="qr-actions">
+                <button type="button" class="btn btn--secondary btn--sm" (click)="downloadPng(vm)"><svg lucideIcon="arrow-down-to-line" [size]="16"></svg>Download PNG</button>
+                <button type="button" class="btn btn--ghost btn--sm" (click)="copyLink(vm.url ?? '')"><svg lucideIcon="link" [size]="16"></svg>Copy link</button>
+                <button type="button" class="btn btn--ghost btn--sm" (click)="confirmOpen.set(true)" [disabled]="busy()"><svg lucideIcon="rotate-cw" [size]="16"></svg>Regenerate</button>
+              </div>
+            } @else {
+              <app-empty-state icon="qr-code" heading="No check-in code yet" message="Generate a code to get a QR poster for the venue. Volunteers scan it, or type the 8 characters under it.">
+                <button type="button" class="btn btn--primary btn--sm" (click)="generate(vm)" [disabled]="busy()" [attr.aria-busy]="busy()">
+                  {{ busy() ? 'Generating…' : 'Generate code' }}
+                </button>
+              </app-empty-state>
+            }
+          </section>
+
+          <!-- Arrivals: who is here, updated every 5 seconds. -->
+          <section class="surface-card stack arrivals" aria-labelledby="arrivals-heading">
+            <header class="arrivals__head">
+              <div>
+                <h2 id="arrivals-heading">Arrivals</h2>
+                <p class="text-small text-muted">Updates every 5 seconds. Arrivals more than 15 minutes after the start are late.</p>
+              </div>
+              <button type="button" class="btn btn--secondary btn--sm" (click)="exportCsv(vm)" [disabled]="!vm.expected">
+                <svg lucideIcon="arrow-down-to-line" [size]="16"></svg>Export CSV
+              </button>
+            </header>
+
+            <dl class="counters" aria-live="polite">
+              <div class="sunken-tile counter"><dt>Present</dt><dd class="tabular">{{ vm.present }}</dd></div>
+              <div class="sunken-tile counter"><dt>Expected</dt><dd class="tabular">{{ vm.expected }}</dd></div>
+              <div class="sunken-tile counter"><dt>Not arrived</dt><dd class="tabular">{{ vm.notArrived }}</dd></div>
+              <div class="sunken-tile counter"><dt>Late</dt><dd class="tabular">{{ vm.late }}</dd></div>
+            </dl>
+
+            @if (vm.rows.length) {
+              <table class="data-table">
+                <caption class="visually-hidden">Arrivals for {{ vm.activity.title }}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">Arrived</th>
+                    <th scope="col">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of vm.rows; track row.registrationId) {
+                    <tr>
+                      <td><span class="person"><app-avatar [name]="row.name" [seed]="row.registrationId" size="sm" />{{ row.name }}</span></td>
+                      <td data-label="Department" class="text-small">{{ row.department }}</td>
+                      <td data-label="Arrived" class="text-small tabular">{{ row.time ?? '—' }}</td>
+                      <td data-label="Status">
+                        @switch (row.status) {
+                          @case ('on-time') { <app-status-pill label="On time" tone="success" /> }
+                          @case ('late') { <app-status-pill label="Late" tone="warning" /> }
+                          @default { <app-status-pill label="Not arrived" tone="neutral" /> }
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            } @else {
+              <app-empty-state icon="users" heading="Nobody is registered" message="When people register for this activity, they appear here as expected arrivals." />
+            }
+          </section>
+        </div>
+
+        @if (confirmOpen()) {
+          <app-confirm-dialog
+            [heading]="'Regenerate the code for ' + vm.activity.title + '?'"
+            message="The current QR code and code stop working straight away, so reprint the poster. People who already checked in stay checked in."
+            confirmLabel="Regenerate code"
+            cancelLabel="Keep the current code"
+            tone="danger"
+            [busy]="busy()"
+            [open]="true"
+            (openChange)="closeConfirm($event)"
+            (confirmed)="generate(vm)"
+          />
+        }
+      } @else if (loadFailed$ | async) {
+        <section class="surface-card" aria-label="Arrivals could not load">
+          <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the arrivals" message="The Service Day server didn't answer. It will try again in a few seconds." />
+        </section>
+      } @else {
+        <div class="card-row">
+          <div class="surface-card qr-card"><app-skeleton [lines]="8" /></div>
+          <div class="surface-card arrivals"><app-skeleton [lines]="8" /></div>
+        </div>
+      }
+    </div>
+
+  } @else {
+    <section class="surface-card" aria-label="No activities">
+      <app-empty-state icon="calendar-days" heading="No published activities" message="Check-in works for published activities. Publish one first.">
+        <a class="btn btn--primary btn--sm" routerLink="/admin/activities">Go to activities</a>
+      </app-empty-state>
+    </section>
+  }
+} @else {
+  <div class="surface-card"><app-skeleton [lines]="4" /></div>
+}

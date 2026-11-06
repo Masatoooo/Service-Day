@@ -6,6 +6,7 @@ import { ActivitiesList } from './activities-list/activities-list';
 import { ActivityAdminDetail } from './activity-admin-detail/activity-admin-detail';
 import { ActivityForm } from './activity-form/activity-form';
 import { Ngos } from './ngos/ngos';
+import { CheckIns } from './check-ins/check-ins';
 import { NotificationsCenter } from './notifications-center/notifications-center';
 import { Participation } from './participation/participation';
 import { AdminOverview } from './overview/overview';
@@ -62,6 +63,12 @@ const routes: Routes = [
         component: NotificationsCenter,
         title: 'Notifications · Service Day',
         data: { heading: 'Notifications', subheading: 'Reminder schedule, broadcasts and everything sent so far.' } satisfies ShellRouteData,
+      },
+      {
+        path: 'check-ins',
+        component: CheckIns,
+        title: 'Check-ins · Service Day',
+        data: { heading: 'Check-ins', subheading: 'QR codes for the venue and who has arrived, live.' } satisfies ShellRouteData,
       },
     ],
   },

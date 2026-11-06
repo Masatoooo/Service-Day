@@ -15,6 +15,8 @@ export interface MyPlace {
   /** Switch and withdraw share the same rule: allowed until this activity's cut-off. */
   changes: RuleResult;
   checkInToday: boolean;
+  /** "14:02" once checked in on the day; null before. */
+  checkedInAt: string | null;
   /** The activity's day, split for the date tile: "Friday", "20", "November". */
   day: { weekday: string; date: string; month: string };
 }
@@ -77,7 +79,7 @@ export class EmployeeHomeService {
         const daysUntil = serviceDay ? differenceInCalendarDays(new Date(`${serviceDay}T00:00:00`), now) : null;
         return {
           now,
-          place: placeView ? this.toPlace(placeView, now) : null,
+          place: placeView ? this.toPlace(placeView, snapshot.registrations, userId, now) : null,
           openCount: bookable.length,
           slotsAvailable: bookable.reduce((sum, v) => sum + v.remaining, 0),
           serviceDay,
@@ -107,7 +109,7 @@ export class EmployeeHomeService {
             const placeView = this.registrations.placeIn(views, snapshot, userId);
             return {
               now: snapshot.now,
-              place: placeView ? this.toPlace(placeView, snapshot.now) : null,
+              place: placeView ? this.toPlace(placeView, snapshot.registrations, userId, snapshot.now) : null,
               rows: rows.map((r) => this.toHistoryRow(r, byId.get(r.activityId) ?? null)),
             };
           }),
@@ -118,11 +120,13 @@ export class EmployeeHomeService {
     );
   }
 
-  private toPlace(view: ActivityView, now: Date): MyPlace {
+  private toPlace(view: ActivityView, registrations: Registration[], userId: string, now: Date): MyPlace {
+    const mine = registrations.find((r) => r.userId === userId && r.activityId === view.id);
     return {
       view,
       changes: canWithdraw(view, now),
       checkInToday: isSameDay(now, new Date(`${view.date}T00:00:00`)),
+      checkedInAt: mine?.checkedInAt ? format(new Date(mine.checkedInAt), 'HH:mm') : null,
       day: this.dayParts(view.date),
     };
   }

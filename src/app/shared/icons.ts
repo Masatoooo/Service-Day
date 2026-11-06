@@ -1,4 +1,5 @@
 import {
+  LucideArrowDownToLine,
   LucideArrowLeft,
   LucideArrowLeftRight,
   LucideArrowUpRight,
@@ -23,6 +24,7 @@ import {
   LucideInbox,
   LucideInfo,
   LucideLayoutDashboard,
+  LucideLink,
   LucideLock,
   LucideLogOut,
   LucideMapPin,
@@ -46,6 +48,7 @@ import {
  * <svg lucideIcon="calendar-days"></svg>. Add an icon here before using it.
  */
 export const APP_ICONS = [
+  LucideArrowDownToLine,
   LucideArrowLeft,
   LucideArrowLeftRight,
   LucideChevronRight,
@@ -73,6 +76,7 @@ export const APP_ICONS = [
   LucideInbox,
   LucideInfo,
   LucideLayoutDashboard,
+  LucideLink,
   LucideLogOut,
   LucideMapPin,
   LucideMegaphone,

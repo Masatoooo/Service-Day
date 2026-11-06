@@ -1,0 +1,106 @@
+:host {
+  display: flex;
+  justify-content: center;
+}
+
+/* One focused card, centred in the content column (a task page, not a dashboard). */
+.result,
+.entry {
+  width: 100%;
+  max-width: 560px;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--card-padding);
+  text-align: center;
+}
+
+.result h2 {
+  font: var(--text-h1);
+}
+
+.result__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-control);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.result--success .result__icon {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.result__activity {
+  font: var(--text-h2);
+}
+
+.result__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.entry {
+  --stack-gap: var(--space-5);
+}
+
+.entry h2 {
+  font: var(--text-h2);
+}
+
+/* Code field grows; the button sits beside it and drops below on phones. */
+.entry__form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.entry__field {
+  flex: 1 1 240px;
+}
+
+.code-input {
+  font: var(--text-h3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Refusal / info message above the form: tinted tile, icon + heading + reason. */
+.notice-box {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-tile);
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.notice-box[data-tone='info'] {
+  background: var(--info-soft);
+  color: var(--info);
+}
+
+.notice-box svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.notice-box__title {
+  font-weight: var(--weight-medium);
+}
+
+.notice-box p {
+  color: inherit;
+}

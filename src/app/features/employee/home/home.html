@@ -20,7 +20,9 @@
           <span class="text-small text-muted">{{ a.cutoffAt | cutoffLabel: home.now }}</span>
         </div>
         <div class="hero__actions">
-          @if (place.checkInToday) {
+          @if (place.checkedInAt) {
+            <app-status-pill [label]="'Checked in at ' + place.checkedInAt" tone="success" />
+          } @else if (place.checkInToday) {
             <a class="btn btn--primary" routerLink="/app/check-in"><svg lucideIcon="scan-qr-code"></svg>Check in</a>
           }
           @if (place.changes.ok) {

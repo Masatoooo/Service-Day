@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { format } from 'date-fns';
-import { Observable, forkJoin, map, of, switchMap, throwError, timer } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, catchError, forkJoin, map, of, startWith, switchMap, tap, throwError, timer } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Activity, PublicUser, Registration } from '../models';
 import {
@@ -27,12 +27,17 @@ export interface CheckInResult {
   late: boolean;
 }
 
+export type ArrivalStatus = 'on-time' | 'late' | 'not-arrived';
+
 export interface ArrivalRow {
   registrationId: string;
   name: string;
+  email: string;
   department: string;
+  registeredAt: string;
   checkedInAt: string | null;
   late: boolean;
+  status: ArrivalStatus;
 }
 
 export interface ArrivalsView {
@@ -41,7 +46,10 @@ export interface ArrivalsView {
   expected: number;
   present: number;
   late: number;
+  notArrived: number;
 }
+
+const STATUS_LABEL: Record<ArrivalStatus, string> = { 'on-time': 'On time', late: 'Late', 'not-arrived': 'Not arrived' };
 
 /** QR check-in (UC6, simulated): codes, check-in, live arrivals, attendance CSV. */
 @Injectable({ providedIn: 'root' })
@@ -51,17 +59,28 @@ export class CheckInService {
   private readonly clock = inject(ClockService);
   private readonly activities = inject(ActivityService);
   private readonly users = inject(UserService);
+  private readonly refresh$ = new Subject<void>();
+  private readonly loadFailedSubject = new BehaviorSubject(false);
+  /** True while the latest arrivals poll failed (the page shows an error state; polling continues). */
+  readonly loadFailed$ = this.loadFailedSubject.asObservable();
 
   /** New random 8-character code from the unambiguous alphabet, saved on the activity. */
   generateCode(activityId: string): Observable<string> {
     const bytes = crypto.getRandomValues(new Uint8Array(CHECK_IN_CODE_LENGTH));
     const code = Array.from(bytes, (byte) => CHECK_IN_ALPHABET[byte % CHECK_IN_ALPHABET.length]).join('');
-    return this.activities.update(activityId, { checkInCode: code }).pipe(map(() => code));
+    return this.activities.update(activityId, { checkInCode: code }).pipe(
+      tap(() => this.refresh$.next()),
+      map(() => code),
+    );
   }
 
-  /** The link encoded in the QR code. */
+  /**
+   * The link encoded in the QR code. `environment.publicAppUrl` when set; otherwise
+   * the address this page was opened on, so `npm run dev:lan` + the Mac's IP just works.
+   */
   checkInUrl(code: string): string {
-    return `${environment.publicAppUrl}/app/check-in/${code}`;
+    const base = environment.publicAppUrl || window.location.origin;
+    return `${base}/app/check-in/${code}`;
   }
 
   /** Code → activity, or null when nothing matches. */
@@ -96,15 +115,20 @@ export class CheckInService {
         const registered = registration as Registration;
         return this.http
           .patch<Registration>(this.api.url('registrations', registered.id), { checkedInAt: this.clock.nowIso() })
-          .pipe(map((updated) => ({ activity, registration: updated, late: isLateArrival(activity, now) })));
+          .pipe(
+            tap(() => this.refresh$.next()),
+            map((updated) => ({ activity, registration: updated, late: isLateArrival(activity, now) })),
+          );
       }),
     );
   }
 
-  /** Live arrivals for the admin Check-ins page: polls every 5 s. */
+  /** Live arrivals for the admin Check-ins page: polls every 5 s and right after a code change. */
   arrivals$(activityId: string): Observable<ArrivalsView> {
     const employees$ = this.users.employees();
-    return timer(0, ARRIVALS_POLL_MS).pipe(
+    return this.refresh$.pipe(
+      startWith(undefined),
+      switchMap(() => timer(0, ARRIVALS_POLL_MS)),
       switchMap(() =>
         forkJoin({
           activity: this.activities.get(activityId),
@@ -112,33 +136,54 @@ export class CheckInService {
             params: { activityId, status: 'registered' },
           }),
           employees: employees$,
-        }),
+        }).pipe(
+          tap(() => this.loadFailedSubject.next(false)),
+          // A failed poll is skipped (ErrorInterceptor shows the toast); the next one retries.
+          catchError(() => {
+            this.loadFailedSubject.next(true);
+            return EMPTY;
+          }),
+        ),
       ),
       map(({ activity, registrations, employees }) => this.toArrivals(activity, registrations, employees)),
     );
   }
 
-  /** Attendance export: one row per registered volunteer. */
+  /**
+   * Attendance export (PLAN §3): one row per registered volunteer. UTF-8 with a BOM and
+   * CRLF line ends, so Excel and Numbers open names and dashes correctly.
+   */
   toCsv(view: ArrivalsView): string {
-    const escape = (value: string) => (/[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
-    const header = ['Name', 'Department', 'Status', 'Checked in at'];
-    const lines = view.rows.map((row) => {
-      const status = row.checkedInAt ? (row.late ? 'Late' : 'Present') : 'Not arrived';
-      const time = row.checkedInAt ? format(new Date(row.checkedInAt), 'yyyy-MM-dd HH:mm') : '';
-      return [row.name, row.department, status, time];
-    });
-    return [header, ...lines].map((cells) => cells.map(escape).join(',')).join('\n');
+    const escape = (value: string) => (/[",\r\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value);
+    const when = (iso: string | null) => (iso ? format(new Date(iso), 'yyyy-MM-dd HH:mm') : '');
+    const header = ['Name', 'Email', 'Department', 'Activity', 'Registered at', 'Checked in at', 'Status'];
+    const lines = view.rows.map((row) => [
+      row.name,
+      row.email,
+      row.department,
+      view.activity.title,
+      when(row.registeredAt),
+      when(row.checkedInAt),
+      STATUS_LABEL[row.status],
+    ]);
+    return '\uFEFF' + [header, ...lines].map((cells) => cells.map(escape).join(',')).join('\r\n') + '\r\n';
   }
 
   private toArrivals(activity: Activity, registrations: Registration[], employees: PublicUser[]): ArrivalsView {
     const byId = new Map(employees.map((e) => [e.id, e]));
-    const rows: ArrivalRow[] = registrations.map((r) => ({
-      registrationId: r.id,
-      name: byId.get(r.userId)?.name ?? 'Unknown employee',
-      department: byId.get(r.userId)?.department ?? '',
-      checkedInAt: r.checkedInAt,
-      late: r.checkedInAt ? isLateArrival(activity, new Date(r.checkedInAt)) : false,
-    }));
+    const rows: ArrivalRow[] = registrations.map((r) => {
+      const late = r.checkedInAt ? isLateArrival(activity, new Date(r.checkedInAt)) : false;
+      return {
+        registrationId: r.id,
+        name: byId.get(r.userId)?.name ?? 'Unknown employee',
+        email: byId.get(r.userId)?.email ?? '',
+        department: byId.get(r.userId)?.department ?? '',
+        registeredAt: r.registeredAt,
+        checkedInAt: r.checkedInAt,
+        late,
+        status: r.checkedInAt ? (late ? 'late' : 'on-time') : 'not-arrived',
+      };
+    });
     // Arrived first (latest on top), then everyone still expected, by name.
     rows.sort((a, b) => {
       if (a.checkedInAt && b.checkedInAt) return Date.parse(b.checkedInAt) - Date.parse(a.checkedInAt);
@@ -146,6 +191,6 @@ export class CheckInService {
       return a.name.localeCompare(b.name);
     });
     const present = rows.filter((row) => row.checkedInAt).length;
-    return { activity, rows, expected: rows.length, present, late: rows.filter((row) => row.late).length };
+    return { activity, rows, expected: rows.length, present, late: rows.filter((row) => row.late).length, notArrived: rows.length - present };
   }
 }

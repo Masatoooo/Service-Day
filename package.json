@@ -10,7 +10,10 @@
     "seed": "node mock-api/seed.mjs",
     "api": "json-server mock-api/db.json --port 3000",
     "dev": "node mock-api/seed.mjs --if-missing && concurrently --names api,web --prefix-colors yellow,cyan --kill-others \"npm:api\" \"npm:start\"",
-    "db:reset": "node mock-api/seed.mjs"
+    "db:reset": "node mock-api/seed.mjs",
+    "api:lan": "json-server mock-api/db.json --port 3000 --host 0.0.0.0",
+    "start:lan": "ng serve --configuration lan --host 0.0.0.0",
+    "dev:lan": "node mock-api/seed.mjs --if-missing && concurrently --names api,web --prefix-colors yellow,cyan --kill-others \"npm:api:lan\" \"npm:start:lan\""
   },
   "private": true,
   "packageManager": "npm@11.20.0",

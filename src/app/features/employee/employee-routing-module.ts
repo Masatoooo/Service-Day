@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AreaShell, ShellRouteData } from '../../layout/area-shell/area-shell';
 import { ActivityDetail } from './activity-detail/activity-detail';
+import { CheckIn } from './check-in/check-in';
 import { EmployeeHome } from './home/home';
 import { Inbox } from './inbox/inbox';
 import { MyRegistrations } from './my-registrations/my-registrations';
@@ -45,6 +46,18 @@ const routes: Routes = [
           heading: 'Notifications',
           subheading: 'Everything the Service Day team has sent you.',
         } satisfies ShellRouteData,
+      },
+      {
+        path: 'check-in',
+        component: CheckIn,
+        title: 'Check in · Service Day',
+        data: { heading: 'Check in', subheading: 'Let the team know you have arrived.' } satisfies ShellRouteData,
+      },
+      {
+        path: 'check-in/:code',
+        component: CheckIn,
+        title: 'Check in · Service Day',
+        data: { heading: 'Check in', subheading: 'Let the team know you have arrived.' } satisfies ShellRouteData,
       },
       {
         path: 'opportunities/:id',
