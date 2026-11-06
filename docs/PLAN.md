@@ -369,13 +369,15 @@ Final values are owned by `DESIGN.md` after `/impeccable init`; start from these
 | `--hairline` | `#ECEAE6` | Dividers only |
 | `--ink` | `#1C1B19` | Primary text |
 | `--ink-muted` | `#6B6965` | Secondary text, labels |
-| `--ink-faint` | `#9C9A95` | Placeholders, axis labels |
+| `--ink-faint` | `#73716C` | Placeholders, axis labels (on surface / surface-sunken only, never on canvas) |
 | `--accent` | `#E8692C` | Charts, icons, active marker, KPI accents (large marks only) |
-| `--accent-strong` | `#B9501A` | Primary button bg, links, accent text (≥ 4.5:1 on white) |
+| `--accent-strong` | `#B24D19` | Primary button bg, links, accent text (≥ 4.5:1 on white and on accent-soft) |
 | `--accent-soft` | `#FDEDE4` | Active nav bg, icon tiles, selected pill |
-| `--success` / `--success-soft` | `#1E8E50` / `#E5F4EA` | Open, checked in, positive delta |
-| `--warning` / `--warning-soft` | `#A76A00` / `#FBF1DC` | Closing soon, last slots |
-| `--danger` / `--danger-soft` | `#C8372D` / `#FBE9E7` | Full, closed, destructive |
+| `--success` / `--success-soft` | `#1A7B45` / `#E5F4EA` | Open, checked in, positive delta |
+| `--warning` / `--warning-soft` | `#986000` / `#FBF1DC` | Closing soon, last slots |
+| `--danger` / `--danger-soft` | `#C2352C` / `#FBE9E7` | Full, closed, destructive |
+
+Contrast (WCAG 2.2 AA, 2026-11-06): every text token above is ≥ 4.5:1 on white and on its own `-soft` tint. Five values were darkened slightly from the first draft (same hue) to get there; see PROGRESS → Decisions.
 | `--info` / `--info-soft` | `#2F5FC4` / `#E8EFFB` | Neutral info, draft |
 
 Status pill mapping: open → success, last-slots → warning, closing-soon → warning, full → danger, closed → neutral (ink-muted on sunken), cancelled → danger outline, draft → info.

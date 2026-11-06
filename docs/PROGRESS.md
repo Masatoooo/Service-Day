@@ -7,7 +7,7 @@ Claude Code appends to this file at the end of every phase. Newest entry at the 
 | Phase | Name | Status | Commit |
 |---|---|---|---|
 | 0 | Bootstrap | done | chore: bootstrap Angular 22 NgModule app with json-server mock API |
-| 0b | Product & design context (impeccable init) | not started | |
+| 0b | Product & design context (impeccable init) | done | docs: add PRODUCT.md and DESIGN.md via impeccable init |
 | 1 | Design system, modules, shell | not started | |
 | 2 | Models, seed, rules, services | not started | |
 | 3 | Authentication | not started | |
@@ -36,6 +36,8 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - 2026-11-06 — json-server is v1 (`1.0.0-beta.15`, the `latest` tag). CLI: `json-server <file> --port 3000`; v1 watches the file by default and uses string IDs.
 - 2026-11-06 — Kept zone.js change detection (`--zoneless=false`) and the CLI's 2025 file naming (`app.ts`, `app-module.ts`, `app-routing-module.ts`, no `.component` suffix).
 - 2026-11-06 — Unit tests: CLI 22 default runner Vitest (+ jsdom), kept as generated.
+- 2026-11-06 — Accessibility target is WCAG 2.2 AA (PRODUCT.md). Five colour tokens darkened slightly, same hue, so every text pair is ≥ 4.5:1: `accent-strong` #B9501A→#B24D19 (4.36→4.64 on accent-soft), `success` #1E8E50→#1A7B45 (3.66→4.66 on its soft tint), `warning` #A76A00→#986000 (3.98→4.67), `danger` #C8372D→#C2352C (4.43→4.67), `ink-faint` #9C9A95→#73716C (2.81→4.88 on white, 4.51 on surface-sunken; never on canvas). PLAN §8.1, CLAUDE.md §4 and PRODUCT.md updated.
+- 2026-11-06 — DESIGN.md written as a pre-implementation seed with the PLAN §8 tokens (creative north star "Morning of Service Day"). No visual-direction roll: the brief pins the world.
 
 ## Known issues
 
@@ -43,6 +45,8 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - npm 11 skipped install scripts for esbuild, lmdb, @parcel/watcher, msgpackr-extract, fsevents (`allowScripts` not configured). Build, serve and tests all work without them; revisit only if the dev server's file watching or caching misbehaves.
 - json-server v1 also serves `./public` as static files (Angular's favicon folder). Harmless; the API routes are unaffected.
 - No Chromium installed for Playwright, so Phase 0 was verified with `curl` only (app HTML 200, `/users` → `[]`).
+- `docs/PROMPTS.md` Phase 0b still quotes `#B9501A`; the current value is `#B24D19` (PLAN §8.1 wins).
+- DESIGN.md is a seed: after Phase 1 builds `tokens.css` and the shell, run `/impeccable document` to sync it with the real code and generate `.impeccable/design.json`.
 
 ## Phase entries
 
@@ -61,3 +65,10 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - Verified: `npx ng build` ✓ (no warnings, font woff2 bundled) · `npx ng test` ✓ 2/2 · `npm run dev` → API on :3000 (`/users` → `[]`, `/reminderSettings` → defaults) and app on :4200 (HTTP 200) · browser not checked (no Playwright browser installed).
 - Decisions: see *Decisions* (lucide package, `@angular/cdk`, json-server v1, zone.js, file naming).
 - Known issues / follow-ups: `app.spec.ts` now imports `AppModule`; the CLI's generated spec (declaring `App` alone) fails AOT with NG8001 on `<router-outlet>` because the test build doesn't see App's NgModule. Use the same pattern (import the feature module) in later component specs. GitHub repo not created: `gh` CLI is not installed.
+
+### Phase 0b — Product & design context (2026-11-06)
+- Built: `PRODUCT.md` via `/impeccable init` (users incl. the assessor, purpose, positioning, operating context, constraints, brand commitments, evidence, 5 principles, WCAG 2.2 AA). `DESIGN.md` seed with PLAN §8 tokens in frontmatter, north star "Morning of Service Day", named rules, layout and do's/don'ts. `.impeccable/live/config.json` for live mode (target `src/index.html`, no CSP).
+- Files: `PRODUCT.md`, `DESIGN.md`, `.impeccable/live/config.json`, `docs/PLAN.md` §8.1, `CLAUDE.md` §4, `docs/PROGRESS.md`.
+- Verified: contrast of all text/background token pairs computed (WCAG formula); no app code changed, so no build needed.
+- Decisions: see *Decisions* (colour darkening, seed DESIGN.md).
+- Known issues / follow-ups: re-run `/impeccable document` after Phase 1.
