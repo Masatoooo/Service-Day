@@ -1,4 +1,4 @@
-<article class="kpi">
+<article class="kpi" [class.kpi--compact]="compact()">
   <header class="kpi__head">
     <h3 class="kpi__label">{{ label() }}</h3>
     @if (icon(); as iconName) {

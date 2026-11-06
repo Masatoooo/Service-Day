@@ -15,6 +15,11 @@
   --meter-text: var(--warning);
 }
 
+.meter[data-tone='muted'] {
+  --meter-fill: var(--ink-faint);
+  --meter-text: var(--ink-muted);
+}
+
 .meter[data-tone='full'] {
   --meter-fill: var(--danger);
   --meter-text: var(--danger);

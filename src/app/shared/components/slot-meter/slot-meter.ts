@@ -18,6 +18,8 @@ export class SlotMeter {
   readonly capacity = input.required<number>();
   /** Remaining slots at or below this count show as "last slots" (ReminderSettings default 2). */
   readonly threshold = input(2);
+  /** Closed or cancelled: the numbers still show, but without warning colours. */
+  readonly muted = input(false);
 
   protected readonly remaining = computed(() => Math.max(this.capacity() - this.taken(), 0));
   protected readonly segmented = computed(() => this.capacity() <= MAX_SEGMENTS);
@@ -28,6 +30,7 @@ export class SlotMeter {
     this.capacity() ? Math.min((this.taken() / this.capacity()) * 100, 100) : 0,
   );
   protected readonly tone = computed(() => {
+    if (this.muted()) return 'muted';
     if (this.remaining() === 0) return 'full';
     return this.remaining() <= this.threshold() ? 'low' : 'ok';
   });

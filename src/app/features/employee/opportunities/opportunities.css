@@ -1,0 +1,72 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+/* Filter bar: two wrapping flex rows inside one card. */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.filters__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.filters__search {
+  flex: 2 1 280px;
+}
+
+.filters__select {
+  flex: 1 1 170px;
+}
+
+.filters__types {
+  flex: 1 1 420px;
+  min-width: 0;
+}
+
+.results-count {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+/* Card list: Flexbox with wrap. The basis gives 3 columns on wide screens,
+   2 on tablets and 1 on phones; `gap` spaces cards without margins. */
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--card-gap);
+}
+
+.cards__item {
+  display: flex;
+  flex: 0 0 calc((100% - 2 * var(--card-gap)) / 3);
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cards__item > * {
+  flex: 1;
+}
+
+@media (max-width: 1279px) {
+  .cards__item {
+    flex-basis: calc((100% - var(--card-gap)) / 2);
+  }
+}
+
+@media (max-width: 599px) {
+  .cards__item {
+    flex-basis: 100%;
+  }
+
+  .filters__select {
+    flex-basis: calc(50% - var(--space-3));
+  }
+}

@@ -20,4 +20,6 @@ export class KpiCard {
   /** Lucide icon name registered in SharedModule, e.g. 'ticket'. */
   readonly icon = input<string>();
   readonly tone = input<KpiTone>('accent');
+  /** Secondary KPIs (e.g. under a hero card): smaller number and padding. */
+  readonly compact = input(false);
 }

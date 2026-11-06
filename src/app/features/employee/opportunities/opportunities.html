@@ -1,0 +1,92 @@
+@if (vm$ | async; as vm) {
+  <section class="surface-card filters" aria-label="Filter activities">
+    <div class="filters__row">
+      <app-search-field
+        class="filters__search"
+        label="Search activities"
+        placeholder="Search by activity, NGO or place"
+        [value]="vm.criteria.query"
+        (valueChange)="setQuery($event)"
+      />
+      <div class="field filters__select">
+        <label class="visually-hidden" for="filter-date">Date</label>
+        <div class="input-wrap">
+          <select id="filter-date" class="input" (change)="setDate($event)">
+            <option value="" [selected]="!vm.criteria.date">All dates</option>
+            @for (option of vm.dates; track option.value) {
+              <option [value]="option.value" [selected]="option.value === vm.criteria.date">{{ option.label }}</option>
+            }
+          </select>
+          <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+        </div>
+      </div>
+      <div class="field filters__select">
+        <label class="visually-hidden" for="filter-sort">Sort by</label>
+        <div class="input-wrap">
+          <select id="filter-sort" class="input" (change)="setSort($event)">
+            <option value="cutoff" [selected]="vm.criteria.sort === 'cutoff'">Soonest cut-off</option>
+            <option value="slots" [selected]="vm.criteria.sort === 'slots'">Most slots left</option>
+          </select>
+          <svg class="input-wrap__icon" lucideIcon="chevron-down"></svg>
+        </div>
+      </div>
+    </div>
+    <div class="filters__row">
+      <app-pill-filter
+        class="filters__types"
+        label="Service type"
+        [options]="vm.typeOptions"
+        [allowNone]="false"
+        [selected]="vm.selectedType"
+        (selectedChange)="setType($event)"
+      />
+      <label class="switch">
+        <input type="checkbox" role="switch" [checked]="vm.criteria.showAll" (change)="setShowAll($event)" />
+        Show full &amp; closed
+      </label>
+    </div>
+  </section>
+
+  <p class="results-count" aria-live="polite">
+    <span class="tabular">{{ vm.results.length }}</span> {{ vm.results.length === 1 ? 'activity' : 'activities' }}
+  </p>
+
+  @if (vm.results.length) {
+    <ul class="cards" role="list">
+      @for (activity of vm.results; track activity.id) {
+        <li class="cards__item">
+          <app-activity-card [activity]="activity" [now]="vm.now" [link]="['/app/opportunities', activity.id]" />
+        </li>
+      }
+    </ul>
+  } @else {
+    <section class="surface-card" aria-label="No matching activities">
+      <app-empty-state
+        icon="search-x"
+        heading="No activities match these filters"
+        [message]="vm.suggestion ? vm.suggestion.label + ' to see ' + vm.suggestion.extra + ' more.' : 'Try a different search, or check back as NGOs add activities.'"
+      >
+        @if (vm.suggestion; as suggestion) {
+          <button type="button" class="btn btn--secondary btn--sm" (click)="update(suggestion.patch)">{{ suggestion.label }}</button>
+        }
+      </app-empty-state>
+    </section>
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Activities could not load">
+    <app-empty-state
+      icon="circle-exclamation-point"
+      heading="We couldn't load the activities"
+      message="The Service Day server didn't answer. Check your connection, then try again."
+    >
+      <button type="button" class="btn btn--primary btn--sm" (click)="retry()"><svg lucideIcon="rotate-cw" [size]="16"></svg>Try again</button>
+    </app-empty-state>
+  </section>
+} @else {
+  <div class="surface-card filters" aria-hidden="true"><app-skeleton shape="block" height="96px" /></div>
+  <ul class="cards" role="list" aria-busy="true" aria-label="Loading activities">
+    @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+      <li class="cards__item"><div class="surface-card"><app-skeleton [lines]="4" /><app-skeleton shape="block" height="40px" /></div></li>
+    }
+  </ul>
+}

@@ -45,6 +45,7 @@
 
   /* ---- Type (Instrument Sans Variable, weights 400/500/600) ---- */
   --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-display: 500 64px/1 var(--font-sans); /* the date tile on the employee home only */
   --text-kpi: 500 40px/44px var(--font-sans);
   --text-h1: 500 28px/34px var(--font-sans);
   --text-h2: 500 20px/28px var(--font-sans);

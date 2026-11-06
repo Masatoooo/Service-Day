@@ -1,0 +1,28 @@
+@let a = activity();
+<article class="card">
+  <header class="card__head">
+    <span class="card__ngo">
+      <app-avatar [name]="a.ngo.name" [seed]="a.ngo.id" shape="tile" size="sm" />
+      <span class="card__ngo-name">{{ a.ngo.name }}</span>
+    </span>
+    <app-status-pill [availability]="a.availability" />
+  </header>
+
+  <h3 class="card__title">
+    <a class="card__link" [routerLink]="link()">{{ a.title }}</a>
+  </h3>
+
+  <ul class="card__facts" role="list">
+    <li><svg lucideIcon="calendar-days" [size]="16"></svg>{{ a | activityDate }}</li>
+    <li><svg lucideIcon="map-pin" [size]="16"></svg>{{ a.location }}</li>
+  </ul>
+
+  <app-slot-meter class="card__meter" [taken]="a.taken" [capacity]="a.maxSlots" [muted]="a.availability === 'closed'" />
+
+  <footer class="card__foot">
+    <span class="card__cutoff"><svg lucideIcon="clock" [size]="16"></svg>{{ a.cutoffAt | cutoffLabel: now() }}</span>
+    @if (a.isRegisteredByMe) {
+      <app-status-pill label="Your place" tone="accent" />
+    }
+  </footer>
+</article>

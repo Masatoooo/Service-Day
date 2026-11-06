@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import {
+  BehaviorSubject,
   EMPTY,
   Observable,
   Subject,
@@ -49,13 +50,24 @@ export class ActivityService {
   private readonly clock = inject(ClockService);
   private readonly ngoService = inject(NgoService);
   private readonly refresh$ = new Subject<void>();
+  private readonly loadFailedSubject = new BehaviorSubject(false);
+  /** True while the latest poll failed: pages with no data yet show an error state with Retry. */
+  readonly loadFailed$ = this.loadFailedSubject.asObservable();
 
   readonly snapshot$: Observable<ActivitySnapshot> = merge(this.refresh$, this.ngoService.changed$).pipe(
     startWith(undefined),
     // Each refresh restarts the 10-second polling timer.
     switchMap(() => timer(0, POLL_MS)),
     // A failed poll is skipped (ErrorInterceptor already showed a toast); the next one retries.
-    switchMap(() => this.snapshotOnce().pipe(catchError(() => EMPTY))),
+    switchMap(() =>
+      this.snapshotOnce().pipe(
+        tap(() => this.loadFailedSubject.next(false)),
+        catchError(() => {
+          this.loadFailedSubject.next(true);
+          return EMPTY;
+        }),
+      ),
+    ),
     shareReplay({ bufferSize: 1, refCount: true }),
   );
 
@@ -67,6 +79,11 @@ export class ActivityService {
   /** Live activity views. Pass a userId to fill `isRegisteredByMe`. */
   live$(userId?: string): Observable<ActivityView[]> {
     return this.snapshot$.pipe(map((snapshot) => this.toViews(snapshot, userId)));
+  }
+
+  /** Live views plus the snapshot's `now`, so time labels ("Closes in 2 days") refresh with each poll. */
+  liveWithTime$(userId?: string): Observable<{ views: ActivityView[]; now: Date }> {
+    return this.snapshot$.pipe(map((snapshot) => ({ views: this.toViews(snapshot, userId), now: snapshot.now })));
   }
 
   getView(id: string, userId?: string): Observable<ActivityView | null> {

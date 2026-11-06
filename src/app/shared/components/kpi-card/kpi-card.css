@@ -79,3 +79,26 @@
 .kpi__foot:empty {
   display: none;
 }
+
+/* Compact: one row, label and number side by side under the icon tile. */
+.kpi--compact {
+  gap: var(--space-2);
+  padding: var(--space-4) var(--space-5);
+}
+
+.kpi--compact .kpi__value {
+  font: var(--text-h1);
+}
+
+.kpi--compact .kpi__unit {
+  font: var(--text-body);
+}
+
+.kpi--compact .kpi__label {
+  font: var(--text-small);
+}
+
+.kpi--compact .kpi__icon {
+  width: var(--control-height-sm);
+  height: var(--control-height-sm);
+}

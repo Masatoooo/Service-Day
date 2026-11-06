@@ -1,0 +1,132 @@
+<nav class="back" aria-label="Breadcrumb">
+  <a routerLink="/app/opportunities"><svg lucideIcon="arrow-left" [size]="16"></svg>All opportunities</a>
+</nav>
+
+@if (vm$ | async; as vm) {
+  @if (vm.state; as s) {
+    @let a = s.view;
+    @if (a.status === 'cancelled') {
+      <section class="surface-card" aria-label="Activity cancelled">
+        <app-empty-state
+          icon="info"
+          [heading]="a.title + ' was cancelled'"
+          [message]="a.ngo.name + ' called it off. If you had a place, it has been released and you can register for another activity.'"
+        >
+          <a class="btn btn--primary btn--sm" routerLink="/app/opportunities">Browse open activities</a>
+        </app-empty-state>
+      </section>
+    } @else {
+      <div class="card-row">
+        <article class="surface-card col-main detail" [attr.aria-labelledby]="'activity-' + a.id">
+          <header class="detail__head">
+            <span class="detail__type"><svg lucideIcon="tag" [size]="16"></svg>{{ a.serviceType }}</span>
+            <app-status-pill [availability]="a.availability" />
+          </header>
+          <h2 class="detail__title" [id]="'activity-' + a.id">{{ a.title }}</h2>
+          <ul class="detail__facts" role="list">
+            <li><svg lucideIcon="calendar-days"></svg>{{ a | activityDate: 'long' }}</li>
+            <li><svg lucideIcon="map-pin"></svg>{{ a.location }}</li>
+            <li><svg lucideIcon="heart-handshake"></svg>{{ a.ngo.name }}</li>
+          </ul>
+
+          <section class="detail__section" aria-labelledby="about-heading">
+            <h3 id="about-heading">About this activity</h3>
+            <p class="detail__description">{{ a.description }}</p>
+          </section>
+
+          <section class="sunken-tile detail__rules" aria-labelledby="rules-heading">
+            <h3 id="rules-heading">How registration works</h3>
+            <ul role="list">
+              <li>You can hold one place for this Service Day. To move, use Switch rather than registering twice.</li>
+              <li>You can switch or withdraw until the cut-off, {{ s.cutoffText }}.</li>
+              <li>After the cut-off your place is locked, so {{ a.ngo.name }} can plan with a final list.</li>
+            </ul>
+          </section>
+        </article>
+
+        <aside class="col-side stack side">
+          <section class="surface-card stack action" aria-labelledby="place-heading">
+            <h3 id="place-heading">Places</h3>
+            <app-slot-meter [taken]="a.taken" [capacity]="a.maxSlots" [muted]="a.availability === 'closed'" />
+            <p class="action__cutoff"><svg lucideIcon="clock" [size]="16"></svg>{{ a.cutoffAt | cutoffLabel: s.now }}</p>
+
+            <div class="action__area">
+              @if (s.isMine) {
+                <app-status-pill label="You're registered here" tone="success" />
+                @if (s.checkInToday) {
+                  <a class="btn btn--primary btn--block" routerLink="/app/check-in"><svg lucideIcon="scan-qr-code"></svg>Check in</a>
+                }
+                @if (s.withdraw?.ok) {
+                  <a class="btn btn--secondary btn--block" routerLink="/app/opportunities">Switch to another activity</a>
+                  <button type="button" class="btn btn--ghost btn--block" (click)="pending.set('withdraw')">Withdraw</button>
+                } @else if (s.withdraw && !s.withdraw.ok) {
+                  <p class="locked-reason"><svg lucideIcon="lock" [size]="16"></svg>{{ s.withdraw.reason }} Your place is confirmed.</p>
+                }
+              } @else if (s.current) {
+                <p class="action__current">
+                  Your place: <a [routerLink]="['/app/opportunities', s.current.id]">{{ s.current.title }}</a>
+                </p>
+                @if (s.switchHere?.ok) {
+                  <button type="button" class="btn btn--primary btn--block" (click)="pending.set('switch')">Switch here</button>
+                } @else if (s.switchHere && !s.switchHere.ok) {
+                  <button type="button" class="btn btn--primary btn--block" disabled aria-describedby="action-reason">Switch here</button>
+                  <p class="locked-reason" id="action-reason"><svg lucideIcon="lock" [size]="16"></svg>{{ s.switchHere.reason }}</p>
+                }
+              } @else {
+                @if (s.register.ok) {
+                  <button type="button" class="btn btn--primary btn--block" (click)="pending.set('register')">Register</button>
+                } @else {
+                  <button type="button" class="btn btn--primary btn--block" disabled aria-describedby="action-reason">Register</button>
+                  <p class="locked-reason" id="action-reason"><svg lucideIcon="lock" [size]="16"></svg>{{ s.register.reason }}</p>
+                }
+              }
+            </div>
+          </section>
+
+          <section class="surface-card stack ngo" aria-labelledby="ngo-heading">
+            <div class="ngo__head">
+              <app-avatar [name]="a.ngo.name" [seed]="a.ngo.id" shape="tile" size="lg" />
+              <div class="ngo__text">
+                <h3 id="ngo-heading">{{ a.ngo.name }}</h3>
+                <span class="text-small text-muted">{{ a.ngo.focusArea }}</span>
+              </div>
+            </div>
+            <p class="text-small text-muted">{{ a.ngo.description }}</p>
+          </section>
+        </aside>
+      </div>
+
+      @if (pending(); as action) {
+        @let copy = dialogCopy(s, action);
+        <app-confirm-dialog
+          [heading]="copy.heading"
+          [message]="copy.message"
+          [confirmLabel]="copy.confirmLabel"
+          [tone]="copy.tone"
+          [open]="true"
+          (openChange)="setDialogOpen($event)"
+          (confirmed)="confirm()"
+        />
+      }
+    }
+  } @else {
+    <section class="surface-card" aria-label="Activity not found">
+      <app-empty-state
+        icon="search-x"
+        heading="We couldn't find this activity"
+        message="It may have been removed, or it isn't published yet. The list of opportunities shows everything that's open."
+      >
+        <a class="btn btn--primary btn--sm" routerLink="/app/opportunities">Browse opportunities</a>
+      </app-empty-state>
+    </section>
+  }
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Activity could not load">
+    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load this activity" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  </section>
+} @else {
+  <div class="card-row" aria-busy="true" aria-label="Loading activity">
+    <div class="surface-card col-main stack"><app-skeleton [lines]="2" /><app-skeleton [lines]="5" /></div>
+    <div class="surface-card col-side stack"><app-skeleton shape="block" height="140px" /></div>
+  </div>
+}

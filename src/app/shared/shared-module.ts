@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { LucideDynamicIcon, provideLucideConfig, provideLucideIcons } from '@lucide/angular';
 
 import { APP_ICONS } from './icons';
+import { ActivityCard } from './components/activity-card/activity-card';
 import { Avatar } from './components/avatar/avatar';
 import { ConfirmDialog } from './components/confirm-dialog/confirm-dialog';
 import { Drawer } from './components/drawer/drawer';
@@ -19,12 +20,14 @@ import { SlotMeter } from './components/slot-meter/slot-meter';
 import { StatusPill } from './components/status-pill/status-pill';
 import { Tabs } from './components/tabs/tabs';
 import { ToastStack } from './components/toast-stack/toast-stack';
+import { ActivityDatePipe } from './pipes/activity-date-pipe';
 import { AvailabilityLabelPipe } from './pipes/availability-label-pipe';
 import { CutoffLabelPipe } from './pipes/cutoff-label-pipe';
 import { InitialsPipe } from './pipes/initials-pipe';
 import { RelativeTimePipe } from './pipes/relative-time-pipe';
 
 const COMPONENTS = [
+  ActivityCard,
   Avatar,
   ConfirmDialog,
   Drawer,
@@ -41,7 +44,7 @@ const COMPONENTS = [
   ToastStack,
 ];
 
-const PIPES = [AvailabilityLabelPipe, CutoffLabelPipe, InitialsPipe, RelativeTimePipe];
+const PIPES = [ActivityDatePipe, AvailabilityLabelPipe, CutoffLabelPipe, InitialsPipe, RelativeTimePipe];
 
 /**
  * SharedModule — reusable UI (View layer) for every feature module.

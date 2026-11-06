@@ -1,6 +1,147 @@
-<section class="surface-card" aria-label="Your Service Day">
-  <app-page-header
-    heading="Your Service Day"
-    description="Your place, its cut-off and the activities closing soon will appear here."
-  />
-</section>
+@if (home$ | async; as home) {
+  <!-- Hero: the employee's Service Day. Everything else on the page is secondary. -->
+  <section class="surface-card hero" aria-label="Your Service Day">
+    @if (home.place; as place) {
+      @let a = place.view;
+      <div class="hero__body">
+        <div class="hero__ngo">
+          <app-avatar [name]="a.ngo.name" [seed]="a.ngo.id" shape="tile" size="sm" />
+          <span>Your place with {{ a.ngo.name }}</span>
+        </div>
+        <h2 class="hero__title">
+          <a [routerLink]="['/app/opportunities', a.id]">{{ a.title }}</a>
+        </h2>
+        <ul class="hero__facts" role="list">
+          <li><svg lucideIcon="clock"></svg>{{ a | activityDate: 'long' }}</li>
+          <li><svg lucideIcon="map-pin"></svg>{{ a.location }}</li>
+        </ul>
+        <div class="hero__status">
+          <app-status-pill [availability]="a.availability" />
+          <span class="text-small text-muted">{{ a.cutoffAt | cutoffLabel: home.now }}</span>
+        </div>
+        <div class="hero__actions">
+          @if (place.checkInToday) {
+            <a class="btn btn--primary" routerLink="/app/check-in"><svg lucideIcon="scan-qr-code"></svg>Check in</a>
+          }
+          @if (place.changes.ok) {
+            <a class="btn btn--secondary" routerLink="/app/opportunities">Switch activity</a>
+            <button type="button" class="btn btn--ghost" (click)="withdrawOpen.set(true)">Withdraw</button>
+          } @else {
+            <p class="locked-reason"><svg lucideIcon="lock" [size]="16"></svg>{{ place.changes.reason }} Your place is confirmed.</p>
+          }
+        </div>
+      </div>
+      <div class="hero__date" aria-hidden="true">
+        <span class="hero__weekday">{{ place.day.weekday }}</span>
+        <span class="hero__day tabular">{{ place.day.date }}</span>
+        <span class="hero__month">{{ place.day.month }}</span>
+      </div>
+
+      <app-confirm-dialog
+        [heading]="'Withdraw from ' + a.title + '?'"
+        message="Your place goes back to the pool for someone else. You can still register for another activity before its cut-off."
+        confirmLabel="Withdraw"
+        tone="danger"
+        [(open)]="withdrawOpen"
+        (confirmed)="confirmWithdraw()"
+      />
+    } @else {
+      <div class="hero__body">
+        <h2 class="hero__title">You haven't picked an activity yet</h2>
+        <p class="hero__lede">
+          <span class="tabular">{{ home.openCount }}</span> activities still have places, with
+          <span class="tabular">{{ home.slotsAvailable }}</span> spots between them. Pick one before its cut-off.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" routerLink="/app/opportunities"><svg lucideIcon="compass"></svg>Browse opportunities</a>
+        </div>
+      </div>
+    }
+  </section>
+
+  <div class="card-row">
+    <div class="kpi-slot"><app-kpi-card label="Open activities" [value]="home.openCount" icon="compass" [compact]="true" /></div>
+    <div class="kpi-slot"><app-kpi-card label="Slots still available" [value]="home.slotsAvailable" icon="ticket" tone="success" [compact]="true" /></div>
+    <div class="kpi-slot">
+      <app-kpi-card
+        label="Days until Service Day"
+        [value]="home.daysUntil === 0 ? 'Today' : (home.daysUntil ?? '–')"
+        icon="calendar-days"
+        tone="info"
+        [compact]="true"
+      />
+    </div>
+  </div>
+
+  <div class="card-row">
+    <section class="surface-card col-main stack" aria-label="Closing soon">
+      <app-page-header heading="Closing soon" description="The next cut-offs. After these, places can't be changed.">
+        <a class="btn btn--ghost btn--sm" routerLink="/app/opportunities">All opportunities</a>
+      </app-page-header>
+      @if (home.closingSoon.length) {
+        <ul class="rows" role="list">
+          @for (activity of home.closingSoon; track activity.id) {
+            <li>
+              <a class="row" [routerLink]="['/app/opportunities', activity.id]">
+                <app-avatar [name]="activity.ngo.name" [seed]="activity.ngo.id" shape="tile" size="sm" />
+                <span class="row__text">
+                  <span class="row__title">{{ activity.title }}</span>
+                  <span class="row__meta">{{ activity.cutoffAt | cutoffLabel: home.now }}</span>
+                </span>
+                <span class="row__slots tabular">{{ activity.remaining }} of {{ activity.maxSlots }} left</span>
+                <svg class="row__chevron" lucideIcon="chevron-right" [size]="16"></svg>
+              </a>
+            </li>
+          }
+        </ul>
+      } @else {
+        <app-empty-state icon="clock" heading="Nothing is closing soon" message="Every open activity has more than a few days to go." />
+      }
+    </section>
+
+    <section class="surface-card col-side stack" aria-label="Latest notices">
+      <app-page-header heading="Latest notices">
+        <a class="btn btn--ghost btn--sm" routerLink="/app/inbox" aria-label="All notices">All</a>
+      </app-page-header>
+      @if (home.notifications; as notices) {
+        @if (notices.length) {
+          <ul class="notices" role="list">
+            @for (notice of notices; track notice.id) {
+              <li class="notice" [class.is-unread]="!notice.readBy.includes(userId)">
+                <span class="notice__icon"><svg [lucideIcon]="noticeIcon[notice.type]" [size]="16"></svg></span>
+                <span class="notice__text">
+                  <span class="notice__title">{{ notice.title }}</span>
+                  <span class="notice__time">{{ notice.createdAt | relativeTime: home.now }}</span>
+                </span>
+                @if (!notice.readBy.includes(userId)) {
+                  <span class="notice__dot"><span class="visually-hidden">Unread</span></span>
+                }
+              </li>
+            }
+          </ul>
+        } @else {
+          <app-empty-state icon="inbox" heading="No notices yet" message="Reminders and updates about your activity will show up here." />
+        }
+      } @else {
+        <app-skeleton [lines]="3" />
+      }
+    </section>
+  </div>
+} @else if (loadFailed$ | async) {
+  <section class="surface-card" aria-label="Home could not load">
+    <app-empty-state
+      icon="circle-exclamation-point"
+      heading="We couldn't load your Service Day"
+      message="The Service Day server didn't answer. It will try again in a few seconds."
+    />
+  </section>
+} @else {
+  <div class="surface-card hero" aria-busy="true" aria-label="Loading your Service Day">
+    <div class="hero__body"><app-skeleton [lines]="2" /><app-skeleton shape="block" height="64px" /></div>
+  </div>
+  <div class="card-row">
+    @for (i of [1, 2, 3]; track i) {
+      <div class="kpi-slot surface-card"><app-skeleton [lines]="2" /></div>
+    }
+  </div>
+}

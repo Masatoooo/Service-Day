@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { isSameDay } from 'date-fns';
 import { Observable, finalize, map, switchMap, throwError } from 'rxjs';
-import { Activity, Ngo, Registration } from '../models';
-import { RuleResult, RuleViolationError, canRegister, canSwitch, canWithdraw } from '../rules';
+import { Activity, ActivityView, Ngo, Registration } from '../models';
+import { RuleResult, RuleViolationError, canRegister, canSwitch, canWithdraw, formatCutoff } from '../rules';
 import { ActivitySnapshot, ActivityService } from './activity-service';
 import { ApiUrlService } from './api-url-service';
 import { ClockService } from './clock-service';
@@ -15,6 +16,28 @@ interface GuardContext {
   snapshot: ActivitySnapshot;
   current: Registration | null;
   currentActivity: Activity | null;
+}
+
+/**
+ * What one employee may do on one activity, decided only by the rule functions.
+ * The detail page shows exactly one of register / switchHere / withdraw.
+ */
+export interface ActivityActions {
+  view: ActivityView;
+  now: Date;
+  /** The employee's current place this season (may be this activity), or null. */
+  current: ActivityView | null;
+  isMine: boolean;
+  /** Relevant when the employee has no place yet. */
+  register: RuleResult;
+  /** Relevant when the employee's place is on another activity. */
+  switchHere: RuleResult | null;
+  /** Relevant when this activity is the employee's place. */
+  withdraw: RuleResult | null;
+  /** Their activity takes place today: show the check-in shortcut. */
+  checkInToday: boolean;
+  /** The cut-off as an absolute time, e.g. "15 Nov, 17:00". */
+  cutoffText: string;
 }
 
 /** Turns a blocked rule into an Observable error the component can show. */
@@ -52,6 +75,40 @@ export class RegistrationService {
   /** People currently registered on an activity. */
   forActivity(activityId: string): Observable<Registration[]> {
     return this.http.get<Registration[]>(this.api.url('registrations'), { params: { activityId, status: 'registered' } });
+  }
+
+  /** The employee's current place among the given views (cancelled activities don't count). */
+  placeIn(views: ActivityView[], snapshot: ActivitySnapshot, userId: string): ActivityView | null {
+    const active = snapshot.activeRegistrations.find((r) => r.userId === userId);
+    return active ? views.find((v) => v.id === active.activityId) ?? null : null;
+  }
+
+  /**
+   * Live action state for the detail page (re-evaluated on every 10 s poll).
+   * Emits null when the activity doesn't exist or is a draft (hidden from employees).
+   */
+  actions$(userId: string, activityId: string): Observable<ActivityActions | null> {
+    return this.activities.snapshot$.pipe(
+      map((snapshot) => {
+        const views = this.activities.toViews(snapshot, userId);
+        const view = views.find((v) => v.id === activityId);
+        if (!view || view.status === 'draft') return null;
+        const current = this.placeIn(views, snapshot, userId);
+        const isMine = current?.id === view.id;
+        const now = snapshot.now;
+        return {
+          view,
+          now,
+          current,
+          isMine,
+          register: canRegister(view, view.taken, now, current !== null),
+          switchHere: current && !isMine ? canSwitch(current, view, view.taken, now) : null,
+          withdraw: isMine ? canWithdraw(view, now) : null,
+          checkInToday: isMine && isSameDay(now, new Date(`${view.date}T00:00:00`)),
+          cutoffText: formatCutoff(view.cutoffAt),
+        };
+      }),
+    );
   }
 
   register(userId: string, activityId: string): Observable<Registration> {
