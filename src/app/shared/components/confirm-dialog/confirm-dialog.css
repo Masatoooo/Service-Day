@@ -1,0 +1,54 @@
+/* Box model: a fixed max width with generous padding; the actions sit in a flex row. */
+.dialog {
+  width: min(440px, calc(100vw - 2 * var(--shell-inset)));
+  max-width: none;
+  /* margin: auto centres the modal (the global reset sets margin: 0 on everything). */
+  margin: auto;
+  padding: var(--card-padding);
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-overlay);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity var(--duration) var(--ease-out),
+    transform var(--duration) var(--ease-out),
+    display var(--duration) allow-discrete,
+    overlay var(--duration) allow-discrete;
+}
+
+.dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .dialog[open] {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.dialog::backdrop {
+  background: var(--scrim);
+}
+
+.dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.dialog__message {
+  color: var(--ink-muted);
+}
+
+.dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+}

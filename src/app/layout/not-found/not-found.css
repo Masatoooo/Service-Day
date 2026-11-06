@@ -1,0 +1,43 @@
+/* Flexbox: the card sits in the optical centre of the canvas. */
+.not-found {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: var(--shell-inset);
+}
+
+/* Box model: a narrow card with generous padding; content is start-aligned. */
+.not-found__card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  width: min(480px, 100%);
+  padding: var(--space-8);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.not-found__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-tile);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.not-found__text {
+  color: var(--ink-muted);
+  margin-bottom: var(--space-3);
+}
+
+@media (max-width: 599px) {
+  .not-found__card {
+    padding: var(--card-padding);
+  }
+}

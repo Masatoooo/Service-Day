@@ -1,0 +1,43 @@
+<div class="sidebar">
+  <a class="brand" [routerLink]="homePath()" (click)="navigate.emit()">
+    <span class="brand__mark" aria-hidden="true">
+      <svg lucideIcon="hand-heart" [size]="22"></svg>
+    </span>
+    <span class="brand__text">
+      <span class="brand__name">Service Day</span>
+      <span class="brand__by">by Halden &amp; Co.</span>
+    </span>
+  </a>
+
+  <nav class="nav" aria-label="Main">
+    <ul class="nav__list" role="list">
+      @for (item of items(); track item.path) {
+        <li>
+          <a
+            class="nav__link"
+            [class.is-preview-active]="item.path === previewActivePath()"
+            [routerLink]="item.path"
+            routerLinkActive="is-active"
+            [routerLinkActiveOptions]="{ exact: item.exact }"
+            ariaCurrentWhenActive="page"
+            (click)="navigate.emit()"
+          >
+            <svg class="nav__icon" [lucideIcon]="item.icon"></svg>
+            <span>{{ item.label }}</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="sidebar__footer">
+    <button type="button" class="nav__link" (click)="help.emit()">
+      <svg class="nav__icon" lucideIcon="circle-question-mark"></svg>
+      <span>How it works</span>
+    </button>
+    <button type="button" class="nav__link nav__link--sign-out" (click)="signOut.emit()">
+      <svg class="nav__icon" lucideIcon="log-out"></svg>
+      <span>Sign out</span>
+    </button>
+  </div>
+</div>

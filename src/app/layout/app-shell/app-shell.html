@@ -1,0 +1,58 @@
+<a class="skip-link" [href]="'#' + contentId()">Skip to content</a>
+
+<div class="shell">
+  <!-- Desktop: the sidebar is its own white card in a sticky <aside>. -->
+  <aside class="shell__sidebar">
+    <app-sidebar
+      [items]="navItems()"
+      [homePath]="homePath()"
+      [previewActivePath]="previewActivePath()"
+      (help)="openHelp()"
+      (signOut)="signOut.emit()"
+    />
+  </aside>
+
+  <!-- Below 900px: the same sidebar inside an off-canvas drawer (focus trapped, Esc closes). -->
+  <app-drawer heading="Menu" side="start" [headingHidden]="true" [(open)]="navOpen">
+    <app-sidebar
+      [items]="navItems()"
+      [homePath]="homePath()"
+      [previewActivePath]="previewActivePath()"
+      (navigate)="navOpen.set(false)"
+      (help)="openHelp()"
+      (signOut)="signOut.emit()"
+    />
+  </app-drawer>
+
+  <div class="shell__main">
+    <app-topbar
+      [heading]="heading()"
+      [subheading]="subheading()"
+      [session]="session()"
+      [inboxPath]="inboxPath()"
+      [unreadCount]="unreadCount()"
+      [menuOpen]="navOpen()"
+      (menuToggle)="navOpen.set(true)"
+    />
+    <main class="shell__content" [id]="contentId()" tabindex="-1">
+      <ng-content />
+    </main>
+  </div>
+</div>
+
+<app-drawer heading="How Service Day works" [(open)]="helpOpen">
+  <ol class="help-steps" role="list">
+    <li class="help-step">
+      <h3>Pick one activity</h3>
+      <p>Browse Opportunities and register for the one you like. Everyone has one place per Service Day.</p>
+    </li>
+    <li class="help-step">
+      <h3>Change it before the cut-off</h3>
+      <p>Switch or withdraw any time until the activity's cut-off. After that your place is locked in.</p>
+    </li>
+    <li class="help-step">
+      <h3>Check in on the day</h3>
+      <p>Scan the QR code at the venue, or type the 8-character code printed under it.</p>
+    </li>
+  </ol>
+</app-drawer>

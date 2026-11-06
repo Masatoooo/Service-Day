@@ -1,0 +1,135 @@
+/* Flexbox column of sections; box model: page padding = shell inset. */
+.sg {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: var(--space-7) var(--shell-inset);
+}
+
+.sg__intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: var(--measure);
+}
+
+.sg__section,
+.sg__group {
+  --stack-gap: var(--space-4);
+}
+
+code {
+  font: var(--text-small);
+  color: var(--ink);
+}
+
+.sg__swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  padding: 0;
+  list-style: none;
+}
+
+.sg__swatch {
+  display: flex;
+  flex: 0 1 148px;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sg__chip {
+  height: 56px;
+  border-radius: var(--radius-tile);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline);
+}
+
+.sg__type-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-5);
+}
+
+.sg__type-meta {
+  display: flex;
+  flex: 0 0 160px;
+  flex-direction: column;
+}
+
+.sg__type-sample {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.sg__space-bar {
+  height: 12px;
+  border-radius: var(--radius-control);
+  background: var(--accent);
+}
+
+.sg__radius {
+  display: flex;
+  align-items: flex-end;
+  width: 72px;
+  height: 56px;
+  padding: var(--space-2);
+  background: var(--surface-sunken);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+}
+
+.sg__disabled {
+  --stack-gap: var(--space-1);
+  align-items: flex-start;
+}
+
+.sg__meters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5) var(--space-6);
+}
+
+.sg__meters > * {
+  flex: 1 1 220px;
+  --stack-gap: var(--space-2);
+}
+
+.sg__labels li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sg__week > * {
+  flex: 1 1 120px;
+  --stack-gap: var(--space-1);
+}
+
+.sg__tile-value {
+  font: var(--text-h3);
+}
+
+.sg__skeleton-row {
+  flex-wrap: nowrap;
+  gap: var(--space-3);
+}
+
+.sg__grow {
+  flex: 1;
+}
+
+.sg__field {
+  --stack-gap: var(--space-1);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+/* The shell preview sits in a framed canvas so it reads as a page inside the page. */
+.sg__frame {
+  border-radius: var(--radius-card);
+  background: var(--canvas);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+  overflow: hidden;
+}

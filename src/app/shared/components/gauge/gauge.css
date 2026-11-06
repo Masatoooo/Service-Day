@@ -1,0 +1,52 @@
+:host {
+  display: block;
+}
+
+/* The readout sits on the open bottom of the arc: the figure is the positioning context. */
+.gauge {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin-inline: auto;
+}
+
+.gauge__arc {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.gauge__bar {
+  stroke: var(--hairline);
+  stroke-width: 13;
+  stroke-linecap: round;
+  transition: stroke var(--duration) var(--ease-out);
+}
+
+.gauge__bar.is-filled {
+  stroke: var(--accent);
+}
+
+.gauge__readout {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.gauge__value {
+  font: var(--text-kpi);
+  letter-spacing: var(--tracking-tight);
+}
+
+.gauge__unit {
+  font: var(--text-h2);
+  color: var(--ink-muted);
+}
+
+.gauge__label {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}

@@ -1,5 +1,46 @@
 /* ==========================================================================
    utilities.css — small single-purpose helpers
-   e.g. visually-hidden, tabular numbers, muted text.
-   Filled in Phase 1.
    ========================================================================== */
+
+/* Hidden visually, still read by screen readers (labels, live text). */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Equal-width digits so live counts don't jitter. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-muted {
+  color: var(--ink-muted);
+}
+
+.text-small {
+  font: var(--text-small);
+}
+
+/* Skip link: hidden until keyboard focus reaches it. */
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: var(--z-toast);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: var(--shadow-overlay);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}

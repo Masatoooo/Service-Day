@@ -1,0 +1,23 @@
+<dialog
+  #dialog
+  class="drawer"
+  [attr.data-side]="side()"
+  [attr.aria-labelledby]="headingId"
+  (close)="onClose()"
+  (click)="onDialogClick($event)"
+>
+  <div class="drawer__panel">
+    <header class="drawer__header" [class.is-floating]="headingHidden()">
+      <h2 [id]="headingId" [class.visually-hidden]="headingHidden()">{{ heading() }}</h2>
+      <button type="button" class="icon-btn" aria-label="Close" (click)="open.set(false)">
+        <svg lucideIcon="x"></svg>
+      </button>
+    </header>
+    <div class="drawer__body">
+      <ng-content />
+    </div>
+    <footer class="drawer__footer">
+      <ng-content select="[drawer-footer]" />
+    </footer>
+  </div>
+</dialog>

@@ -8,7 +8,7 @@ Claude Code appends to this file at the end of every phase. Newest entry at the 
 |---|---|---|---|
 | 0 | Bootstrap | done | chore: bootstrap Angular 22 NgModule app with json-server mock API |
 | 0b | Product & design context (impeccable init) | done | docs: add PRODUCT.md and DESIGN.md via impeccable init |
-| 1 | Design system, modules, shell | not started | |
+| 1 | Design system, modules, shell | done | feat(ui): design tokens, shared components and app shell |
 | 2 | Models, seed, rules, services | not started | |
 | 3 | Authentication | not started | |
 | 4 | Employee browsing | not started | |
@@ -38,6 +38,15 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - 2026-11-06 — Unit tests: CLI 22 default runner Vitest (+ jsdom), kept as generated.
 - 2026-11-06 — Accessibility target is WCAG 2.2 AA (PRODUCT.md). Five colour tokens darkened slightly, same hue, so every text pair is ≥ 4.5:1: `accent-strong` #B9501A→#B24D19 (4.36→4.64 on accent-soft), `success` #1E8E50→#1A7B45 (3.66→4.66 on its soft tint), `warning` #A76A00→#986000 (3.98→4.67), `danger` #C8372D→#C2352C (4.43→4.67), `ink-faint` #9C9A95→#73716C (2.81→4.88 on white, 4.51 on surface-sunken; never on canvas). PLAN §8.1, CLAUDE.md §4 and PRODUCT.md updated.
 - 2026-11-06 — DESIGN.md written as a pre-implementation seed with the PLAN §8 tokens (creative north star "Morning of Service Day"). No visual-direction roll: the brief pins the world.
+- 2026-11-06 — Icons: `@lucide/angular` has no `LucideAngularModule.pick()`. Equivalent: SharedModule provides `provideLucideIcons(...APP_ICONS)` (only the 30 icons in `shared/icons.ts` are bundled) + `provideLucideConfig({ strokeWidth: 1.75, size: 18 })`, and re-exports the standalone `LucideDynamicIcon` (`<svg lucideIcon="bell">`).
+- 2026-11-06 — HttpClient: `provideHttpClient(withInterceptorsFromDi())` in CoreModule (checked in `@angular/common` 22 typings: still supported; Angular recommends functional interceptors, kept DI classes as PLAN §6.5 asks).
+- 2026-11-06 — Naming: CLI 2025 file style (`kpi-card.ts` → `KpiCard`, `initials-pipe.ts`, `core-module.ts`). Services keep a readable suffix: `toast-service.ts` → `ToastService`, `clock-service.ts` → `ClockService`, matching PLAN §7.3 names.
+- 2026-11-06 — Tokens added beyond PLAN §8 (all in tokens.css, no hex in component CSS): `--hairline-strong`, `--accent-strong-hover`, `--danger-hover`, `--on-accent`, `--scrim`, six NGO avatar tints `--tint-1..6`, control/icon sizes, motion and z-index tokens. Type tokens are `font` shorthands (`font: var(--text-h2)`).
+- 2026-11-06 — Dialogs and drawers use the native `<dialog>` + `showModal()`: focus trap, Esc to close and inert background come from the browser (no extra package). The mobile sidebar is the same Sidebar component inside a start-side Drawer.
+- 2026-11-06 — Active nav marker is a 3px `::before` bar (PLAN §8.4), not a coloured border.
+- 2026-11-06 — `Session`, `Role`, `Availability`, `ToastMessage` models and `ClockService` created now because the shell and pipes need them; Phase 2 adds the rest of PLAN §4.
+- 2026-11-06 — Pipes that depend on time take `now` as an argument (`cutoffAt | cutoffLabel: now`), so they stay pure.
+- 2026-11-06 — `/` temporarily redirects to `/styleguide` until Phase 3 adds role-based redirects.
 
 ## Known issues
 
@@ -46,7 +55,12 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - json-server v1 also serves `./public` as static files (Angular's favicon folder). Harmless; the API routes are unaffected.
 - No Chromium installed for Playwright, so Phase 0 was verified with `curl` only (app HTML 200, `/users` → `[]`).
 - `docs/PROMPTS.md` Phase 0b still quotes `#B9501A`; the current value is `#B24D19` (PLAN §8.1 wins).
-- DESIGN.md is a seed: after Phase 1 builds `tokens.css` and the shell, run `/impeccable document` to sync it with the real code and generate `.impeccable/design.json`.
+- DESIGN.md is a seed: after Phase 1 builds `tokens.css` and the shell, run `/impeccable document` to sync it with the real code and generate `.impeccable/design.json`. (Still open after Phase 1; the added tokens are not in DESIGN.md yet.)
+- Initial bundle is 494 kB raw / 109 kB transferred, close to the 500 kB warning budget (Angular core + router + forms + http + zone.js). Keep chart.js inside the lazy AdminModule.
+- `/styleguide` renders two shell previews, so the dev page has two `<main>` elements. Dev-only; the real app renders one shell.
+- Input and pill outlines use `--hairline-strong` (about 1.4:1 against white). Fields are identified by labels and fill, but check WCAG 1.4.11 in the Phase 9 audit.
+- No component `.spec.ts` files for UI components yet (only `app.spec.ts`). Rules get unit tests in Phase 2.
+- The impeccable detector reports `rgb(0,0,0)` text on templates: false positive (it renders templates without the global stylesheet; real text uses `--ink`).
 
 ## Phase entries
 
@@ -72,3 +86,10 @@ Record any change to the stack, packages, models or rules here, with a one-line 
 - Verified: contrast of all text/background token pairs computed (WCAG formula); no app code changed, so no build needed.
 - Decisions: see *Decisions* (colour darkening, seed DESIGN.md).
 - Known issues / follow-ups: re-run `/impeccable document` after Phase 1.
+
+### Phase 1 — Design system, modules, shell (2026-11-06)
+- Built: tokens / base / layout / utilities CSS (Flexbox only, no Grid anywhere); CoreModule (re-import guard, HttpClient with DI interceptors, ToastService, ClockService); SharedModule with 14 components (page-header, kpi-card, status-pill, slot-meter, empty-state, skeleton, confirm-dialog, toast-stack, avatar, search-field, pill-filter, drawer, tabs, gauge) and 4 pipes (initials, relative-time, cutoff-label, availability-label via date-fns); LayoutModule (app-shell, sidebar, topbar, not-found, typed `nav-config.ts` for employee/admin); lazy DevModule at `/styleguide` with every token and component state plus both shell variants; `**` → NotFound; toast stack in the root template.
+- Files: `src/styles/*`, `src/app/{app-module,app-routing-module,app.html,app.spec.ts}`, `src/app/core/**`, `src/app/shared/**`, `src/app/layout/**`, `src/app/features/dev/**`.
+- Verified: `npx ng build` ✓ (no warnings) · `npx ng test` ✓ 2/2 · Playwright (cached Chromium) at 1440 / 1024 / 768 / 390: no horizontal page scroll; drawer opens from the menu button below 900px, keeps focus inside and closes on Esc; dialog, drawer and toasts captured. One fix batch after round 1 (dialog was pinned top-left because the reset removed `margin: auto`; preview shells now show the active nav state). No hex values in component CSS/HTML; class files ≤ 78 lines. Impeccable detector: 18 findings, all the default-black false positive.
+- Decisions: see *Decisions* (icons API, HttpClient, naming, extra tokens, native dialog, temporary `/` redirect).
+- Known issues / follow-ups: see *Known issues* (DESIGN.md sync, bundle budget, two `<main>` on the styleguide, input outline contrast, UI specs).

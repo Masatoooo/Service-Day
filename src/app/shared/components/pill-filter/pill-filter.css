@@ -1,0 +1,55 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Flexbox: pills wrap on wide screens. */
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+  color: var(--ink-muted);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.pill-btn:hover {
+  color: var(--ink);
+  background: var(--hairline);
+}
+
+.pill-btn[aria-pressed='true'] {
+  background: var(--accent-soft);
+  box-shadow: inset 0 0 0 var(--border-width) var(--accent);
+  color: var(--accent-strong);
+}
+
+.pill-btn__count {
+  color: inherit;
+  opacity: 0.8;
+}
+
+/* Phones: one scrollable line inside its own container; the page never scrolls sideways. */
+@media (max-width: 599px) {
+  .pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: var(--space-1);
+    scrollbar-width: none;
+  }
+}

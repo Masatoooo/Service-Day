@@ -1,0 +1,29 @@
+<dialog
+  #dialog
+  class="dialog"
+  role="alertdialog"
+  [attr.aria-labelledby]="id + '-heading'"
+  [attr.aria-describedby]="id + '-message'"
+  (close)="onClose()"
+>
+  <div class="dialog__body">
+    <h2 [id]="id + '-heading'">{{ heading() }}</h2>
+    <p class="dialog__message" [id]="id + '-message'">{{ message() }}</p>
+  </div>
+  <footer class="dialog__actions">
+    <button type="button" class="btn btn--ghost" autofocus (click)="open.set(false)">
+      {{ cancelLabel() }}
+    </button>
+    <button
+      type="button"
+      class="btn"
+      [class.btn--primary]="tone() === 'default'"
+      [class.btn--danger]="tone() === 'danger'"
+      [disabled]="busy()"
+      [attr.aria-busy]="busy()"
+      (click)="confirmed.emit()"
+    >
+      {{ busy() ? 'Working…' : confirmLabel() }}
+    </button>
+  </footer>
+</dialog>

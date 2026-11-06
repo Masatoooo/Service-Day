@@ -1,0 +1,11 @@
+<section class="toasts" aria-live="polite" aria-label="Messages">
+  @for (toast of (toasts$ | async) ?? []; track toast.id) {
+    <div class="toast" [attr.data-tone]="toast.tone">
+      <svg class="toast__icon" [lucideIcon]="icons[toast.tone]" [size]="20"></svg>
+      <p class="toast__message">{{ toast.message }}</p>
+      <button type="button" class="toast__close" aria-label="Dismiss message" (click)="dismiss(toast.id)">
+        <svg lucideIcon="x" [size]="16"></svg>
+      </button>
+    </div>
+  }
+</section>

@@ -1,0 +1,19 @@
+<article class="kpi">
+  <header class="kpi__head">
+    <h3 class="kpi__label">{{ label() }}</h3>
+    @if (icon(); as iconName) {
+      <span class="kpi__icon" [attr.data-tone]="tone()">
+        <svg [lucideIcon]="iconName" [size]="20"></svg>
+      </span>
+    }
+  </header>
+  <p class="kpi__value tabular">
+    {{ value() }}
+    @if (unit()) {
+      <span class="kpi__unit">{{ unit() }}</span>
+    }
+  </p>
+  <footer class="kpi__foot">
+    <ng-content />
+  </footer>
+</article>

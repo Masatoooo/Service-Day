@@ -1,0 +1,61 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+/* Flexbox: icon, input (grows) and clear button in one pill. */
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: 0 var(--space-2) 0 var(--space-4);
+  border: var(--border-width) solid var(--hairline-strong);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunken);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.search:hover {
+  border-color: var(--ink-faint);
+}
+
+/* The whole pill shows the focus ring, not just the bare input. */
+.search:focus-within {
+  border-color: var(--accent-strong);
+  outline: var(--focus-width) solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+.search__icon {
+  flex: none;
+  color: var(--ink-muted);
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  height: var(--control-height);
+  border: 0;
+  background: none;
+  outline: none;
+}
+
+.search__input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.search__clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-control);
+  color: var(--ink-muted);
+}
+
+.search__clear:hover {
+  background: var(--hairline);
+  color: var(--ink);
+}

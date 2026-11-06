@@ -1,0 +1,10 @@
+<span
+  class="avatar"
+  [attr.data-tint]="tint()"
+  [attr.data-shape]="shape()"
+  [attr.data-size]="size()"
+  [attr.aria-hidden]="decorative() ? 'true' : null"
+  [attr.role]="decorative() ? null : 'img'"
+  [attr.aria-label]="decorative() ? null : name()"
+  >{{ name() | initials }}</span
+>

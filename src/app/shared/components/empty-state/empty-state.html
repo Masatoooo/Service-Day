@@ -1,0 +1,12 @@
+<div class="empty">
+  <span class="empty__icon">
+    <svg [lucideIcon]="icon()" [size]="20"></svg>
+  </span>
+  <div class="empty__body">
+    <h3>{{ heading() }}</h3>
+    <p class="empty__message">{{ message() }}</p>
+    <div class="empty__actions">
+      <ng-content />
+    </div>
+  </div>
+</div>

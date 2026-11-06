@@ -1,5 +1,110 @@
 /* ==========================================================================
    tokens.css — design tokens as CSS custom properties
-   Colors, type scale, radii, spacing, elevation, motion (PLAN §8).
-   Filled in Phase 1; DESIGN.md is the authority once it exists.
+   Source of truth: DESIGN.md frontmatter / PLAN §8. Light theme only (dark: Phase 10).
+   Component CSS uses only these variables: no hex values, font sizes or radii.
    ========================================================================== */
+
+:root {
+  /* ---- Colour: neutrals ---- */
+  --canvas: #f4f3f1;          /* app background behind every card */
+  --surface: #ffffff;         /* cards, sidebar, top bar */
+  --surface-sunken: #f7f6f4;  /* inputs, table headers, inner tiles */
+  --hairline: #eceae6;        /* dividers only */
+  --hairline-strong: #dcd9d3; /* input outlines, segment gaps */
+  --ink: #1c1b19;             /* primary text */
+  --ink-muted: #6b6965;       /* secondary text, labels */
+  --ink-faint: #73716c;       /* placeholders, axis labels (surface / sunken only) */
+
+  /* ---- Colour: accent (Morning Terracotta) ---- */
+  --accent: #e8692c;          /* large marks only: charts, icons, active marker */
+  --accent-strong: #b24d19;   /* any accent text, links, filled buttons (≥ 4.5:1) */
+  --accent-strong-hover: #973f12;
+  --accent-soft: #fdede4;     /* active nav, icon tiles, selected pill */
+
+  /* ---- Colour: status ---- */
+  --success: #1a7b45;
+  --success-soft: #e5f4ea;
+  --warning: #986000;
+  --warning-soft: #fbf1dc;
+  --danger: #c2352c;
+  --danger-hover: #a52b23;
+  --danger-soft: #fbe9e7;
+  --info: #2f5fc4;
+  --info-soft: #e8effb;
+
+  /* ---- Colour: deterministic NGO avatar tints (initials stay --ink) ---- */
+  --tint-1: #fdede4; /* apricot */
+  --tint-2: #e6f0e4; /* sage */
+  --tint-3: #f2ece2; /* sand */
+  --tint-4: #e6eef7; /* sky */
+  --tint-5: #f8e7e7; /* rose */
+  --tint-6: #f8f0d6; /* butter */
+
+  --on-accent: #ffffff;       /* text on filled accent / danger buttons */
+  --scrim: rgb(28 27 25 / 0.32);
+
+  /* ---- Type (Instrument Sans Variable, weights 400/500/600) ---- */
+  --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --text-kpi: 500 40px/44px var(--font-sans);
+  --text-h1: 500 28px/34px var(--font-sans);
+  --text-h2: 500 20px/28px var(--font-sans);
+  --text-h3: 500 16px/24px var(--font-sans);
+  --text-body: 400 15px/22px var(--font-sans);
+  --text-small: 400 13px/18px var(--font-sans);
+  --text-micro: 500 12px/16px var(--font-sans);
+  --tracking-tight: -0.01em;  /* h1 and KPI only */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-strong: 600;
+  --measure: 70ch;
+
+  /* ---- Shape ---- */
+  --radius-card: 20px;
+  --radius-tile: 14px;
+  --radius-input: 12px;
+  --radius-control: 999px;
+
+  /* ---- Space (4-based scale) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 56px;
+  --card-padding: var(--space-6);
+  --card-gap: var(--space-5);
+  --shell-inset: var(--space-4);
+
+  /* ---- Sizes ---- */
+  --sidebar-width: 264px;
+  --control-height: 40px;
+  --control-height-sm: 32px;
+  --icon-size: 18px;
+  --icon-size-lg: 20px;
+  --border-width: 1px;
+  --focus-width: 2px;
+
+  /* ---- Elevation: overlays only ---- */
+  --shadow-overlay: 0 12px 32px rgb(28 27 25 / 0.1);
+
+  /* ---- Motion ---- */
+  --duration-fast: 150ms;
+  --duration: 200ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* ---- Layers ---- */
+  --z-sticky: 10;
+  --z-toast: 100;
+}
+
+/* Smaller screens: tighter card padding and gaps (PLAN §8.3). */
+@media (max-width: 599px) {
+  :root {
+    --card-padding: var(--space-5);
+    --card-gap: var(--space-4);
+    --shell-inset: var(--space-3);
+  }
+}

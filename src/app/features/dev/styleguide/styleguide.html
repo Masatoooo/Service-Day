@@ -1,0 +1,251 @@
+<div class="sg">
+  <header class="sg__intro">
+    <h1>Service Day styleguide</h1>
+    <p class="text-muted">
+      Development reference for tokens and shared components. Not linked from the app. Values come from
+      <code>src/styles/tokens.css</code> and DESIGN.md.
+    </p>
+  </header>
+
+  <!-- Colours -->
+  <section class="surface-card stack sg__section" aria-labelledby="sg-colors">
+    <h2 id="sg-colors">Colours</h2>
+    @for (group of colorGroups; track group.name) {
+      <div class="stack sg__group">
+        <h3>{{ group.name }}</h3>
+        <ul class="sg__swatches" role="list">
+          @for (swatch of group.swatches; track swatch.token) {
+            <li class="sg__swatch">
+              <span class="sg__chip" [style.background]="'var(' + swatch.token + ')'"></span>
+              <code>{{ swatch.token }}</code>
+              <span class="text-small text-muted">{{ swatch.role }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </section>
+
+  <!-- Type, spacing, radius -->
+  <div class="card-row">
+    <section class="surface-card stack col-main" aria-labelledby="sg-type">
+      <h2 id="sg-type">Type scale</h2>
+      <p class="text-small text-muted">Instrument Sans Variable · weights 400 / 500 / 600 · tabular numbers</p>
+      <ul class="stack" role="list">
+        @for (step of typeScale; track step.token) {
+          <li class="sg__type-row">
+            <span class="sg__type-meta"><code>{{ step.token }}</code><span class="text-small text-muted">{{ step.spec }}</span></span>
+            <span class="sg__type-sample tabular" [style.font]="'var(' + step.token + ')'">{{ step.sample }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="surface-card stack col-side" aria-labelledby="sg-space">
+      <h2 id="sg-space">Space and shape</h2>
+      <ul class="stack sg__space" role="list">
+        @for (token of spaceTokens; track token) {
+          <li class="cluster">
+            <span class="sg__space-bar" [style.width]="'var(' + token + ')'"></span>
+            <code>{{ token }}</code>
+          </li>
+        }
+      </ul>
+      <ul class="cluster" role="list">
+        @for (token of radiusTokens; track token) {
+          <li class="sg__radius" [style.border-radius]="'var(' + token + ')'"><code>{{ token.replace('--radius-', '') }}</code></li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <!-- Buttons and pills -->
+  <section class="surface-card stack sg__section" aria-labelledby="sg-controls">
+    <h2 id="sg-controls">Buttons and status</h2>
+    <div class="cluster">
+      <button type="button" class="btn btn--primary">Register</button>
+      <button type="button" class="btn btn--secondary">Switch here</button>
+      <button type="button" class="btn btn--ghost">Cancel</button>
+      <button type="button" class="btn btn--danger">Withdraw</button>
+      <button type="button" class="btn btn--primary btn--sm"><svg lucideIcon="plus" [size]="16"></svg>New activity</button>
+      <button type="button" class="icon-btn" aria-label="Notifications"><svg lucideIcon="bell"></svg></button>
+    </div>
+    <div class="stack sg__disabled">
+      <button type="button" class="btn btn--primary" disabled aria-describedby="sg-disabled-reason">Register</button>
+      <p id="sg-disabled-reason" class="text-small text-muted">Registration closed on 18 Nov, 17:00.</p>
+    </div>
+    <div class="cluster">
+      @for (availability of availabilities; track availability) {
+        <app-status-pill [availability]="availability" />
+      }
+      <app-status-pill label="Switched" tone="neutral" />
+      <app-status-pill label="Checked in" tone="success" />
+      <app-status-pill label="Late" tone="warning" />
+      <app-status-pill label="Urgent" tone="accent" />
+    </div>
+  </section>
+
+  <!-- Signature components -->
+  <div class="card-row">
+    <section class="surface-card stack col-main" aria-labelledby="sg-slots">
+      <h2 id="sg-slots">Slot meter and cut-off label</h2>
+      <div class="sg__meters">
+        <div class="stack"><h3>Plenty</h3><app-slot-meter [taken]="6" [capacity]="20" /></div>
+        <div class="stack"><h3>Last slot</h3><app-slot-meter [taken]="11" [capacity]="12" /></div>
+        <div class="stack"><h3>Full</h3><app-slot-meter [taken]="15" [capacity]="15" /></div>
+        <div class="stack"><h3>Large (continuous)</h3><app-slot-meter [taken]="47" [capacity]="120" /></div>
+      </div>
+      <ul class="stack sg__labels" role="list">
+        <li><svg lucideIcon="clock" [size]="16"></svg>{{ dates.inTwoDays | cutoffLabel: now }}</li>
+        <li><svg lucideIcon="clock" [size]="16"></svg>{{ dates.inFiveHours | cutoffLabel: now }}</li>
+        <li><svg lucideIcon="clock" [size]="16"></svg>{{ dates.closedYesterday | cutoffLabel: now }}</li>
+        <li class="text-muted">Relative time: {{ dates.tenMinutesAgo | relativeTime: now }} · {{ dates.threeDaysAgo | relativeTime: now }}</li>
+      </ul>
+    </section>
+
+    <section class="surface-card stack col-side" aria-labelledby="sg-gauge">
+      <h2 id="sg-gauge">Participation gauge</h2>
+      <app-gauge [value]="64" label="Staff registered" />
+      <div class="card-row sg__week">
+        <div class="sunken-tile stack"><span class="text-small text-muted">This week</span><span class="sg__tile-value tabular">12 sign-ups</span></div>
+        <div class="sunken-tile stack"><span class="text-small text-muted">Last week</span><span class="sg__tile-value tabular">9 sign-ups</span></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- KPI cards -->
+  <section class="stack sg__section" aria-labelledby="sg-kpi">
+    <h2 id="sg-kpi">KPI cards</h2>
+    <div class="card-row">
+      <div class="kpi-slot"><app-kpi-card label="Slots offered" [value]="128" icon="ticket">Across 7 published activities</app-kpi-card></div>
+      <div class="kpi-slot"><app-kpi-card label="Slots taken" [value]="72" icon="users" tone="success">56% of capacity</app-kpi-card></div>
+      <div class="kpi-slot"><app-kpi-card label="Slots remaining" [value]="56" icon="hourglass" tone="warning">2 activities on last slots</app-kpi-card></div>
+      <div class="kpi-slot"><app-kpi-card label="Staff participation" [value]="64" unit="%" icon="chart-column" tone="info">18 of 28 employees</app-kpi-card></div>
+    </div>
+  </section>
+
+  <!-- Avatars, inputs, tabs -->
+  <div class="card-row">
+    <section class="surface-card stack col-side" aria-labelledby="sg-avatars">
+      <h2 id="sg-avatars">Avatars</h2>
+      <ul class="stack" role="list">
+        @for (ngo of ngos; track ngo.id) {
+          <li class="cluster"><app-avatar [name]="ngo.name" [seed]="ngo.id" shape="tile" />{{ ngo.name }}</li>
+        }
+      </ul>
+      <div class="cluster">
+        <app-avatar name="Daniel Koh" seed="u-daniel-koh" size="sm" />
+        <app-avatar name="Aisha Rahman" seed="u-aisha-rahman" />
+        <app-avatar name="Priya Menon" seed="u-priya-menon" size="lg" />
+      </div>
+    </section>
+
+    <section class="surface-card stack col-main" aria-labelledby="sg-inputs">
+      <h2 id="sg-inputs">Search, filters and tabs</h2>
+      <app-search-field label="Search activities" placeholder="Search activities or NGOs" [(value)]="query" />
+      <app-pill-filter label="Service type" [options]="serviceTypes" [(selected)]="serviceType" />
+      <p class="text-small text-muted">Query: "{{ query() }}" · Type: {{ serviceType() ?? 'all' }}</p>
+      <app-tabs label="Notification settings" idPrefix="sg-tabs" [tabs]="notificationTabs" [(selected)]="tab" />
+      <section class="sunken-tile" role="tabpanel" [id]="'sg-tabs-panel-' + tab()" [attr.aria-labelledby]="'sg-tabs-tab-' + tab()">
+        @switch (tab()) {
+          @case ('schedule') { Reminders go out 7, 3 and 1 day before each activity at 09:00. }
+          @case ('broadcast') { Write a message to all staff, unregistered staff or one activity's participants. }
+          @default { 14 notices sent this season. }
+        }
+      </section>
+    </section>
+  </div>
+
+  <!-- States -->
+  <div class="card-row">
+    <section class="surface-card stack col-main" aria-labelledby="sg-empty">
+      <h2 id="sg-empty">Empty state</h2>
+      <app-empty-state
+        icon="search-x"
+        heading="No activities match these filters"
+        message="Nothing in Elderly Care on Sat 21 Nov. Clear the date filter to see 3 more."
+      >
+        <button type="button" class="btn btn--secondary btn--sm">Clear date filter</button>
+      </app-empty-state>
+    </section>
+
+    <section class="surface-card stack col-side" aria-labelledby="sg-skeleton" aria-busy="true">
+      <h2 id="sg-skeleton">Skeleton</h2>
+      <div class="cluster sg__skeleton-row">
+        <app-skeleton shape="circle" width="40px" />
+        <app-skeleton class="sg__grow" [lines]="2" />
+      </div>
+      <app-skeleton shape="block" height="72px" />
+    </section>
+  </div>
+
+  <!-- Overlays -->
+  <section class="surface-card stack sg__section" aria-labelledby="sg-overlays">
+    <h2 id="sg-overlays">Dialog, drawer and toasts</h2>
+    <div class="cluster">
+      <button type="button" class="btn btn--primary" (click)="confirmOpen.set(true)">Open confirm dialog</button>
+      <button type="button" class="btn btn--secondary" (click)="dangerOpen.set(true)">Open danger dialog</button>
+      <button type="button" class="btn btn--secondary" (click)="drawerOpen.set(true)">Open drawer</button>
+      <button type="button" class="btn btn--ghost" (click)="showToast('success')">Success toast</button>
+      <button type="button" class="btn btn--ghost" (click)="showToast('error')">Error toast</button>
+      <button type="button" class="btn btn--ghost" (click)="showToast('info')">Info toast</button>
+    </div>
+  </section>
+
+  <!-- Shell previews -->
+  <section class="stack sg__section" aria-labelledby="sg-shell-employee">
+    <h2 id="sg-shell-employee">Shell · employee</h2>
+    <div class="sg__frame">
+      <app-shell [session]="employee" heading="Good morning, Daniel" subheading="Service Day is in 14 days. You're registered for Pack & Deliver."
+        [unreadCount]="2" contentId="sg-employee-content" [preview]="true" previewActivePath="/app">
+        <div class="card-row">
+          <div class="kpi-slot"><app-kpi-card label="Open activities" [value]="5" icon="compass" /></div>
+          <div class="kpi-slot"><app-kpi-card label="Slots still available" [value]="38" icon="ticket" tone="success" /></div>
+          <div class="kpi-slot"><app-kpi-card label="Days until Service Day" [value]="14" icon="calendar-days" tone="info" /></div>
+        </div>
+      </app-shell>
+    </div>
+  </section>
+
+  <section class="stack sg__section" aria-labelledby="sg-shell-admin">
+    <h2 id="sg-shell-admin">Shell · admin</h2>
+    <div class="sg__frame">
+      <app-shell [session]="admin" heading="Overview" subheading="Service Day · 14 days to go" contentId="sg-admin-content" [preview]="true" previewActivePath="/admin">
+        <section class="surface-card stack">
+          <app-page-header heading="Needs attention" description="Activities that are nearly full, closing soon or under-filled.">
+            <button type="button" class="btn btn--secondary btn--sm">View all</button>
+          </app-page-header>
+          <div class="split"><span>Reading Buddies · Little Readers Library</span><app-status-pill availability="last-slots" /></div>
+          <div class="split"><span>Lunch Service · Open Hands Community Kitchen</span><app-status-pill availability="closing-soon" /></div>
+        </section>
+      </app-shell>
+    </div>
+  </section>
+</div>
+
+<app-confirm-dialog
+  heading="Register for Reading Buddies?"
+  message="You'll take 1 of the last slots. You can switch or withdraw until 18 Nov, 17:00."
+  confirmLabel="Register"
+  [busy]="busy()"
+  [(open)]="confirmOpen"
+  (confirmed)="confirmRegister()"
+/>
+<app-confirm-dialog
+  heading="Delete Beach Cleanup Sprint?"
+  message="This removes the activity for everyone. It has no registrations yet."
+  confirmLabel="Delete activity"
+  tone="danger"
+  [(open)]="dangerOpen"
+  (confirmed)="dangerOpen.set(false)"
+/>
+<app-drawer heading="Edit NGO" [(open)]="drawerOpen">
+  <form class="stack" (submit)="$event.preventDefault()">
+    <label class="stack sg__field">Name<input class="input" value="Harbour Animal Shelter" /></label>
+    <label class="stack sg__field">Contact email<input class="input" type="email" placeholder="name@organisation.org" /></label>
+  </form>
+  <div drawer-footer>
+    <button type="button" class="btn btn--ghost" (click)="drawerOpen.set(false)">Cancel</button>
+    <button type="button" class="btn btn--primary" (click)="drawerOpen.set(false)">Save NGO</button>
+  </div>
+</app-drawer>

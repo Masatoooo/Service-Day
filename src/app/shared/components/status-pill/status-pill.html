@@ -1,0 +1,4 @@
+<span class="pill" [attr.data-tone]="resolvedTone()">
+  <span class="pill__dot" aria-hidden="true"></span>
+  {{ label() ?? (availability() | availabilityLabel) }}
+</span>

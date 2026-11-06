@@ -1,5 +1,252 @@
 /* ==========================================================================
-   base.css — element defaults
-   Reset, box-sizing, body font and colors, headings, links, focus-visible ring.
-   Filled in Phase 1.
+   base.css — element defaults and the shared control vocabulary
+   Reset, body, headings, links, focus ring, browser surfaces, buttons, inputs.
    ========================================================================== */
+
+/* ---- Modern reset ---- */
+/* Box model: border-box everywhere, so padding and borders stay inside the declared width. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--canvas);
+  color: var(--ink);
+  font: var(--text-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  caret-color: var(--accent-strong);
+  /* Never let the page itself scroll sideways (responsive requirement). */
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+  padding: 0;
+}
+
+p,
+h1,
+h2,
+h3,
+h4 {
+  overflow-wrap: break-word;
+}
+
+/* ---- Headings: medium weight, sentence case ---- */
+h1 {
+  font: var(--text-h1);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+}
+
+h2 {
+  font: var(--text-h2);
+  text-wrap: balance;
+}
+
+h3 {
+  font: var(--text-h3);
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* ---- Links ---- */
+a {
+  color: var(--accent-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent-strong-hover);
+}
+
+/* ---- Browser surfaces themed from the palette ---- */
+::selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
+html {
+  scrollbar-color: var(--hairline-strong) transparent;
+}
+
+/* While a modal dialog or drawer is open, the page behind it doesn't scroll. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--accent-strong);
+  outline-offset: 2px;
+}
+
+::placeholder {
+  color: var(--ink-faint);
+  opacity: 1;
+}
+
+/* ---- Buttons: pill-shaped controls ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  /* Box model: horizontal padding gives the pill its width; no fixed width. */
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-control);
+  font: var(--text-body);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.btn--primary {
+  background: var(--accent-strong);
+  color: var(--on-accent);
+}
+
+.btn--primary:hover {
+  background: var(--accent-strong-hover);
+  color: var(--on-accent);
+}
+
+.btn--secondary {
+  background: var(--surface-sunken);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+}
+
+.btn--secondary:hover {
+  background: var(--hairline);
+  color: var(--ink);
+}
+
+.btn--ghost {
+  color: var(--ink-muted);
+}
+
+.btn--ghost:hover {
+  background: var(--surface-sunken);
+  color: var(--ink);
+}
+
+.btn--danger {
+  background: var(--danger);
+  color: var(--on-accent);
+}
+
+.btn--danger:hover {
+  background: var(--danger-hover);
+  color: var(--on-accent);
+}
+
+.btn--sm {
+  min-height: var(--control-height-sm);
+  padding: 0 var(--space-4);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+}
+
+.btn:disabled,
+.btn[aria-disabled='true'] {
+  background: var(--surface-sunken);
+  color: var(--ink-muted);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Square-ish icon-only button (still pill-round). */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border-radius: var(--radius-control);
+  color: var(--ink-muted);
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out);
+}
+
+.icon-btn:hover {
+  background: var(--surface-sunken);
+  color: var(--ink);
+}
+
+/* ---- Inputs ---- */
+.input {
+  width: 100%;
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: var(--border-width) solid var(--hairline-strong);
+  border-radius: var(--radius-input);
+  background: var(--surface-sunken);
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.input:hover {
+  border-color: var(--ink-faint);
+}
+
+.input:focus-visible {
+  border-color: var(--accent-strong);
+  outline-offset: 0;
+}
+
+/* ---- Reduced motion: keep opacity changes, drop movement ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

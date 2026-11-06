@@ -1,0 +1,111 @@
+:host {
+  display: block;
+}
+
+/* Flexbox: menu button, title (grows), actions. Box model: card padding 20/24px. */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--card-padding);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+.topbar__menu {
+  display: none;
+  flex: none;
+  color: var(--ink);
+}
+
+.topbar__title {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.topbar__subheading {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.topbar__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.topbar__bell {
+  position: relative;
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+}
+
+.topbar__dot {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-control);
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+
+/* Profile chip: a pill with the initials avatar, name and role. */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px var(--space-4) 4px 4px;
+  border-radius: var(--radius-control);
+  box-shadow: inset 0 0 0 var(--border-width) var(--hairline-strong);
+}
+
+.profile__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__name {
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  color: var(--ink);
+}
+
+.profile__role {
+  font: var(--text-micro);
+  font-weight: var(--weight-regular);
+  color: var(--ink-muted);
+}
+
+/* Below 900px the sidebar is a drawer: show the menu button. */
+@media (max-width: 899px) {
+  .topbar__menu {
+    display: inline-flex;
+  }
+}
+
+/* Phones: smaller title, profile chip shrinks to the avatar. */
+@media (max-width: 599px) {
+  .topbar {
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-3) var(--space-3) var(--space-2);
+  }
+
+  .topbar h1 {
+    font: var(--text-h2);
+  }
+
+  .topbar__subheading,
+  .profile__text {
+    display: none;
+  }
+
+  .profile {
+    padding: 0;
+    box-shadow: none;
+  }
+}

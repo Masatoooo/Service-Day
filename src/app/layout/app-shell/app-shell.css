@@ -1,0 +1,94 @@
+:host {
+  display: block;
+}
+
+/* Flexbox row: fixed-width sidebar + flexible main column.
+   Box model: the shell's padding is the 16px inset around both cards. */
+.shell {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--shell-inset);
+  min-height: 100dvh;
+  padding: var(--shell-inset);
+}
+
+.shell__sidebar {
+  position: sticky;
+  top: var(--shell-inset);
+  flex: 0 0 var(--sidebar-width);
+  height: calc(100dvh - 2 * var(--shell-inset));
+  overflow-y: auto;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+
+/* flex: 1 + min-width: 0 lets the main column shrink instead of overflowing. */
+.shell__main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--card-gap);
+  min-width: 0;
+}
+
+.shell__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--card-gap);
+  outline: none;
+}
+
+/* Styleguide preview: fit the frame, sidebar stretches with the content. */
+:host(.is-preview) .shell {
+  min-height: 0;
+  align-items: stretch;
+}
+
+:host(.is-preview) .shell__sidebar {
+  position: static;
+  height: auto;
+}
+
+.help-steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  counter-reset: step;
+}
+
+.help-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-left: var(--space-9);
+  position: relative;
+  counter-increment: step;
+}
+
+.help-step::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-control);
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font: var(--text-small);
+  font-weight: var(--weight-strong);
+}
+
+.help-step p {
+  color: var(--ink-muted);
+}
+
+/* Below 900px the sidebar moves into the drawer. */
+@media (max-width: 899px) {
+  .shell__sidebar {
+    display: none;
+  }
+}

@@ -1,0 +1,15 @@
+@switch (shape()) {
+  @case ('text') {
+    <span class="skeleton-lines">
+      @for (line of lineList(); track line) {
+        <span class="skeleton skeleton--line" [class.is-last]="$last && lines() > 1"></span>
+      }
+    </span>
+  }
+  @case ('circle') {
+    <span class="skeleton skeleton--circle" [style.width]="width()" [style.height]="width()"></span>
+  }
+  @default {
+    <span class="skeleton skeleton--block" [style.width]="width()" [style.height]="height()"></span>
+  }
+}

@@ -1,0 +1,15 @@
+<header class="page-header">
+  <div class="page-header__text">
+    @if (level() === 1) {
+      <h1>{{ heading() }}</h1>
+    } @else {
+      <h2>{{ heading() }}</h2>
+    }
+    @if (description()) {
+      <p class="page-header__description">{{ description() }}</p>
+    }
+  </div>
+  <div class="page-header__actions">
+    <ng-content />
+  </div>
+</header>

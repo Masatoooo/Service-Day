@@ -1,0 +1,56 @@
+:host {
+  display: block;
+}
+
+.skeleton-lines {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.skeleton {
+  display: block;
+  /* A soft highlight sweeps across: tells the user something is loading. */
+  background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--surface) 50%,
+      transparent 100%
+    )
+    var(--surface-sunken);
+  background-size: 200% 100%;
+  background-repeat: no-repeat;
+  animation: sweep 1.4s var(--ease-out) infinite;
+}
+
+.skeleton--line {
+  height: 12px;
+  border-radius: var(--radius-control);
+}
+
+.skeleton--line.is-last {
+  width: 60%;
+}
+
+.skeleton--block {
+  border-radius: var(--radius-tile);
+}
+
+.skeleton--circle {
+  border-radius: var(--radius-control);
+}
+
+@keyframes sweep {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

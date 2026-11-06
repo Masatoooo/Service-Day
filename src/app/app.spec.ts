@@ -16,10 +16,10 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render the bootstrap message', () => {
+  it('should render the polite live region for toasts', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Service Day — bootstrap OK');
+    expect(compiled.querySelector('[aria-live="polite"]')).toBeTruthy();
   });
 });

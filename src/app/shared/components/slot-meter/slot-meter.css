@@ -1,0 +1,58 @@
+:host {
+  display: block;
+}
+
+.meter {
+  --meter-fill: var(--accent);
+  --meter-text: var(--ink-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.meter[data-tone='low'] {
+  --meter-fill: var(--warning);
+  --meter-text: var(--warning);
+}
+
+.meter[data-tone='full'] {
+  --meter-fill: var(--danger);
+  --meter-text: var(--danger);
+}
+
+/* Flexbox: one equal-width segment per slot (flex: 1), separated by a 3px gap. */
+.meter__track {
+  display: flex;
+  gap: 3px;
+  height: 8px;
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  background: var(--hairline-strong);
+}
+
+.meter__track:has(.meter__segment) {
+  background: none;
+}
+
+.meter__segment {
+  flex: 1;
+  border-radius: var(--radius-control);
+  background: var(--hairline-strong);
+  transition: background-color var(--duration) var(--ease-out);
+}
+
+.meter__segment.is-filled {
+  background: var(--meter-fill);
+}
+
+.meter__fill {
+  border-radius: var(--radius-control);
+  background: var(--meter-fill);
+  transition: width var(--duration) var(--ease-out);
+}
+
+.meter__text {
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  color: var(--meter-text);
+}

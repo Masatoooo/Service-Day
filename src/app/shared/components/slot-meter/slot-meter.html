@@ -1,0 +1,20 @@
+<div class="meter" [attr.data-tone]="tone()">
+  <div
+    class="meter__track"
+    role="meter"
+    aria-label="Slots taken"
+    [attr.aria-valuemin]="0"
+    [attr.aria-valuemax]="capacity()"
+    [attr.aria-valuenow]="taken()"
+    [attr.aria-valuetext]="text()"
+  >
+    @if (segmented()) {
+      @for (filled of segments(); track $index) {
+        <span class="meter__segment" [class.is-filled]="filled"></span>
+      }
+    } @else {
+      <span class="meter__fill" [style.width.%]="percent()"></span>
+    }
+  </div>
+  <p class="meter__text tabular">{{ text() }}</p>
+</div>

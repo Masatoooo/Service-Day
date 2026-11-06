@@ -1,0 +1,18 @@
+<div class="search">
+  <label class="visually-hidden" [for]="inputId">{{ label() }}</label>
+  <svg class="search__icon" lucideIcon="search" [size]="18"></svg>
+  <input
+    class="search__input"
+    type="search"
+    autocomplete="off"
+    [id]="inputId"
+    [value]="value()"
+    [placeholder]="placeholder()"
+    (input)="onInput($event)"
+  />
+  @if (value()) {
+    <button type="button" class="search__clear" aria-label="Clear search" (click)="value.set('')">
+      <svg lucideIcon="x" [size]="16"></svg>
+    </button>
+  }
+</div>

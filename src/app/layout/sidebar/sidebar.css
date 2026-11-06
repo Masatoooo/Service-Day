@@ -1,0 +1,131 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+/* Flexbox column: brand, nav, then the footer pushed to the bottom with margin-top: auto. */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+  height: 100%;
+  padding: var(--space-6) var(--space-4) var(--space-5);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--ink);
+}
+
+.brand__mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-input);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.brand__text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand__name {
+  font: var(--text-h2);
+  font-weight: var(--weight-strong);
+  letter-spacing: var(--tracking-tight);
+}
+
+.brand__by {
+  font: var(--text-small);
+  color: var(--ink-muted);
+}
+
+.nav__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* Box model: min-height + horizontal padding make a comfortable 44px target. */
+.nav__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-tile);
+  color: var(--ink);
+  font: var(--text-body);
+  text-align: left;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.nav__link:hover {
+  background: var(--surface-sunken);
+  color: var(--ink);
+}
+
+.nav__icon {
+  flex: none;
+  color: var(--ink-muted);
+}
+
+/* Active page: soft accent fill + a short 3px accent marker at the left edge.
+   (.is-preview-active is the same look, used only by the styleguide preview.) */
+.nav__link.is-active,
+.nav__link.is-preview-active {
+  background: var(--accent-soft);
+  font-weight: var(--weight-medium);
+}
+
+.nav__link.is-active::before,
+.nav__link.is-preview-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 3px;
+  height: 20px;
+  border-radius: var(--radius-control);
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+
+.nav__link.is-active .nav__icon,
+.nav__link.is-preview-active .nav__icon {
+  color: var(--accent);
+}
+
+.sidebar__footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: var(--border-width) solid var(--hairline);
+}
+
+.nav__link--sign-out,
+.nav__link--sign-out .nav__icon {
+  color: var(--accent-strong);
+}
+
+.nav__link--sign-out:hover {
+  color: var(--accent-strong-hover);
+}

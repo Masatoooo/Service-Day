@@ -1,0 +1,56 @@
+:host {
+  display: inline-flex;
+  flex: none;
+}
+
+.avatar {
+  --avatar-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: var(--radius-control);
+  background: var(--tint-1);
+  color: var(--ink);
+  font: var(--text-small);
+  font-weight: var(--weight-strong);
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+.avatar[data-size='sm'] {
+  --avatar-size: 32px;
+  font: var(--text-micro);
+  font-weight: var(--weight-strong);
+}
+
+.avatar[data-size='lg'] {
+  --avatar-size: 56px;
+  font: var(--text-h3);
+  font-weight: var(--weight-strong);
+}
+
+.avatar[data-shape='tile'] {
+  border-radius: var(--radius-input);
+}
+
+.avatar[data-tint='2'] {
+  background: var(--tint-2);
+}
+
+.avatar[data-tint='3'] {
+  background: var(--tint-3);
+}
+
+.avatar[data-tint='4'] {
+  background: var(--tint-4);
+}
+
+.avatar[data-tint='5'] {
+  background: var(--tint-5);
+}
+
+.avatar[data-tint='6'] {
+  background: var(--tint-6);
+}

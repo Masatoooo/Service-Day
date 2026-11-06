@@ -1,0 +1,95 @@
+/* The host takes no space in its parent's flex layout; only the dialog renders. */
+:host {
+  display: contents;
+}
+
+/* The drawer floats as an inset card, like the sidebar (16px from the viewport edges). */
+.drawer {
+  position: fixed;
+  inset: var(--shell-inset) var(--shell-inset) var(--shell-inset) auto;
+  width: min(420px, calc(100vw - 2 * var(--shell-inset)));
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-overlay);
+  opacity: 0;
+  transform: translateX(16px);
+  transition:
+    opacity var(--duration) var(--ease-out),
+    transform var(--duration) var(--ease-out),
+    display var(--duration) allow-discrete,
+    overlay var(--duration) allow-discrete;
+}
+
+.drawer[data-side='start'] {
+  inset: var(--shell-inset) auto var(--shell-inset) var(--shell-inset);
+  width: min(296px, calc(100vw - 2 * var(--shell-inset)));
+  transform: translateX(-16px);
+}
+
+.drawer[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .drawer[open] {
+    opacity: 0;
+  }
+}
+
+.drawer::backdrop {
+  background: var(--scrim);
+}
+
+/* Flexbox column: header, scrolling body (flex: 1), footer. */
+.drawer__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-3) var(--card-padding);
+}
+
+/* When the heading is hidden, the close button floats over the content's top corner. */
+.drawer__header.is-floating {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  padding: 0;
+}
+
+.drawer__body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 var(--card-padding) var(--card-padding);
+}
+
+.drawer__header.is-floating + .drawer__body {
+  padding: 0;
+}
+
+.drawer__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding: var(--space-4) var(--card-padding);
+  border-top: var(--border-width) solid var(--hairline);
+}
+
+.drawer__footer:not(:has(*)) {
+  display: none;
+}

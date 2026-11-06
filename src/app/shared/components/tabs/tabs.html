@@ -1,0 +1,19 @@
+<div class="tabs" role="tablist" [attr.aria-label]="label()" (keydown)="onKeydown($event)">
+  @for (tab of tabs(); track tab.id) {
+    <button
+      type="button"
+      role="tab"
+      class="tab"
+      [id]="idPrefix() + '-tab-' + tab.id"
+      [attr.aria-selected]="tab.id === selected()"
+      [attr.aria-controls]="idPrefix() + '-panel-' + tab.id"
+      [tabIndex]="tab.id === selected() ? 0 : -1"
+      (click)="selected.set(tab.id)"
+    >
+      {{ tab.label }}
+      @if (tab.count !== undefined) {
+        <span class="tab__count tabular">{{ tab.count }}</span>
+      }
+    </button>
+  }
+</div>

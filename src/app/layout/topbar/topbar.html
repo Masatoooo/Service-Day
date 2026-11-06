@@ -1,0 +1,35 @@
+<header class="topbar">
+  <button
+    type="button"
+    class="icon-btn topbar__menu"
+    aria-label="Open menu"
+    aria-haspopup="dialog"
+    [attr.aria-expanded]="menuOpen()"
+    (click)="menuToggle.emit()"
+  >
+    <svg lucideIcon="menu" [size]="20"></svg>
+  </button>
+
+  <div class="topbar__title">
+    <h1>{{ heading() }}</h1>
+    @if (subheading()) {
+      <p class="topbar__subheading">{{ subheading() }}</p>
+    }
+  </div>
+
+  <div class="topbar__actions">
+    <a class="icon-btn topbar__bell" [routerLink]="inboxPath()" [attr.aria-label]="bellLabel()">
+      <svg lucideIcon="bell"></svg>
+      @if (unreadCount() > 0) {
+        <span class="topbar__dot" aria-hidden="true"></span>
+      }
+    </a>
+    <div class="profile">
+      <app-avatar [name]="session().name" [seed]="session().userId" size="sm" />
+      <span class="profile__text">
+        <span class="profile__name">{{ session().name }}</span>
+        <span class="profile__role">{{ roleLabel() }}</span>
+      </span>
+    </div>
+  </div>
+</header>

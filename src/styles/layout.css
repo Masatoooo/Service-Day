@@ -1,5 +1,69 @@
 /* ==========================================================================
-   layout.css — reusable Flexbox layout primitives
-   Rows, stacks, wrapping card collections, two-column sections (PLAN §8.4).
-   Filled in Phase 1.
+   layout.css — reusable Flexbox layout primitives (PLAN §8.4)
+   Flexbox only, no CSS Grid: card collections use flex-wrap + gap.
    ========================================================================== */
+
+/* Stack: children in a column with even spacing. Flexbox `gap` replaces margins
+   between siblings, so no child needs a margin of its own (box model stays clean). */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, var(--space-4));
+}
+
+/* Cluster: a wrapping row of small items (pills, buttons, chips). */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-gap, var(--space-2));
+}
+
+/* Split: two groups pushed to opposite ends; wraps when space runs out. */
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--split-gap, var(--space-4));
+}
+
+/* Card row: a wrapping collection of cards. Each card grows from its basis. */
+.card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--card-gap);
+}
+
+/* KPI cards: four across on desktop, two on tablet, one on phone (flex-basis 220px). */
+.card-row > .kpi-slot {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+/* Two-column section: wide main column + narrow side column; wraps below ~900px. */
+.card-row > .col-main {
+  flex: 2 1 560px;
+  min-width: 0;
+}
+
+.card-row > .col-side {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+/* Surface card: white sheet on the canvas. Box model: padding inside the card,
+   gap between cards comes from the parent's flex gap, so cards carry no margin. */
+.surface-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: var(--card-padding);
+  min-width: 0;
+}
+
+/* Inner tile: a sunken block inside a card (stats, previews). */
+.sunken-tile {
+  background: var(--surface-sunken);
+  border-radius: var(--radius-tile);
+  padding: var(--space-4);
+}
