@@ -1,0 +1,8 @@
+/* Global stylesheet: font + the four style layers, in cascade order.
+   Component CSS only uses the tokens defined in tokens.css. */
+@import '@fontsource-variable/instrument-sans';
+
+@import './styles/tokens.css';
+@import './styles/base.css';
+@import './styles/layout.css';
+@import './styles/utilities.css';
