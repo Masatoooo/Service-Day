@@ -44,6 +44,7 @@ export class Login {
   }
 
   protected submit(): void {
+    if (this.submitting()) return; // a second click while the request runs
     this.submitted.set(true);
     this.formError.set(null);
     this.clearServerErrors();

@@ -85,6 +85,7 @@ export class Participation {
 
   /** Only people who are still unregistered get the reminder. */
   protected sendReminder(unregistered: PublicUser[], kpis: Kpis): void {
+    if (this.busy()) return;
     const stillOpen = new Set(unregistered.map((e) => e.id));
     const recipientIds = [...this.selected()].filter((id) => stillOpen.has(id));
     this.busy.set(true);

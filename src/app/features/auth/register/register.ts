@@ -13,13 +13,14 @@ import {
   matchingFieldsValidator,
   workEmailValidator,
 } from '../../../core/validators/account-validators';
+import { TEXT_LIMITS, requiredText } from '../../../core/validators/text-validators';
 import { whenSettled } from '../../../core/validators/when-settled';
 
 type Field = 'name' | 'email' | 'department' | 'password' | 'confirm';
 
 /** One sentence per validation error, per field (sentence case, says how to fix it). */
 const MESSAGES: Record<Field, Record<string, string>> = {
-  name: { required: 'Enter your full name.', minlength: 'Enter your full name.' },
+  name: { required: 'Enter your full name.', minlength: 'Enter your full name.', maxlength: `Keep your name under ${TEXT_LIMITS.personName} characters.` },
   email: {
     required: 'Enter your work email.',
     email: 'Enter an email address like aisha.rahman@halden.co.',
@@ -49,9 +50,9 @@ export class Register {
   protected readonly departments = DEPARTMENTS;
   protected readonly form = this.fb.group(
     {
-      name: ['', [Validators.required, Validators.minLength(2)]],
+      name: ['', [requiredText, Validators.minLength(2), Validators.maxLength(TEXT_LIMITS.personName)]],
       email: this.fb.control('', {
-        validators: [Validators.required, Validators.email, workEmailValidator],
+        validators: [Validators.required, Validators.email, Validators.maxLength(TEXT_LIMITS.email), workEmailValidator],
         asyncValidators: [emailAvailableValidator(inject(UserService))],
       }),
       department: ['', Validators.required],
@@ -66,6 +67,7 @@ export class Register {
   protected readonly formError = signal<string | null>(null);
 
   protected submit(): void {
+    if (this.submitting()) return; // a second click while the request runs
     this.submitted.set(true);
     this.formError.set(null);
     if (this.form.pending) {

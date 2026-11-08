@@ -56,6 +56,7 @@ export class Inbox {
   }
 
   private run<T>(action$: Observable<T>, done?: (result: T) => void): void {
+    if (this.busy()) return;
     this.busy.set(true);
     action$
       .pipe(

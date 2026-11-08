@@ -36,6 +36,11 @@
   text-decoration: underline;
 }
 
+.row-title,
+.cell-activity > span {
+  overflow-wrap: anywhere;
+}
+
 .cell-activity > span,
 .cell-schedule > span {
   display: block;

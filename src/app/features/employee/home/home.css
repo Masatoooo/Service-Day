@@ -129,7 +129,13 @@
   color: var(--ink);
 }
 
-.row__text,
+.row__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
 
 .row__title {
   font-weight: var(--weight-medium);

@@ -11,6 +11,7 @@ import { NgoService } from '../../../../core/services/ngo-service';
 import { ToastService } from '../../../../core/services/toast-service';
 import { AttentionKind } from '../../../../core/services/participation-stats-service';
 import { broadcastPreset } from '../broadcast-presets';
+import { requiredText } from '../../../../core/validators/text-validators';
 import { BROADCAST_DEFAULTS, MESSAGE_MAX, TITLE_MAX, broadcastError, targetOf, targetValidator } from './broadcast-form';
 
 /**
@@ -50,8 +51,8 @@ export class BroadcastTab {
       audience: [BROADCAST_DEFAULTS.audience],
       activityId: [''],
       ngoId: [''],
-      title: ['', [Validators.required, Validators.maxLength(TITLE_MAX)]],
-      message: ['', [Validators.required, Validators.maxLength(MESSAGE_MAX)]],
+      title: ['', [requiredText, Validators.maxLength(TITLE_MAX)]],
+      message: ['', [requiredText, Validators.maxLength(MESSAGE_MAX)]],
       urgent: [false],
     },
     { validators: targetValidator },
@@ -97,6 +98,7 @@ export class BroadcastTab {
   }
 
   protected send(): void {
+    if (this.busy()) return; // a second click on "Send now"
     const { title, message, urgent } = this.form.getRawValue();
     this.busy.set(true);
     this.notifications

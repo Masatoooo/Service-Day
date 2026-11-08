@@ -16,6 +16,7 @@ import {
   maxSlotsNotBelowTakenValidator,
 } from '../../../core/validators/activity-validators';
 import { whenSettled } from '../../../core/validators/when-settled';
+import { TEXT_LIMITS, requiredText } from '../../../core/validators/text-validators';
 import { buildActivityInput, formValueFrom, messageFor } from './activity-form-model';
 
 /**
@@ -51,10 +52,10 @@ export class ActivityForm implements HasUnsavedChanges {
   protected readonly form = this.fb.group(
     {
       ngoId: ['', Validators.required],
-      title: ['', [Validators.required, Validators.maxLength(80)]],
+      title: ['', [requiredText, Validators.maxLength(TEXT_LIMITS.activityTitle)]],
       serviceType: ['', Validators.required],
-      description: ['', [Validators.required, Validators.minLength(20)]],
-      location: ['', Validators.required],
+      description: ['', [requiredText, Validators.minLength(20), Validators.maxLength(TEXT_LIMITS.activityDescription)]],
+      location: ['', [requiredText, Validators.maxLength(TEXT_LIMITS.location)]],
       date: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
@@ -93,6 +94,7 @@ export class ActivityForm implements HasUnsavedChanges {
   }
 
   protected save(): void {
+    if (this.saving()) return; // a second click while saving
     this.submitted.set(true);
     if (this.form.pending) {
       // The max-slots check is still asking the API: save once it has an answer.

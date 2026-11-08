@@ -74,6 +74,7 @@ export class CheckIns {
 
   /** Generate (no code yet) or regenerate (after the confirm step): the old code stops working. */
   protected generate(view: ArrivalsView): void {
+    if (this.busy()) return;
     this.busy.set(true);
     this.checkIns
       .generateCode(view.activity.id)

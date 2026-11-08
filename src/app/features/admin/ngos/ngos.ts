@@ -8,15 +8,24 @@ import { ActivityAdminService, NgoRow } from '../../../core/services/activity-ad
 import { ActivityService } from '../../../core/services/activity-service';
 import { NgoService } from '../../../core/services/ngo-service';
 import { ToastService } from '../../../core/services/toast-service';
+import { TEXT_LIMITS, requiredText } from '../../../core/validators/text-validators';
 
 type Field = 'name' | 'focusArea' | 'description' | 'contactName' | 'contactEmail';
 
 const MESSAGES: Record<Field, Record<string, string>> = {
-  name: { required: 'Enter the NGO name.' },
-  focusArea: { required: 'Say what the NGO works on, e.g. "Food security".' },
-  description: { required: 'Add a short description employees will read.', minlength: 'Add a little more (at least 20 characters).' },
-  contactName: { required: 'Who should Halden & Co. contact?' },
-  contactEmail: { required: 'Enter a contact email.', email: 'Enter an email address like name@organisation.org.' },
+  name: { required: 'Enter the NGO name.', maxlength: `Keep the name under ${TEXT_LIMITS.ngoName} characters.` },
+  focusArea: { required: 'Say what the NGO works on, e.g. "Food security".', maxlength: `Keep it short: under ${TEXT_LIMITS.focusArea} characters.` },
+  description: {
+    required: 'Add a short description employees will read.',
+    minlength: 'Add a little more (at least 20 characters).',
+    maxlength: `Keep the description under ${TEXT_LIMITS.ngoDescription} characters.`,
+  },
+  contactName: { required: 'Who should Halden & Co. contact?', maxlength: `Keep the name under ${TEXT_LIMITS.personName} characters.` },
+  contactEmail: {
+    required: 'Enter a contact email.',
+    email: 'Enter an email address like name@organisation.org.',
+    maxlength: `Keep the email under ${TEXT_LIMITS.email} characters.`,
+  },
 };
 
 /** NGOs (UC1): list with activity counts, create/edit in a drawer, guarded delete. */
@@ -43,11 +52,11 @@ export class Ngos {
   protected readonly submitted = signal(false);
 
   protected readonly form = inject(NonNullableFormBuilder).group({
-    name: ['', Validators.required],
-    focusArea: ['', Validators.required],
-    description: ['', [Validators.required, Validators.minLength(20)]],
-    contactName: ['', Validators.required],
-    contactEmail: ['', [Validators.required, Validators.email]],
+    name: ['', [requiredText, Validators.maxLength(TEXT_LIMITS.ngoName)]],
+    focusArea: ['', [requiredText, Validators.maxLength(TEXT_LIMITS.focusArea)]],
+    description: ['', [requiredText, Validators.minLength(20), Validators.maxLength(TEXT_LIMITS.ngoDescription)]],
+    contactName: ['', [requiredText, Validators.maxLength(TEXT_LIMITS.personName)]],
+    contactEmail: ['', [Validators.required, Validators.email, Validators.maxLength(TEXT_LIMITS.email)]],
     verified: [false],
   });
 
@@ -69,6 +78,7 @@ export class Ngos {
   }
 
   protected save(): void {
+    if (this.busy()) return; // a second click while saving
     this.submitted.set(true);
     const editing = this.editing();
     if (this.form.invalid || !editing) {
@@ -76,7 +86,15 @@ export class Ngos {
       afterNextRender(() => this.host.nativeElement.querySelector<HTMLElement>('dialog[open] [aria-invalid="true"]')?.focus(), { injector: this.injector });
       return;
     }
-    const value = { ...this.form.getRawValue(), contactEmail: this.form.getRawValue().contactEmail.trim().toLowerCase() };
+    const raw = this.form.getRawValue();
+    const value = {
+      ...raw,
+      name: raw.name.trim(),
+      focusArea: raw.focusArea.trim(),
+      description: raw.description.trim(),
+      contactName: raw.contactName.trim(),
+      contactEmail: raw.contactEmail.trim().toLowerCase(),
+    };
     const save$ = editing === 'new' ? this.ngoService.create(value) : this.ngoService.update({ ...value, id: editing.id });
     this.run(save$, `${editing === 'new' ? 'Added' : 'Saved'} ${value.name}.`, () => this.editing.set(null));
   }
@@ -100,6 +118,7 @@ export class Ngos {
   }
 
   private run(action$: Observable<unknown>, success: string, done: () => void): void {
+    if (this.busy()) return;
     this.busy.set(true);
     action$
       .pipe(

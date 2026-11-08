@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, input, output, signal, viewChild } from '@angular/core';
 import { placeUnder } from '../../popover-position';
 
 export interface MenuItem {
@@ -21,7 +21,7 @@ let nextId = 0;
   templateUrl: './menu-button.html',
   styleUrl: './menu-button.css',
 })
-export class MenuButton {
+export class MenuButton implements OnDestroy {
   /** Accessible name of the trigger, e.g. "More actions for Reading Buddies". */
   readonly label = input.required<string>();
   readonly items = input.required<MenuItem[]>();
@@ -69,6 +69,12 @@ export class MenuButton {
     } else if (event.key === 'Tab') {
       this.close();
     }
+  }
+
+  /** A row can disappear while its menu is open (e.g. deleted elsewhere): drop the window listeners. */
+  ngOnDestroy(): void {
+    window.removeEventListener('scroll', this.close, { capture: true });
+    window.removeEventListener('resize', this.close);
   }
 
   private menuItems(): HTMLElement[] {

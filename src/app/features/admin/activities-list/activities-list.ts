@@ -93,6 +93,7 @@ export class ActivitiesList {
   }
 
   private runAction(action$: Observable<unknown>, success: string): void {
+    if (this.busy()) return; // one action at a time (also stops double clicks)
     this.busy.set(true);
     action$
       .pipe(

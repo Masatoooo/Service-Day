@@ -29,6 +29,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   caret-color: var(--accent-strong);
+  /* Long words and URLs break instead of pushing the layout wider. */
+  overflow-wrap: break-word;
   /* Never let the page itself scroll sideways (responsive requirement). */
   overflow-x: clip;
 }
