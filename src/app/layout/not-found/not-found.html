@@ -2,6 +2,7 @@
   <app-shell [session]="session" heading="Page not found" (signOut)="signOut()">
     <section class="surface-card" aria-label="Page not found">
       <app-empty-state
+        [level]="2"
         icon="compass"
         heading="We couldn't find that page"
         message="The link may be out of date, or the page has moved. Your home page has everything that's current."

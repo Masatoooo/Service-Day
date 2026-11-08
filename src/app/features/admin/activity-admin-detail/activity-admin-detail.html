@@ -35,7 +35,7 @@
         </div>
       </article>
 
-      <aside class="col-side stack">
+      <aside class="col-side stack" aria-label="Activity numbers">
         <section class="surface-card stack" aria-label="Fill">
           <h3>Fill</h3>
           <app-slot-meter [taken]="a.taken" [capacity]="a.maxSlots" [muted]="a.availability === 'closed' || a.status !== 'published'" />
@@ -95,7 +95,7 @@
   }
 } @else if (loadFailed$ | async) {
   <section class="surface-card" aria-label="Activity could not load">
-    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load this activity" message="The Service Day server didn't answer. It will try again in a few seconds." />
+    <app-empty-state [level]="2" icon="circle-exclamation-point" heading="We couldn't load this activity" message="The Service Day server didn't answer. It will try again in a few seconds." />
   </section>
 } @else {
   <div class="surface-card stack" aria-busy="true" aria-label="Loading activity"><app-skeleton [lines]="6" /></div>

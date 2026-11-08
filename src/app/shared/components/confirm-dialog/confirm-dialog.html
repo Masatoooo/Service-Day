@@ -5,6 +5,7 @@
   [attr.aria-labelledby]="id + '-heading'"
   [attr.aria-describedby]="id + '-message'"
   (close)="onClose()"
+  (keydown)="onKeydown($event)"
 >
   <div class="dialog__body">
     <h2 [id]="id + '-heading'">{{ heading() }}</h2>

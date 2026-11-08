@@ -1,4 +1,8 @@
-@if (loading()) {
+@if (loadError()) {
+  <app-empty-state [level]="2" icon="circle-exclamation-point" heading="We couldn't load the reminder schedule" message="The Service Day server didn't answer. Check that it is running, then try again.">
+    <button type="button" class="btn btn--secondary btn--sm" (click)="load()"><svg lucideIcon="rotate-cw" [size]="16"></svg>Try again</button>
+  </app-empty-state>
+} @else if (loading()) {
   <app-skeleton [lines]="6" />
 } @else {
   <div class="layout">

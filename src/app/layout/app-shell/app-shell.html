@@ -1,8 +1,8 @@
-<a class="skip-link" [href]="'#' + contentId()">Skip to content</a>
+<a class="skip-link" [href]="'#' + contentId()" [appSkipLink]="contentId()">Skip to content</a>
 
 <div class="shell">
   <!-- Desktop: the sidebar is its own white card in a sticky <aside>. -->
-  <aside class="shell__sidebar">
+  <aside class="shell__sidebar" aria-label="Sidebar">
     <app-sidebar
       [items]="navItems()"
       [homePath]="homePath()"

@@ -1,4 +1,5 @@
 import { Component, ElementRef, effect, input, model, viewChild } from '@angular/core';
+import { wrapTab } from '../../focus-wrap';
 
 let nextId = 0;
 
@@ -46,5 +47,10 @@ export class Drawer {
     if (event.target === this.dialog().nativeElement) {
       this.open.set(false);
     }
+  }
+
+  /** Tab stays inside the dialog (wraps from the last control to the first). */
+  protected onKeydown(event: KeyboardEvent): void {
+    wrapTab(event, this.dialog().nativeElement);
   }
 }

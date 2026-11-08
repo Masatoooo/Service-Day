@@ -15,4 +15,6 @@ export class EmptyState {
   readonly message = input.required<string>();
   /** Lucide icon name registered in SharedModule. */
   readonly icon = input('inbox');
+  /** Heading level: 3 inside a card that has its own h2; 2 when the empty state stands alone on the page. */
+  readonly level = input<2 | 3>(3);
 }

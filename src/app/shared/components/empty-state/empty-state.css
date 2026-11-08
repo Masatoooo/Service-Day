@@ -30,6 +30,10 @@
   max-width: 52ch;
 }
 
+.empty__heading {
+  font: var(--text-h3);
+}
+
 .empty__message {
   color: var(--ink-muted);
 }

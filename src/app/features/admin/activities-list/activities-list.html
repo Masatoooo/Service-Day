@@ -112,7 +112,7 @@
   }
 } @else if (loadFailed$ | async) {
   <section class="surface-card" aria-label="Activities could not load">
-    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the activities" message="The Service Day server didn't answer. It will try again in a few seconds." />
+    <app-empty-state [level]="2" icon="circle-exclamation-point" heading="We couldn't load the activities" message="The Service Day server didn't answer. It will try again in a few seconds." />
   </section>
 } @else {
   <div class="surface-card stack" aria-busy="true" aria-label="Loading activities"><app-skeleton [lines]="8" /></div>

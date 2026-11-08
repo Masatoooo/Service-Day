@@ -3,7 +3,11 @@
     <svg [lucideIcon]="icon()" [size]="20"></svg>
   </span>
   <div class="empty__body">
-    <h3>{{ heading() }}</h3>
+    @if (level() === 2) {
+      <h2 class="empty__heading">{{ heading() }}</h2>
+    } @else {
+      <h3 class="empty__heading">{{ heading() }}</h3>
+    }
     <p class="empty__message">{{ message() }}</p>
     <div class="empty__actions">
       <ng-content />

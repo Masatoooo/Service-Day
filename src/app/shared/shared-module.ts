@@ -25,6 +25,7 @@ import { ActivityDatePipe } from './pipes/activity-date-pipe';
 import { AvailabilityLabelPipe } from './pipes/availability-label-pipe';
 import { CutoffLabelPipe } from './pipes/cutoff-label-pipe';
 import { InitialsPipe } from './pipes/initials-pipe';
+import { SkipLink } from './directives/skip-link';
 import { RelativeTimePipe } from './pipes/relative-time-pipe';
 
 const COMPONENTS = [
@@ -47,6 +48,8 @@ const COMPONENTS = [
   ToastStack,
 ];
 
+const DIRECTIVES = [SkipLink];
+
 const PIPES = [ActivityDatePipe, AvailabilityLabelPipe, CutoffLabelPipe, InitialsPipe, RelativeTimePipe];
 
 /**
@@ -59,9 +62,9 @@ const PIPES = [ActivityDatePipe, AvailabilityLabelPipe, CutoffLabelPipe, Initial
  * pages with forms) import it themselves.
  */
 @NgModule({
-  declarations: [...COMPONENTS, ...PIPES],
+  declarations: [...COMPONENTS, ...DIRECTIVES, ...PIPES],
   imports: [CommonModule, RouterModule, LucideDynamicIcon],
-  exports: [CommonModule, RouterModule, LucideDynamicIcon, ...COMPONENTS, ...PIPES],
+  exports: [CommonModule, RouterModule, LucideDynamicIcon, ...COMPONENTS, ...DIRECTIVES, ...PIPES],
   providers: [
     provideLucideIcons(...APP_ICONS),
     // Thin line icons (PLAN §8.6): stroke 1.75, 18px by default.

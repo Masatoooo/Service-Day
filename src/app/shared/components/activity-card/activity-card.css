@@ -41,11 +41,9 @@
 }
 
 .card__ngo-name {
-  overflow: hidden;
   font: var(--text-small);
   color: var(--ink-muted);
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
 }
 
 .card__title {

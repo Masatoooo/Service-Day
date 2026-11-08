@@ -10,7 +10,8 @@
   --surface: #ffffff;         /* cards, sidebar, top bar */
   --surface-sunken: #f7f6f4;  /* inputs, table headers, inner tiles */
   --hairline: #eceae6;        /* dividers only */
-  --hairline-strong: #dcd9d3; /* input outlines, segment gaps */
+  --hairline-strong: #dcd9d3; /* segment gaps, quiet pill outlines */
+  --control-border: #8f8c86;  /* form field edges: 3.35:1 on white, 3.10:1 on sunken (WCAG 1.4.11) */
   --ink: #1c1b19;             /* primary text */
   --ink-muted: #6b6965;       /* secondary text, labels */
   --ink-faint: #73716c;       /* placeholders, axis labels (surface / sunken only) */

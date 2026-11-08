@@ -4,6 +4,7 @@
   [attr.data-side]="side()"
   [attr.aria-labelledby]="headingId"
   (close)="onClose()"
+  (keydown)="onKeydown($event)"
   (click)="onDialogClick($event)"
 >
   <div class="drawer__panel">

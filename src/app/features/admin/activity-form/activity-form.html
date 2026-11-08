@@ -5,13 +5,19 @@
 </nav>
 
 @if (loading()) {
-  <div class="surface-card stack" aria-busy="true" aria-label="Loading activity"><app-skeleton [lines]="6" /></div>
+  @if (loadFailed$ | async) {
+    <section class="surface-card" aria-label="Activity could not load">
+      <app-empty-state [level]="2" icon="circle-exclamation-point" heading="We couldn't load this activity" message="The Service Day server didn't answer. The form opens as soon as it is back; nothing has been changed." />
+    </section>
+  } @else {
+    <div class="surface-card stack" aria-busy="true" aria-label="Loading activity"><app-skeleton [lines]="6" /></div>
+  }
 } @else {
   <form class="surface-card form" [formGroup]="form" (ngSubmit)="save()" novalidate>
     <app-page-header
       [level]="2"
       [heading]="id ? 'Edit ' + (existing()?.title ?? 'activity') : 'New activity'"
-      [description]="existing()?.taken ? existing()!.taken + ' people are registered. If you change details they rely on, they get a notice.' : 'Fields marked as required must be filled before you can save.'"
+      [description]="existing()?.taken ? existing()!.taken + ' people are registered. If you change details they rely on, they get a notice.' : 'Every field is needed before you can save. Keep it as a draft until the NGO confirms.'"
     />
 
     <fieldset class="section">

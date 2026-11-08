@@ -128,6 +128,9 @@
 }
 
 .attention__title {
+  /* 1px padding brings the 22px line to a 24px target (WCAG 2.5.8). */
+  display: inline-block;
+  padding-block: 1px;
   color: var(--ink);
   font-weight: var(--weight-medium);
   text-decoration: none;

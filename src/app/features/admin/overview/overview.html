@@ -1,7 +1,8 @@
 @if (vm$ | async; as o) {
   <div class="overview">
     <!-- Row 1: key numbers (flex-wrap: 4 across → 2 → 1). -->
-    <section class="card-row" aria-label="Key numbers">
+    <section class="card-row" aria-labelledby="kpi-heading">
+      <h2 id="kpi-heading" class="visually-hidden">Key numbers</h2>
       <div class="kpi-slot">
         <app-kpi-card label="Slots offered" [value]="o.kpis.slotsOffered" icon="ticket">
           Across {{ o.kpis.publishedActivities }} published activities
@@ -139,7 +140,7 @@
   </div>
 } @else if (loadFailed$ | async) {
   <section class="surface-card" aria-label="Overview could not load">
-    <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the overview" message="The Service Day server didn't answer. It will try again in a few seconds." />
+    <app-empty-state [level]="2" icon="circle-exclamation-point" heading="We couldn't load the overview" message="The Service Day server didn't answer. It will try again in a few seconds." />
   </section>
 } @else {
   <div class="overview" aria-busy="true" aria-label="Loading overview">

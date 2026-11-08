@@ -27,6 +27,7 @@ export class ScheduleTab {
   private readonly fb = inject(NonNullableFormBuilder);
 
   protected readonly loading = signal(true);
+  protected readonly loadError = signal(false);
   protected readonly saving = signal(false);
   protected readonly offsets = signal<number[]>([]);
   protected readonly offsetError = signal<string | null>(null);
@@ -49,13 +50,22 @@ export class ScheduleTab {
   );
 
   constructor() {
+    this.load();
+  }
+
+  /** Reads the saved schedule; on failure the tab shows an error with Retry (ErrorInterceptor shows the toast). */
+  protected load(): void {
+    this.loadError.set(false);
     this.settings
       .get()
-      .pipe(takeUntilDestroyed())
-      .subscribe((saved) => {
-        this.form.reset({ enabled: saved.enabled, sendTime: saved.sendTime, lastSlotsThreshold: saved.lastSlotsThreshold });
-        this.offsets.set([...saved.offsetsDays].sort((a, b) => b - a));
-        this.loading.set(false);
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (saved) => {
+          this.form.reset({ enabled: saved.enabled, sendTime: saved.sendTime, lastSlotsThreshold: saved.lastSlotsThreshold });
+          this.offsets.set([...saved.offsetsDays].sort((a, b) => b - a));
+          this.loading.set(false);
+        },
+        error: () => this.loadError.set(true),
       });
   }
 

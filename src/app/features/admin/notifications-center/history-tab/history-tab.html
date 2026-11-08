@@ -28,7 +28,7 @@
     }
   </div>
 } @else if (loadFailed$ | async) {
-  <app-empty-state icon="circle-exclamation-point" heading="We couldn't load the history" message="The Service Day server didn't answer. It will try again in a few seconds." />
+  <app-empty-state [level]="2" icon="circle-exclamation-point" heading="We couldn't load the history" message="The Service Day server didn't answer. It will try again in a few seconds." />
 } @else {
   <app-skeleton [lines]="6" />
 }

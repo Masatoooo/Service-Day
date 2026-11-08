@@ -230,14 +230,15 @@ html:has(dialog[open]) {
   width: 100%;
   min-height: var(--control-height);
   padding: 0 var(--space-4);
-  border: var(--border-width) solid var(--hairline-strong);
+  /* Box model: a 1px border with 3:1 contrast marks the field's edge (WCAG 1.4.11). */
+  border: var(--border-width) solid var(--control-border);
   border-radius: var(--radius-input);
   background: var(--surface-sunken);
   transition: border-color var(--duration-fast) var(--ease-out);
 }
 
 .input:hover {
-  border-color: var(--ink-faint);
+  border-color: var(--ink-muted);
 }
 
 .input:focus-visible {
@@ -396,7 +397,8 @@ select.input {
   font: var(--text-small);
 }
 
-/* ---- Reduced motion: keep opacity changes, drop movement ---- */
+/* ---- Reduced motion: every transition and animation becomes instant.
+   State changes (open/closed, selected) still happen; only the movement is dropped. ---- */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -452,4 +454,16 @@ select.input {
 
 .choice strong {
   font-weight: var(--weight-medium);
+}
+
+/* "Back to …" link above detail and form pages. Box model: min-height keeps the
+   target at least 32px tall although the text is small (WCAG 2.5.8). */
+.back a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height-sm);
+  font: var(--text-small);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
 }

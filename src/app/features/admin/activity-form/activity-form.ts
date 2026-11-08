@@ -40,6 +40,7 @@ export class ActivityForm implements HasUnsavedChanges {
   private readonly fb = inject(NonNullableFormBuilder);
 
   protected readonly id = this.route.snapshot.paramMap.get('id');
+  protected readonly loadFailed$ = inject(ActivityService).loadFailed$;
   protected readonly ngos$ = inject(NgoService).list();
   protected readonly serviceTypes = SERVICE_TYPES;
   protected readonly existing = signal<ActivityView | null>(null);

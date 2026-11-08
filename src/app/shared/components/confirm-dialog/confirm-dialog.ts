@@ -1,4 +1,5 @@
 import { Component, ElementRef, effect, input, model, output, viewChild } from '@angular/core';
+import { wrapTab } from '../../focus-wrap';
 
 let nextId = 0;
 
@@ -41,5 +42,10 @@ export class ConfirmDialog {
 
   protected onClose(): void {
     this.open.set(false);
+  }
+
+  /** Tab stays inside the dialog (wraps from the last control to the first). */
+  protected onKeydown(event: KeyboardEvent): void {
+    wrapTab(event, this.dialog().nativeElement);
   }
 }

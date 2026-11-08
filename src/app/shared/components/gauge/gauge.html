@@ -1,4 +1,4 @@
-<figure class="gauge" role="img" [attr.aria-label]="label() + ': ' + clamped() + '%'">
+<div class="gauge" role="img" [attr.aria-label]="label() + ': ' + clamped() + '%'">
   <svg class="gauge__arc" viewBox="0 0 240 136" aria-hidden="true">
     @for (bar of bars(); track $index) {
       <line
@@ -11,8 +11,8 @@
       />
     }
   </svg>
-  <figcaption class="gauge__readout" aria-hidden="true">
+  <div class="gauge__readout" aria-hidden="true">
     <span class="gauge__value tabular">{{ clamped() }}<span class="gauge__unit">%</span></span>
     <span class="gauge__label">{{ label() }}</span>
-  </figcaption>
-</figure>
+  </div>
+</div>

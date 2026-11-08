@@ -127,6 +127,7 @@
 } @else if (loadFailed$ | async) {
   <section class="surface-card" aria-label="Home could not load">
     <app-empty-state
+      [level]="2"
       icon="circle-exclamation-point"
       heading="We couldn't load your Service Day"
       message="The Service Day server didn't answer. It will try again in a few seconds."

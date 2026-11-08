@@ -44,6 +44,7 @@
   } @else if (vm.rows.length) {
     <section class="surface-card" aria-label="No current place">
       <app-empty-state
+        [level]="2"
         icon="compass"
         heading="You don't have a place right now"
         message="Your earlier places are listed below. Pick a new activity while cut-offs are still open."
@@ -79,6 +80,7 @@
   } @else {
     <section class="surface-card" aria-label="No registrations yet">
       <app-empty-state
+        [level]="2"
         icon="clipboard-list"
         heading="You haven't registered for anything yet"
         message="Pick one activity for Service Day. You can switch or withdraw any time until its cut-off."
@@ -90,6 +92,7 @@
 } @else if (loadFailed$ | async) {
   <section class="surface-card" aria-label="Registrations could not load">
     <app-empty-state
+      [level]="2"
       icon="circle-exclamation-point"
       heading="We couldn't load your registrations"
       message="The Service Day server didn't answer. It will try again in a few seconds."
