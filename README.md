@@ -1,29 +1,71 @@
 # Service Day
 
-A dashboard for Halden & Co. staff to find, sign up for and check in to corporate volunteering activities, and for admins to manage NGOs, activities and participation. Built with Angular 22 (front-end only, BIT306 Assignment 1) against a json-server mock API.
+Service Day is a web application for Halden & Co.'s annual corporate volunteering day. Employees choose one NGO activity, can switch or withdraw until the activity's cut-off, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor participation, send reminders and broadcasts, and record attendance.
 
-## Run it
+Built for BIT306 Web Technologies, Assignment 1 (front-end): **Angular 22** with NgModules, plain CSS with Flexbox, and a **json-server** mock REST API. Assignment 2 adds an Express/MongoDB back-end behind the same front-end.
 
-Requires Node 22.22+, 24.15+ or 26.
+![Admin overview](docs/screenshots/admin-overview.png)
+
+## Features by role
+
+**Employee** (`/app`)
+- Home: your place, the cut-off, what you can still change, closing-soon activities, latest notices
+- Opportunities: search, filter by type and date, live slot meters (updated every 10 s)
+- Register, switch and withdraw, with slot and cut-off rules and an overbooking guard
+- My registrations with full history; notifications inbox and bell
+- QR / code check-in on the day
+
+**Administrator** (`/admin`)
+- Overview: KPIs, Fill by NGO chart, participation gauge, "needs attention", recent sign-ups
+- Activities: create, edit, publish, unpublish, cancel (participants are notified), delete with rules
+- NGOs: create, edit, delete (blocked while an NGO has activities)
+- Participation: by department and NGO, staff without a place, one-click reminders
+- Notification centre: reminder schedule with preview, broadcasts, history
+- Check-ins: QR code and printable poster, live arrivals (5 s), attendance CSV export
+
+**Both:** sign in, employee self-registration (`@halden.co` emails only), responsive layout down to 390 px, keyboard and screen-reader support (WCAG 2.2 AA).
+
+## Quick start
+
+Requires Node.js 22.22.3+, 24.15+ or 26 and npm.
 
 ```bash
+git clone https://github.com/Masatoooo/Service-Day.git
+cd Service-Day
 npm install
 npm run dev
 ```
 
-`npm run dev` seeds `mock-api/db.json` if it is missing, then starts the mock API on http://localhost:3000 and the app on http://localhost:4200.
+Open <http://localhost:4200>. The mock API runs on <http://localhost:3000>.
 
-`npm run db:reset` re-seeds the mock database from scratch. Stop `npm run dev` first (or restart it afterwards): the running mock API keeps its data in memory and does not pick up the new file.
+Demo accounts (also listed on the sign-in page):
 
-## Scan the check-in QR code with a phone (LAN demo)
+| Account | Password | Role |
+|---|---|---|
+| `admin@halden.co` | `Admin#2026` | Admin |
+| `aisha.rahman@halden.co`, `daniel.koh@halden.co`, `priya.menon@halden.co`, `marcus.tan@halden.co` | `Volunteer#1` | Employees |
 
-The QR code on **Admin → Check-ins** links to the address the admin opened the app on. To scan it with a phone on the same Wi-Fi:
+To start again with fresh demonstration data (dates are relative to today): stop `npm run dev`, run `npm run db:reset`, then `npm run dev` again.
 
-1. Find the Mac's IP address: `ipconfig getifaddr en0` (Wi-Fi), e.g. `192.168.1.23`.
-2. Stop `npm run dev` and start `npm run dev:lan` instead. It serves the app and the mock API on all network interfaces (`0.0.0.0`), ports 4200 and 3000.
-3. On the Mac, open `http://<that IP>:4200` (not `localhost`), sign in as the admin and open Check-ins. The QR code now contains `http://<that IP>:4200/app/check-in/<code>`.
-4. Scan it with the phone, sign in as the employee (e.g. Marcus Tan) and the check-in completes.
+## Documentation
 
-The LAN build (`environment.lan.ts`) calls the API on the same host the page came from, port 3000. If the phone can't connect, allow incoming connections for Node in macOS System Settings → Network → Firewall. To force a fixed address in the QR code, set `publicAppUrl` in the environment file.
+| Document | Contents |
+|---|---|
+| [docs/SETUP.md](docs/SETUP.md) | Installation and configuration manual, LAN mode for phone scanning, troubleshooting, switching to the Assignment 2 API |
+| [docs/USER-MANUAL.md](docs/USER-MANUAL.md) | Step-by-step use of the employee and administrator modules, with screenshots |
+| [docs/REPORT-NOTES.md](docs/REPORT-NOTES.md) | Technologies, MVC mapping, front-end, AJAX and modules evidence for the report |
+| [docs/VIDEO-SCRIPT.md](docs/VIDEO-SCRIPT.md) | Scene-by-scene script for the demonstration video |
+| [docs/PLAN.md](docs/PLAN.md) · [docs/PROGRESS.md](docs/PROGRESS.md) | Build plan and development log |
+| [DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md) | Visual design system and product context |
 
-A full setup guide will be in `docs/SETUP.md`.
+## Scripts
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Seed the data if missing, start the API (3000) and the app (4200) |
+| `npm run db:reset` | Recreate the demonstration data |
+| `npm run dev:lan` | Same as `dev`, reachable from a phone on the same Wi-Fi (see SETUP §6) |
+| `npm run build` | Production build into `dist/service-day/` |
+| `npm test` | Unit tests (Vitest) |
+
+The mock API stores passwords in plain text in `mock-api/db.json`; this is acceptable only for this prototype and is replaced by a real server in Assignment 2.
