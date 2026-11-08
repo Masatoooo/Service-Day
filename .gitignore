@@ -49,3 +49,6 @@ mock-api/db.json
 dist/
 .DS_Store
 *.log
+
+# Submission bundle (built by git archive, not tracked)
+submission/

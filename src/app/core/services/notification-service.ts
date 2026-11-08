@@ -8,6 +8,7 @@ import { ActivityService } from './activity-service';
 import { ApiUrlService } from './api-url-service';
 import { ClockService } from './clock-service';
 import { UserService } from './user-service';
+import { runToCompletion } from './run-to-completion';
 
 /** The bell re-polls the inbox this often (PLAN §6.4). */
 const INBOX_POLL_MS = 15_000;
@@ -136,7 +137,7 @@ export class NotificationService {
   broadcast(input: BroadcastInput): Observable<BroadcastResult> {
     const { recipientIds: _ids, ...notice } = input;
     const original$ = this.create({ ...notice, type: input.type ?? 'broadcast' });
-    return forkJoin({ original: original$, recipients: this.recipientsFor(input), reach: this.recipientCount(input) }).pipe(
+    return runToCompletion(forkJoin({ original: original$, recipients: this.recipientsFor(input), reach: this.recipientCount(input) }).pipe(
       switchMap(({ original, recipients, reach }) => {
         // All-staff and NGO notices stay one record, so their reach comes from the audience.
         if (recipients.length === 0) {
@@ -147,7 +148,7 @@ export class NotificationService {
         );
         return forkJoin(copies).pipe(map(() => ({ original, recipientCount: recipients.length })));
       }),
-    );
+    ));
   }
 
   /** Admin History: originals only (per-user copies of a broadcast are hidden). */
@@ -239,12 +240,12 @@ export class NotificationService {
   }
 
   markAllRead(userId: string): Observable<number> {
-    return this.inbox(userId).pipe(
+    return runToCompletion(this.inbox(userId).pipe(
       switchMap((items) => {
         const unread = items.filter((n) => !n.readBy.includes(userId));
         return unread.length ? forkJoin(unread.map((n) => this.markRead(n, userId))).pipe(map(() => unread.length)) : of(0);
       }),
-    );
+    ));
   }
 
   /** A failed poll is skipped (ErrorInterceptor shows the toast) so the next one can retry. */

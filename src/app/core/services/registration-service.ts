@@ -8,6 +8,7 @@ import { ActivitySnapshot, ActivityService } from './activity-service';
 import { ApiUrlService } from './api-url-service';
 import { ClockService } from './clock-service';
 import { NotificationService } from './notification-service';
+import { runToCompletion } from './run-to-completion';
 
 const OVERBOOKED = 'Someone just took the last slot. The list has been refreshed.';
 
@@ -122,7 +123,8 @@ export class RegistrationService {
   }
 
   register(userId: string, activityId: string): Observable<Registration> {
-    return this.guard(userId).pipe(
+    // Runs to the end even if the page is left mid-way (see runToCompletion).
+    return runToCompletion(this.guard(userId).pipe(
       switchMap((ctx) => {
         const target = this.find(ctx, activityId);
         const result = canRegister(target, this.taken(ctx, activityId), ctx.snapshot.now, ctx.current !== null);
@@ -132,11 +134,12 @@ export class RegistrationService {
         );
       }),
       finalize(() => this.activities.refresh()),
-    );
+    ));
   }
 
   switch(userId: string, targetActivityId: string): Observable<Registration> {
-    return this.guard(userId).pipe(
+    // Runs to the end even if the page is left mid-way (see runToCompletion).
+    return runToCompletion(this.guard(userId).pipe(
       switchMap((ctx) => {
         if (!ctx.current || !ctx.currentActivity) return this.noCurrentPlace('switch');
         const from = ctx.currentActivity;
@@ -149,11 +152,12 @@ export class RegistrationService {
         );
       }),
       finalize(() => this.activities.refresh()),
-    );
+    ));
   }
 
   withdraw(userId: string): Observable<Registration> {
-    return this.guard(userId).pipe(
+    // Runs to the end even if the page is left mid-way (see runToCompletion).
+    return runToCompletion(this.guard(userId).pipe(
       switchMap((ctx) => {
         if (!ctx.current || !ctx.currentActivity) return this.noCurrentPlace('withdraw from');
         const activity = ctx.currentActivity;
@@ -164,7 +168,7 @@ export class RegistrationService {
         );
       }),
       finalize(() => this.activities.refresh()),
-    );
+    ));
   }
 
   /** Re-fetch everything the rules need, right now (not the cached live stream). */

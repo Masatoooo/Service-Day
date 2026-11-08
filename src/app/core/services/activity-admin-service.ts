@@ -9,6 +9,7 @@ import { ApiUrlService } from './api-url-service';
 import { NgoService } from './ngo-service';
 import { NotificationService } from './notification-service';
 import { UserService } from './user-service';
+import { runToCompletion } from './run-to-completion';
 
 export interface ParticipantRow {
   registrationId: string;
@@ -65,7 +66,7 @@ export class ActivityAdminService {
       return this.activities.create(input);
     }
     const changes = [...new Set(NOTIFY_FIELDS.filter((f) => input[f.key] !== existing[f.key]).map((f) => f.describe(input)))];
-    return this.activities.update(existing.id, input).pipe(
+    return runToCompletion(this.activities.update(existing.id, input).pipe(
       switchMap((saved) => {
         if (existing.status !== 'published' || existing.taken === 0 || changes.length === 0) {
           return of(saved);
@@ -82,7 +83,7 @@ export class ActivityAdminService {
           })
           .pipe(map(() => saved));
       }),
-    );
+    ));
   }
 
   setStatus(view: ActivityView, status: Exclude<ActivityStatus, 'cancelled'>): Observable<Activity> {
@@ -95,7 +96,7 @@ export class ActivityAdminService {
 
   /** Cancel and tell everyone registered (their places stop counting as active). */
   cancel(view: ActivityView, adminId: string): Observable<number> {
-    return this.activities.update(view.id, { status: 'cancelled' }).pipe(
+    return runToCompletion(this.activities.update(view.id, { status: 'cancelled' }).pipe(
       switchMap(() =>
         this.notifications.broadcast({
           type: 'activity-update',
@@ -108,7 +109,7 @@ export class ActivityAdminService {
         }),
       ),
       map((result) => result.recipientCount),
-    );
+    ));
   }
 
   remove(view: ActivityView): Observable<void> {
