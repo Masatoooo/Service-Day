@@ -231,6 +231,7 @@ html:has(dialog[open]) {
 .input {
   width: 100%;
   min-height: var(--control-height);
+  font-size: var(--input-font-size);
   padding: 0 var(--space-4);
   /* Box model: a 1px border with 3:1 contrast marks the field's edge (WCAG 1.4.11). */
   border: var(--border-width) solid var(--control-border);
@@ -468,4 +469,11 @@ select.input {
   font: var(--text-small);
   font-weight: var(--weight-medium);
   text-decoration: none;
+}
+
+/* A lone ghost link in a page header ("All", "All opportunities"): pull it out by its
+   own padding so its text lines up with the card's content edge, whether it sits on the
+   right or wraps below. Global because projected content keeps its parent's style scope. */
+.page-header__actions > .btn--ghost:only-child {
+  margin-inline: calc(-1 * var(--space-4));
 }

@@ -112,11 +112,6 @@ h2 {
   font: var(--text-h1);
 }
 
-.person {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
 
 @media (max-width: 599px) {
   .qr-card {

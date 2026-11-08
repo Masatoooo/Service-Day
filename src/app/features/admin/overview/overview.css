@@ -140,11 +140,6 @@
   text-decoration: underline;
 }
 
-.person {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
 
 .person__text {
   display: flex;

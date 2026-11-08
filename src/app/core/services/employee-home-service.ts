@@ -64,8 +64,9 @@ export class EmployeeHomeService {
   private readonly notifications = inject(NotificationService);
 
   home$(userId: string): Observable<EmployeeHomeView> {
-    const inbox$ = this.notifications.inboxLive$(userId).pipe(
-      map((items) => items.slice(0, 3)),
+    // Shares the bell's live inbox (one 15 s poll for both).
+    const inbox$ = this.notifications.inboxView$(userId).pipe(
+      map((view) => view.items.slice(0, 3).map((item) => item.notice)),
       catchError(() => of([])),
       startWith(null),
     );

@@ -35,6 +35,7 @@
 .search__input {
   flex: 1;
   min-width: 0;
+  font-size: var(--input-font-size);
   height: var(--control-height);
   border: 0;
   background: none;

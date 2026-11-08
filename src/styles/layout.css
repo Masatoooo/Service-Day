@@ -141,3 +141,15 @@
   border-radius: var(--radius-tile);
   padding: var(--space-4);
 }
+
+/* Person: avatar beside a name (tables and lists). The name wraps; the avatar never shrinks. */
+.person {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.person > app-avatar {
+  flex: none;
+}

@@ -225,7 +225,7 @@ export class NotificationService {
   }
 
   unreadCount$(userId: string): Observable<number> {
-    return this.inboxLive$(userId).pipe(map((items) => items.filter((n) => !n.readBy.includes(userId)).length));
+    return this.inboxView$(userId).pipe(map((view) => view.unread));
   }
 
   markRead(notification: AppNotification, userId: string): Observable<AppNotification> {

@@ -71,10 +71,8 @@
   background: var(--accent-soft);
 }
 
+/* .person (avatar + name) comes from layout.css; here the whole label is clickable. */
 .person {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
   cursor: pointer;
 }
 

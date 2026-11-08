@@ -77,6 +77,12 @@
   text-transform: uppercase;
 }
 
+/* The hint keeps its normal case ("e.g. EQPC2U3D", not "E.G."). */
+.code-input::placeholder {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
 /* Refusal / info message above the form: tinted tile, icon + heading + reason. */
 .notice-box {
   display: flex;

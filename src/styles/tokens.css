@@ -84,6 +84,8 @@
   --sidebar-width: 264px;
   --control-height: 40px;
   --control-height-sm: 32px;
+  /* Text inside form fields: body size, 16px on phones so iOS Safari doesn't zoom in on focus. */
+  --input-font-size: 15px;
   --icon-size: 18px;
   --icon-size-lg: 20px;
   --border-width: 1px;
@@ -108,5 +110,6 @@
     --card-padding: var(--space-5);
     --card-gap: var(--space-4);
     --shell-inset: var(--space-3);
+    --input-font-size: 16px;
   }
 }
