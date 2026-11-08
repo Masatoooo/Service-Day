@@ -24,11 +24,18 @@ export const COLOR_GROUPS: { name: string; swatches: TokenSwatch[] }[] = [
     ],
   },
   {
-    name: 'Accent',
+    name: 'Action (Ink)',
     swatches: [
-      { token: '--accent', role: 'Large marks only' },
-      { token: '--accent-strong', role: 'Accent text, primary button' },
-      { token: '--accent-soft', role: 'Active nav, selected pill' },
+      { token: '--action', role: 'Primary button, selected nav / pill / tab' },
+      { token: '--action-hover', role: 'Hover on Ink fills' },
+    ],
+  },
+  {
+    name: 'Accent (Pine)',
+    swatches: [
+      { token: '--accent', role: 'Marks: charts, slot meter, gauge, icon tiles' },
+      { token: '--accent-strong', role: 'Links, focus ring, pine text' },
+      { token: '--accent-soft', role: 'Icon tiles, selected choice, chips' },
     ],
   },
   {
@@ -95,8 +102,8 @@ export const PREVIEW_EMPLOYEE: Session = {
 };
 
 export const PREVIEW_ADMIN: Session = {
-  userId: 'u-nadia-halim',
-  name: 'Nadia Halim',
+  userId: 'u-masato-kaneko',
+  name: 'Masato Kaneko',
   role: 'admin',
   department: 'People & Culture',
 };

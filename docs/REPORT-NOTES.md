@@ -183,7 +183,7 @@ All routes were checked at 1440, 1024, 768 and 390 px with no horizontal page sc
 
 ### 3.5 Visual design system
 
-`DESIGN.md` documents the design system ("Morning of Service Day"): a warm light-grey canvas, white cards with 20 px corners, flat at rest, a single terracotta accent used for large marks only, the Instrument Sans typeface at three weights, and signature components (segmented slot meter, relative + absolute cut-off label, bar-built participation gauge, deterministic initials avatars). The tokens are defined once in `src/styles/tokens.css`. [ADD SCHOLARLY SOURCE: visual hierarchy / dashboard design or usability heuristics]
+`DESIGN.md` documents the design system ("The Volunteer Roster", palette "Ink + Pine"): a cool light canvas, white cards with 20 px corners, flat at rest, near-black Ink for the primary action and the one selected item per group, a Pine accent for marks that count (charts, slot meters, gauge), a separate leaf-green success hue, the Instrument Sans typeface at three weights, and signature components (segmented slot meter, relative + absolute cut-off label, bar-built participation gauge, deterministic initials avatars). The tokens are defined once in `src/styles/tokens.css`. [ADD SCHOLARLY SOURCE: visual hierarchy / dashboard design or usability heuristics]
 
 ---
 
@@ -222,7 +222,7 @@ All requests are made with Angular `HttpClient` inside `src/app/core/services/`;
 
 - **Polling.** `ActivityService.snapshot$` (`core/services/activity-service.ts`) re-fetches activities, NGOs, registrations and settings every **10 s** with `timer(0, POLL_MS)` and `switchMap`, and shares one request between all views with `shareReplay({ bufferSize: 1, refCount: true })`. The inbox and the notification bell share one **15 s** poll (`NotificationService.inboxView$`), and the admin arrivals list polls every **5 s** (`CheckInService.arrivals$`).
 - **Refresh after every mutation.** Services call `refresh()` after each write (`tap`/`finalize`), which restarts the poll immediately, so the changed data appears at once on the page that made the change.
-- **Demonstration.** With two browser windows (Priya and Daniel), Priya takes the last place on *Reading Buddies*; Daniel's window switches the activity to **Full** within 10 seconds without reloading (verified in testing, see `docs/PROGRESS.md`, Phase 5).
+- **Demonstration.** With two browser windows (Komang and Daniel), Komang takes the last place on *Reading Buddies*; Daniel's window switches the activity to **Full** within 10 seconds without reloading (verified in testing, see `docs/PROGRESS.md`, Phase 5).
 - **Failures do not stop polling.** A failed poll is skipped and the next one retries; pages show an error state while the server is down and recover by themselves (tested by stopping json-server, §6).
 
 ### 4.3 Interceptors (`src/app/core/interceptors/`)

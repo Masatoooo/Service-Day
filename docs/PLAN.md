@@ -32,11 +32,11 @@ Seeded accounts (shown in a collapsible "Demo accounts" panel on the login page)
 
 | Name | Email | Password | Role | Seeded situation |
 |---|---|---|---|---|
-| Nadia Halim | `admin@halden.co` | `Admin#2026` | Admin | — |
-| Aisha Rahman | `aisha.rahman@halden.co` | `Volunteer#1` | Employee | Registered for an activity whose cut-off **has passed** (edit locked) |
-| Daniel Koh | `daniel.koh@halden.co` | `Volunteer#1` | Employee | Registered for an **open** activity (can switch / withdraw) |
-| Priya Menon | `priya.menon@halden.co` | `Volunteer#1` | Employee | **Not registered** (used to take the last slot in the demo) |
-| Marcus Tan | `marcus.tan@halden.co` | `Volunteer#1` | Employee | Registered for **today's** activity (check-in demo) |
+| Masato Kaneko | `masato@kaneko.co` | `Admin#2026` | Admin | — |
+| Aisha Rahman | `aisha.rahman@kaneko.co` | `Volunteer#1` | Employee | Registered for an activity whose cut-off **has passed** (edit locked) |
+| Daniel Koh | `daniel.koh@kaneko.co` | `Volunteer#1` | Employee | Registered for an **open** activity (can switch / withdraw) |
+| Komang Masato | `komangmasato@kaneko.co` | `Volunteer#1` | Employee | **Not registered** (used to take the last slot in the demo) |
+| Marcus Tan | `marcus.tan@kaneko.co` | `Volunteer#1` | Employee | Registered for **today's** activity (check-in demo) |
 
 Plus ~20 more employees across departments so charts look real.
 
@@ -52,7 +52,7 @@ All app pages sit inside the shell (sidebar + top bar). Auth pages use a split l
 | Route | Page | Notes |
 |---|---|---|
 | `/login` | Sign in | Email + password, demo-accounts panel, link to register |
-| `/register` | Create account | Full name, work email (must end with `@halden.co`), department, password + confirm (min 8 chars, one number). Email uniqueness checked via API. Auto sign-in → `/app` |
+| `/register` | Create account | Full name, work email (must end with `@kaneko.co`), department, password + confirm (min 8 chars, one number). Email uniqueness checked via API. Auto sign-in → `/app` |
 
 ### Employee (`EmployeeModule`, lazy, `authGuard` + `roleGuard('employee')`, prefix `/app`)
 | Route | Page | UC | Content |
@@ -263,7 +263,7 @@ Relative to the day the seed runs (`T` = today). **Service Day** is `T+14` (a Sa
 - `ActivityService.live$()`: `timer(0, 10_000)` + manual `refresh$` Subject → `switchMap` to fetch activities + active registrations → map to `ActivityView[]`. `shareReplay({ bufferSize: 1, refCount: true })`.
 - After any mutation, the service calls `refresh()` so every subscribed view updates without reload.
 - Check-ins page polls every 5 s. Notification bell polls every 15 s.
-- Demo trick for the video: two browser windows (Priya + Daniel). Priya takes the last slot of activity B; Daniel's window flips B to **Full** within 10 s without reload.
+- Demo trick for the video: two browser windows (Komang + Daniel). Komang takes the last slot of activity B; Daniel's window flips B to **Full** within 10 s without reload.
 
 ### 6.5 HTTP interceptors (`core/interceptors/`)
 
@@ -359,6 +359,8 @@ Follow whatever file-naming convention Angular CLI 22 generates (it may omit the
 
 ## 8. Design system (Option A — warm terracotta)
 
+> **Branch `revamp/ink-pine`:** the colour tokens below were replaced by the "Ink + Pine" palette (DESIGN.md frontmatter and `src/styles/tokens.css` are the source of truth). Type, radius, spacing, elevation and motion are unchanged.
+
 Final values are owned by `DESIGN.md` after `/impeccable init`; start from these.
 
 ### 8.1 Color tokens (light)
@@ -412,7 +414,7 @@ Letter-spacing: −0.01em on h1/kpi only. Numbers tabular. No uppercase labels; 
 - Top bar: greeting block (h1 + small subtitle) left; right side: notification bell + profile chip (initials avatar, name, role) inside pill groups.
 - KPI row: flex-wrap, each card `flex: 1 1 220px`.
 - Two-column sections: `flex: 2 1 560px` + `flex: 1 1 320px`.
-- Sidebar: logo (wordmark "Service Day" + "by Halden & Co." small), nav items with line icons, active item = accent-soft bg + 3 px accent bar on the left; bottom group: Help (opens a small "How Service Day works" dialog) and Sign out in accent-strong.
+- Sidebar: logo (wordmark "Service Day" + "by Kaneko.co" small), nav items with line icons, active item = accent-soft bg + 3 px accent bar on the left; bottom group: Help (opens a small "How Service Day works" dialog) and Sign out in accent-strong.
 - < 900 px: sidebar → off-canvas drawer from a menu button in the top bar; < 600 px: tables → stacked rows, filters → horizontal scroll pills inside their own container (page itself never scrolls sideways).
 
 ### 8.5 Signature details (what makes it feel designed, not generated)
@@ -463,16 +465,16 @@ Letter-spacing: −0.01em on h1/kpi only. Numbers tabular. No uppercase labels; 
 
 ## 11. Demo scenarios (for testing and the video)
 
-1. **Register** (Priya): Opportunities → filter "Education" → Reading Buddies (1 left) → Register → toast + inbox notice → slot meter shows Full.
+1. **Register** (Komang): Opportunities → filter "Education" → Reading Buddies (1 left) → Register → toast + inbox notice → slot meter shows Full.
 2. **Live update** (Daniel, second window): Reading Buddies flips to Full without reload.
 3. **Switch** (Daniel): from Pack & Deliver to Lunch Service (closing soon) → old registration shows "Switched".
 4. **Locked** (Aisha): Kennel Refresh Day → Switch/Withdraw disabled with "Changes closed on … 17:00".
 5. **Withdraw** (Daniel): withdraw before cut-off → slot returned.
-6. **Admin CRUD** (Nadia): create activity as draft → publish → appears for employees; edit max slots below taken → validation message.
+6. **Admin CRUD** (Masato): create activity as draft → publish → appears for employees; edit max slots below taken → validation message.
 7. **Monitor**: Overview KPIs and charts; Participation → select unregistered staff → Send reminder → shows in their inbox.
 8. **Notifications**: Schedule tab change offsets → preview updates; Broadcast urgent "last slots" to all staff.
 9. **Check-in**: Admin opens Memory Lane Afternoon → QR → Marcus opens the link / enters code → arrival appears in admin list within 5 s → export CSV.
-10. **Register account**: new employee signs up with `@halden.co` email → lands on Home.
+10. **Register account**: new employee signs up with `@kaneko.co` email → lands on Home.
 
 ---
 

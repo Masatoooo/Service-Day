@@ -1,23 +1,26 @@
 ---
 name: Service Day
-description: Halden & Co.'s volunteering-day dashboard — warm, calm, and exact about slots and deadlines.
+description: Kaneko.co's volunteering-day dashboard — ink for action, pine for what's filling up, exact about slots and deadlines.
 colors:
-  canvas: "#F4F3F1"
+  canvas: "#F1F3F2"
   surface: "#FFFFFF"
-  surface-sunken: "#F7F6F4"
-  hairline: "#ECEAE6"
-  hairline-strong: "#DCD9D3"
-  control-border: "#8F8C86"
-  ink: "#1C1B19"
-  ink-muted: "#6B6965"
-  ink-faint: "#73716C"
-  accent: "#E8692C"
-  accent-strong: "#B24D19"
-  accent-strong-hover: "#973F12"
-  accent-soft: "#FDEDE4"
+  surface-sunken: "#F6F7F6"
+  hairline: "#E5E8E6"
+  hairline-strong: "#D2D7D4"
+  control-border: "#838A86"
+  ink: "#151917"
+  ink-muted: "#5C635F"
+  ink-faint: "#69706C"
+  action: "#151917"
+  action-hover: "#2E3531"
+  on-action: "#FFFFFF"
+  accent: "#2D6E58"
+  accent-strong: "#1E5442"
+  accent-strong-hover: "#153D30"
+  accent-soft: "#E2EEE8"
   on-accent: "#FFFFFF"
-  success: "#1A7B45"
-  success-soft: "#E5F4EA"
+  success: "#4A7616"
+  success-soft: "#EEF5E1"
   warning: "#986000"
   warning-soft: "#FBF1DC"
   danger: "#C2352C"
@@ -25,12 +28,12 @@ colors:
   danger-soft: "#FBE9E7"
   info: "#2F5FC4"
   info-soft: "#E8EFFB"
-  tint-apricot: "#FDEDE4"
-  tint-sage: "#E6F0E4"
-  tint-sand: "#F2ECE2"
-  tint-sky: "#E6EEF7"
-  tint-rose: "#F8E7E7"
-  tint-butter: "#F8F0D6"
+  tint-sage: "#E4EFE5"
+  tint-sky: "#E2ECF6"
+  tint-clay: "#F3E5DC"
+  tint-butter: "#F5EED4"
+  tint-rose: "#F4E3E7"
+  tint-lilac: "#EBE7F2"
 typography:
   display:
     fontFamily: "Instrument Sans Variable, system-ui, sans-serif"
@@ -94,14 +97,14 @@ spacing:
   "9": "56px"
 components:
   button-primary:
-    backgroundColor: "{colors.accent-strong}"
-    textColor: "{colors.on-accent}"
+    backgroundColor: "{colors.action}"
+    textColor: "{colors.on-action}"
     typography: "{typography.body}"
     rounded: "{rounded.control}"
     padding: "0 20px"
     height: "40px"
   button-primary-hover:
-    backgroundColor: "{colors.accent-strong-hover}"
+    backgroundColor: "{colors.action-hover}"
   button-secondary:
     backgroundColor: "{colors.surface-sunken}"
     textColor: "{colors.ink}"
@@ -153,8 +156,8 @@ components:
     padding: "0 16px"
     height: "36px"
   filter-pill-selected:
-    backgroundColor: "{colors.accent-soft}"
-    textColor: "{colors.accent-strong}"
+    backgroundColor: "{colors.action}"
+    textColor: "{colors.on-action}"
   nav-item:
     textColor: "{colors.ink}"
     typography: "{typography.body}"
@@ -162,7 +165,8 @@ components:
     padding: "0 16px"
     height: "44px"
   nav-item-active:
-    backgroundColor: "{colors.accent-soft}"
+    backgroundColor: "{colors.action}"
+    textColor: "{colors.on-action}"
   tab:
     textColor: "{colors.ink-muted}"
     typography: "{typography.small}"
@@ -170,63 +174,68 @@ components:
     padding: "0 16px"
     height: "32px"
   tab-selected:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.action}"
+    textColor: "{colors.on-action}"
 ---
 
 # Design System: Service Day
 
 ## Overview
 
-**Creative North Star: "Morning of Service Day"**
+**Creative North Star: "The Volunteer Roster"**
 
-The light just before volunteers head out: a warm, quiet room, everything prepared, one clear thing to do next. Service Day sits on a warm light-grey canvas with white cards laid on it like sheets on a table: large soft corners, almost no lines, no shadows at rest. A single terracotta accent shows up the way morning sun does, on a few things only: the active place in the navigation, the bars of a chart, a KPI that matters. Everything else is ink on white.
+A clean roster on a cool desk on the morning of Service Day: names, places, deadlines, all in ink, and one green mark beside whatever is filling up. Service Day sits on a cool, faintly green-grey canvas with white cards laid on it like sheets: large soft corners, almost no lines, no shadows at rest. Ink does the acting: the primary button, the page you are on, the filter you chose. Pine does the counting: slot meters, chart bars, the participation gauge. Everything else is ink on white.
 
-This is a working dashboard (Operate). Ambition shows as precision and restraint: confident numbers set large in tabular figures, medium-weight headings, small muted labels, and generous but never empty spacing. Pill-shaped controls and thin line icons keep the surface soft without making it cute. Taste and typography follow `docs/reference/dashboard-reference.png`; its content, layout specifics and orange-on-everything usage do not carry over.
+This is a working dashboard (Operate). Ambition shows as precision and restraint: confident numbers set large in tabular figures, medium-weight headings, small muted labels, and generous but never empty spacing. Pill-shaped controls and thin line icons keep the surface soft without making it cute. Typography follows `docs/reference/dashboard-reference.png`; the colour mood (ink selection, pale cool canvas, muted pastels for categories) was chosen with the student from a second reference, without its decorative backdrop.
 
-The scene that sets the theme: office staff at a desk in daylight, and on the day itself a phone outdoors. So the default is light and warm. A dark theme is planned as an equal alternative, not a restyle; until it lands, every value here is the light theme.
+The scene that sets the theme: office staff at a desk in daylight, and on the day itself a phone outdoors, so the default is light. Every value here is the light theme; a dark theme is not part of this build.
 
 **Key Characteristics:**
-- Warm light-grey canvas, white cards, flat at rest; depth only on overlays.
-- One accent, used sparingly and only for large marks; text in the accent always uses the stronger tone.
+- Cool light canvas, white cards, flat at rest; depth only on overlays.
+- Ink for action and selection; pine for marks that count. Neither is used as decoration.
 - Large tabular numerals for anything counted: slots, participation, days left.
-- Status is shown with the same small vocabulary everywhere (open, last slots, closing soon, full, closed, cancelled, draft).
-- Signature details carry the identity: the segmented **slot meter**, the relative + absolute **cut-off label**, the bar-built **participation gauge**, and **initials avatars** on deterministic soft tints for NGOs.
+- Status is shown with the same small vocabulary everywhere (open, last slots, closing soon, full, closed, cancelled, draft), always with a label.
+- Signature details carry the identity: the segmented **slot meter**, the relative + absolute **cut-off label**, the bar-built **participation gauge**, and **initials avatars** on deterministic muted tints for NGOs.
 
 ## Colors
 
-Restrained: warm neutrals carry the surface, one terracotta accent marks what matters, and four status hues each come with a soft tint.
+Restrained: cool neutrals carry the surface, Ink carries every action and selection, one Pine accent marks what is filling up, and four status hues each come with a soft tint.
 
-### Primary
-- **Morning Terracotta** (`accent`): large marks only — chart bars, icons, the active-nav marker, KPI accents, gauge bars. Never body text (3.24:1 on white).
-- **Fired Clay** (`accent-strong`): every accent-coloured text, links, filled primary buttons with white text (`on-accent`), the Sign out link, the focus ring, the bell's unread badge. Meets 4.5:1 on white and on `accent-soft`. Hover darkens to `accent-strong-hover`.
-- **Apricot Wash** (`accent-soft`): active nav background, icon tiles, selected pill.
+### Action
+- **Roster Ink** (`action`, same value as `ink`): filled primary buttons, the active navigation item, the selected filter pill and the selected tab, always with white text (`on-action`, 17.8:1). Hover lifts to **Soft Ink** (`action-hover`). There is one dark item per group, so the eye finds where you are and what to press.
+
+### Accent
+- **Pine** (`accent`): marks only: chart bars, slot-meter segments, gauge bars, icon tiles, the brand tile. 6.0:1 on white, so it also carries white text on the brand tile.
+- **Deep Pine** (`accent-strong`): links, the focus ring, the Sign out link, the bell's unread badge, the checked switch and accent-coloured text. 8.7:1 on white, 7.3:1 on `accent-soft`. Hover darkens to `accent-strong-hover`.
+- **Pine Wash** (`accent-soft`): icon tiles, the selected choice card, offset chips, unread notice tiles, text selection.
 
 ### Neutral
-- **Linen Canvas** (`canvas`): the app background behind all cards.
+- **Cool Canvas** (`canvas`): the app background behind all cards.
 - **Paper White** (`surface`): cards, sidebar, top bar.
-- **Sunken Linen** (`surface-sunken`): inputs, table header row, inner tiles inside cards.
-- **Hairline** (`hairline`): dividers and the capacity track in charts; never card outlines.
+- **Sunken Paper** (`surface-sunken`): inputs, table header row, inner tiles inside cards.
+- **Hairline** (`hairline`): dividers, the capacity track in charts and the hover of navigation items; never card outlines.
 - **Strong Hairline** (`hairline-strong`): empty slot-meter segments, quiet outlines on secondary buttons, filter pills and the bell.
-- **Field Edge** (`control-border`): the 1px edge of text fields, selects and the search pill (3.35:1 on white, 3.10:1 on sunken linen), so a field reads as a field (WCAG 1.4.11).
+- **Field Edge** (`control-border`): the 1px edge of text fields, selects and the search pill (3.53:1 on white, 3.29:1 on sunken paper), so a field reads as a field (WCAG 1.4.11).
 - **Ink** (`ink`): primary text and numbers.
-- **Muted Ink** (`ink-muted`): secondary text, labels, captions.
+- **Muted Ink** (`ink-muted`): secondary text, labels, captions (5.5:1 on canvas).
 - **Faint Ink** (`ink-faint`): placeholders and chart axis labels, on `surface` or `surface-sunken` only.
 
 ### Status
-- **Field Green** (`success` / `success-soft`): open, checked in, positive delta.
+- **Leaf Green** (`success` / `success-soft`): open, checked in, positive delta. Yellow-green, a different hue from Pine, and always shown with a label.
 - **Harvest Amber** (`warning` / `warning-soft`): last slots, closing soon.
 - **Brick Red** (`danger` / `danger-soft`): full, destructive actions, errors; cancelled uses a danger outline.
 - **Clear Blue** (`info` / `info-soft`): neutral information, draft.
 - Closed uses neutral: `ink-muted` on `surface-sunken`.
 
 ### NGO tints
-Six soft tints (**Apricot, Sage, Sand, Sky, Rose, Butter**) behind initials avatars. The tint is picked deterministically from the NGO's id, so an NGO keeps its colour everywhere; initials stay in Ink.
+Six muted tints (**Sage, Sky, Clay, Butter, Rose, Lilac**) behind initials avatars. The tint is picked deterministically from the NGO's id, so an NGO keeps its colour everywhere; initials stay in Ink (at least 14:1).
 
 ### Named Rules
-**The Morning Sun Rule.** The accent appears on a few large marks per screen, never as a fill behind content areas. If more than one card on a screen is dominated by terracotta, remove it from all but the most important.
+**The One Dark Item Rule.** In any group (navigation, filters, tabs, a card's actions) at most one element is filled with Ink: the current or primary one. Hover never fills with Ink; it uses Hairline or Sunken Paper, so the current item stays unmistakable.
 
-**The Strong Tone Rule.** Any text that wants to be terracotta uses `accent-strong`, never `accent`. Every text/background pair in this palette is at least 4.5:1; keep it that way when adding tokens.
+**The Pine Counts Rule.** Pine appears on marks that measure something (places, participation, fill), never as a fill behind content areas or as decoration. Success keeps its own leaf-green hue so "open" never reads as "pine".
+
+**The Contrast Rule.** Every text/background pair in this palette is at least 4.5:1 and every control edge at least 3:1; keep it that way when adding tokens.
 
 **The No Hard-Coding Rule.** Component CSS uses these tokens through CSS custom properties in `src/styles/tokens.css`; no hex values, font sizes or radii in component files. Canvas-drawn things (the Fill by NGO chart, the QR code and its PNG poster) read the same tokens with `getComputedStyle`.
 
@@ -277,12 +286,12 @@ Flexbox only, on every page (a graded criterion): no CSS Grid. Card collections 
 
 ## Elevation & Depth
 
-Flat by default. Depth comes from tone: white cards on the warm canvas, sunken tiles inside cards. Shadows exist only on things that float above the page.
+Flat by default. Depth comes from tone: white cards on the cool canvas, sunken tiles inside cards. Shadows exist only on things that float above the page.
 
 ### Shadow Vocabulary
-- **Overlay** (`box-shadow: 0 12px 32px rgb(28 27 25 / 0.10)`): drawers, dialogs, the row-actions menu, the notification dropdown and toasts. Nothing else.
+- **Overlay** (`box-shadow: 0 12px 32px rgb(21 25 23 / 0.10)`): drawers, dialogs, the row-actions menu, the notification dropdown and toasts. Nothing else.
 
-Dialogs and drawers use the native modal `<dialog>` over a warm scrim (`rgb(28 27 25 / 0.32)`); menus and the notification dropdown are native popovers placed under their trigger.
+Dialogs and drawers use the native modal `<dialog>` over an ink scrim (`rgb(21 25 23 / 0.36)`); menus and the notification dropdown are native popovers placed under their trigger.
 
 ### Named Rules
 **The Flat Table Rule.** Cards never get borders or shadows at rest. If a card needs separation, adjust the surface tone, not a line.
@@ -305,53 +314,53 @@ Refined and restrained: soft pills and sheets, one filled colour for the primary
 
 ### Buttons
 - **Shape:** fully rounded pills (999px); 40px tall, 32px for the small size.
-- **Primary:** Fired Clay fill with white text, 20px side padding (16px small). One primary action per card.
-- **Secondary:** Sunken Linen with a Strong Hairline inset outline and Ink text; for the second action or a lone action that isn't the main one.
-- **Ghost:** no fill, Muted Ink text; Sunken Linen on hover. A lone ghost link in a card header is pulled out by its own padding so its text lines up with the content edge.
+- **Primary:** Roster Ink fill with white text, Soft Ink on hover, 20px side padding (16px small). One primary action per card.
+- **Secondary:** Sunken Paper with a Strong Hairline inset outline and Ink text; for the second action or a lone action that isn't the main one.
+- **Ghost:** no fill, Muted Ink text; Sunken Paper on hover. A lone ghost link in a card header is pulled out by its own padding so its text lines up with the content edge.
 - **Danger:** Brick Red fill with white text, only inside a confirm dialog for a destructive step.
-- **Disabled:** Sunken Linen with Muted Ink and no outline; always paired with a sentence saying why.
+- **Disabled:** Sunken Paper with Muted Ink and no outline; always paired with a sentence saying why.
 - **Busy:** the label changes ("Saving…", "Working…") and the button is disabled; a second click does nothing.
-- **Focus:** a 2px Fired Clay ring, 2px offset, on every interactive element.
+- **Focus:** a 2px Deep Pine ring, 2px offset, on every interactive element.
 
 ### Chips and pills
 - **Status pill** (24px, micro type, soft tint with a 6px dot in the status colour): open, last slots, closing soon, full, closed, cancelled (danger outline), draft; also On time, Late, Not arrived, Verified, Checked in.
-- **Filter pill** (36px): Sunken Linen with a Strong Hairline outline; selected turns Apricot Wash with a Morning Terracotta outline and Fired Clay text. Counts sit inside in tabular figures.
-- **Offset chip** (Schedule tab): Apricot Wash with Fired Clay text and a small remove button.
+- **Filter pill** (36px): Sunken Paper with a Strong Hairline outline; Hairline on hover; selected turns Roster Ink with white text. Counts sit inside in tabular figures.
+- **Offset chip** (Schedule tab): Pine Wash with Deep Pine text and a small remove button.
 
 ### Cards / Containers
 - **Corner Style:** 20px.
-- **Background:** Paper White on Linen Canvas.
+- **Background:** Paper White on Cool Canvas.
 - **Shadow Strategy:** none at rest (see Elevation & Depth).
 - **Border:** none.
 - **Internal Padding:** 24px (20px on phones); gap between cards 20px (16px).
-- **Sunken tile:** Sunken Linen, 14px corners, 16px padding, for numbers and previews inside a card (week tiles, check-in counters, the inbox preview).
+- **Sunken tile:** Sunken Paper, 14px corners, 16px padding, for numbers and previews inside a card (week tiles, check-in counters, the inbox preview).
 
 ### Inputs / Fields
-- **Style:** Sunken Linen fill, 1px Field Edge, 12px corners, 40px tall. The search field is a pill with the same edge and a leading icon.
-- **Focus:** the edge and ring turn Fired Clay; the search pill shows the ring on the whole pill.
+- **Style:** Sunken Paper fill, 1px Field Edge, 12px corners, 40px tall. The search field is a pill with the same edge and a leading icon.
+- **Focus:** the edge and ring turn Deep Pine; the search pill shows the ring on the whole pill.
 - **Error:** a Brick Red sentence under the field that says what is wrong and how to fix it, linked with `aria-describedby`; focus moves to the first invalid field.
-- **Choice cards:** radio options as Sunken Linen tiles (14px corners) with a title and a muted line; selected turns Apricot Wash with a Morning Terracotta edge.
-- **Switch:** a 36×20 pill track (Faint Ink, Fired Clay when on) with a white thumb.
+- **Choice cards:** radio options as Sunken Paper tiles (14px corners) with a title and a muted line; selected turns Pine Wash with a Pine edge.
+- **Switch:** a 36×20 pill track (Faint Ink, Deep Pine when on) with a white thumb.
 
 ### Navigation
-- **Sidebar:** its own white card. Items are 44px tall, body type, 14px corners; hover is Sunken Linen; the active item is Apricot Wash, medium weight, with a 3px Morning Terracotta bar on its left edge. "How it works" and Sign out (Fired Clay) sit at the bottom.
-- **Top bar:** the page h1 and a small subtitle on the left; the notification bell (outlined pill button with a Fired Clay count badge) and the profile chip on the right. Below 900px a menu button opens the same sidebar in a drawer.
-- **Tabs:** a segmented pill on Sunken Linen; the selected tab is a white pill with a Strong Hairline outline. Arrow keys move between tabs; the selected tab lives in the URL.
+- **Sidebar:** its own white card. Items are 44px tall, body type, 14px corners; hover is Hairline; the active item is filled with Roster Ink, white text and icon, medium weight. "How it works" and Sign out (Deep Pine) sit at the bottom.
+- **Top bar:** the page h1 and a small subtitle on the left; the notification bell (outlined pill button with a Deep Pine count badge) and the profile chip on the right. Below 900px a menu button opens the same sidebar in a drawer.
+- **Tabs:** a segmented pill on Sunken Paper; the selected tab is a Roster Ink pill with white text. Arrow keys move between tabs; the selected tab lives in the URL.
 
 ### Slot meter (signature)
-A thin bar with one segment per slot (up to 20; a continuous bar above that) and a tabular line under it: "3 of 12 left". Plenty is Morning Terracotta, last slots Harvest Amber, full Brick Red ("Full · 15 of 15 taken"); closed and draft activities use a muted Faint Ink fill.
+A thin bar with one segment per slot (up to 20; a continuous bar above that) and a tabular line under it: "3 of 12 left". Plenty is Pine, last slots Harvest Amber, full Brick Red ("Full · 15 of 15 taken"); closed and draft activities use a muted Faint Ink fill.
 
 ### Cut-off label (signature)
 Relative and absolute together: "Closes in 2 days · 18 Nov, 17:00", and after the cut-off "Closed 18 Nov, 17:00". Used on cards, tables, the detail page and the Schedule preview.
 
 ### Participation gauge (signature)
-A semicircle of 20 short rounded bars, filled in Morning Terracotta in proportion to staff participation, with the percentage in KPI type in its open bottom and two week tiles under it.
+A semicircle of 20 short rounded bars, filled in Pine in proportion to staff participation, with the percentage in KPI type in its open bottom and two week tiles under it.
 
 ### Initials avatar (signature)
 Initials in Ink on one of the six NGO tints, chosen from the id. Round for people, a 14px tile for NGOs.
 
 ### Notice
-A row with a 32px icon tile (Apricot Wash when unread, Brick Red tint when urgent), the title (heavier when unread), an optional muted message, the time, and an 8px unread dot. The same row is used in the inbox, the bell dropdown, the broadcast preview and the admin history.
+A row with a 32px icon tile (Pine Wash when unread, Brick Red tint when urgent), the title (heavier when unread), an optional muted message, the time, and an 8px unread dot. The same row is used in the inbox, the bell dropdown, the broadcast preview and the admin history.
 
 ### Empty, loading and error states
 Empty states sit start-aligned with a 44px icon tile, a heading, one sentence that says what to do next, and an action. Loading uses skeleton lines in the shape of the content. Error states name the problem and say the page retries on its own (or offer "Try again"); toasts appear once, not on every failed poll.
@@ -359,7 +368,7 @@ Empty states sit start-aligned with a 44px icon tile, a heading, one sentence th
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep the accent on large marks and use `accent-strong` (never `accent`) for any terracotta text.
+- **Do** keep Ink for action and selection, Pine for marks that count, and use `accent-strong` for any pine-coloured text.
 - **Do** give every data view a loading skeleton, an empty state that says what to do next, and an error state.
 - **Do** explain every disabled action in a sentence ("Registration closed on 18 Nov, 17:00").
 - **Do** show deadlines relative and absolute together: "Closes in 2 days · 18 Nov, 17:00".

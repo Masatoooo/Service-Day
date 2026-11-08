@@ -25,5 +25,5 @@ export const DEPARTMENTS: readonly string[] = [
   'People & Culture',
 ];
 
-/** Self-registration is for Halden & Co. staff only. */
-export const WORK_EMAIL_DOMAIN = '@halden.co';
+/** Self-registration is for Kaneko.co staff only. */
+export const WORK_EMAIL_DOMAIN = '@kaneko.co';

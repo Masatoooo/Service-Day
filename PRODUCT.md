@@ -8,7 +8,7 @@ web
 
 ## Users
 
-**Employees** (primary). Office staff of Halden & Co. They visit 1–3 times per Service Day season, briefly, mostly on desktop, and sometimes on a phone on the day itself. Their job: find a volunteering activity that suits them quickly, sign up, and always know exactly where they stand (registered where, until when they can still change it, what happens on the day).
+**Employees** (primary). Office staff of Kaneko.co They visit 1–3 times per Service Day season, briefly, mostly on desktop, and sometimes on a phone on the day itself. Their job: find a volunteering activity that suits them quickly, sign up, and always know exactly where they stand (registered where, until when they can still change it, what happens on the day).
 
 **Administrators**. The CSR / People & Culture team. They work in several sessions per week during the season, on desktop. Their job: keep NGO activities published and balanced, avoid overbooking, see who has not signed up yet and nudge them, and track attendance on the day.
 
@@ -16,7 +16,7 @@ web
 
 ## Product Purpose
 
-Service Day is an internal web dashboard for Halden & Co.'s annual corporate social responsibility (CSR) volunteering day. Employees browse NGO volunteering activities, register for one, switch or withdraw before a cut-off, read notices, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor slot use and staff participation, send reminders and broadcasts, and track check-ins.
+Service Day is an internal web dashboard for Kaneko.co's annual corporate social responsibility (CSR) volunteering day. Employees browse NGO volunteering activities, register for one, switch or withdraw before a cut-off, read notices, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor slot use and staff participation, send reminders and broadcasts, and track check-ins.
 
 Success for employees: picking and securing an activity takes a few minutes, and no one is ever unsure whether they are registered or why an action is unavailable. Success for administrators: no activity is overbooked, under-filled activities and unregistered staff are visible early, and attendance on the day is recorded without paperwork.
 
@@ -29,12 +29,12 @@ Service Day covers the whole loop of one company volunteering day in one place: 
 - Seasonal rhythm: activities are published weeks ahead, registration closes at a per-activity cut-off, and Service Day itself is one day (seed: today + 14 days). Admin activity peaks during the season.
 - Employees often arrive from a reminder or broadcast, act once, and leave. On the day they may use a phone to open the QR check-in link or type the 8-character code.
 - Administrators keep the dashboard open while monitoring. Availability updates live by polling, without page reloads.
-- Assessment context: the work is demonstrated in a recorded video with seeded demo accounts (Nadia Halim as admin; Aisha, Daniel, Priya and Marcus as employees with prepared situations) and scripted scenarios (PLAN §11), including a two-window "last slot" live-update demo. The graded criteria are MVC structure, front-end design (semantic HTML, box model, Flexbox, responsive), AJAX, and modules and packages. Those concepts should stay visible and explainable in the running app and its code.
+- Assessment context: the work is demonstrated in a recorded video with seeded demo accounts (Masato Kaneko as admin; Aisha, Daniel, Komang and Marcus as employees with prepared situations) and scripted scenarios (PLAN §11), including a two-window "last slot" live-update demo. The graded criteria are MVC structure, front-end design (semantic HTML, box model, Flexbox, responsive), AJAX, and modules and packages. Those concepts should stay visible and explainable in the running app and its code.
 
 ## Capabilities and Constraints
 
 - Use cases: UC1 manage NGO availability (admin), UC2 view opportunities, UC3 register / switch / withdraw, UC4 monitor participation (admin), UC5 notifications and reminders, UC6 QR check-in.
-- Roles: Employee and Admin. Self-registration creates employees only (work email must end in `@halden.co`); admins exist in seed data.
+- Roles: Employee and Admin. Self-registration creates employees only (work email must end in `@kaneko.co`); admins exist in seed data.
 - Rules: one active registration per employee per season; changes only before the activity's cut-off; overbooking guard re-checks slots right before writing; check-in only on the activity date for registered employees, arrivals more than 15 minutes after start are marked Late.
 - Front-end only in Assignment 1. The json-server mock API stores plain-text passwords, which is acceptable only for the mock. Real email, schedulers, server-side enforcement and real scan endpoints come in Assignment 2, which must only require changing `environment.apiUrl` (plus auth token handling).
 - UC5 and UC6 are UI plus client-simulated behaviour in this build.
@@ -43,9 +43,9 @@ Service Day covers the whole loop of one company volunteering day in one place: 
 
 ## Brand Commitments
 
-- Product name **Service Day**; company **Halden & Co.** (fictional). UI language English, sentence case.
+- Product name **Service Day**; company **Kaneko.co** (fictional). UI language English, sentence case.
 - Voice: warm, calm, competent, human. Generous but not empty. Confident numbers. No hype. Copy is specific: it names the activity, the date and the reason, and tells people what to do next.
-- Binding visual constraints set by the brief (recorded, not expanded here): font Instrument Sans Variable at weights 400/500/600 with tabular numbers; colour, type, radius, spacing, elevation and motion tokens exactly as PLAN §8; accent `#E8692C` for large marks only, `#B24D19` for text and filled buttons (darkened from `#B9501A` to meet WCAG 2.2 AA); Flexbox-only layouts; plain CSS with custom properties. Reference for taste and typography only, not content: `docs/reference/dashboard-reference.png`.
+- Binding visual constraints set by the brief (recorded, not expanded here): font Instrument Sans Variable at weights 400/500/600 with tabular numbers; type, radius, spacing, elevation and motion tokens as PLAN §8; colour is the "Ink + Pine" palette chosen with the student (branch `revamp/ink-pine`, values in DESIGN.md): Ink `#151917` for filled primary buttons and the selected nav item, pill and tab, Pine `#2D6E58` for marks, Deep Pine `#1E5442` for links and focus, a leaf-green success hue kept apart from Pine; light mode only; Flexbox-only layouts; plain CSS with custom properties. Reference for taste and typography only, not content: `docs/reference/dashboard-reference.png`.
 - Anti-references: generic AI dashboards (purple/blue gradients, glassmorphism, emoji icons, identical card grids, stock illustrations, lorem ipsum), Bootstrap admin templates, Material default look.
 
 ## Evidence on Hand

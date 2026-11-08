@@ -153,14 +153,15 @@ html:has(dialog[open]) {
     color var(--duration-fast) var(--ease-out);
 }
 
+/* The primary action is Ink: the strongest contrast on the page, so it is easy to find. */
 .btn--primary {
-  background: var(--accent-strong);
-  color: var(--on-accent);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .btn--primary:hover {
-  background: var(--accent-strong-hover);
-  color: var(--on-accent);
+  background: var(--action-hover);
+  color: var(--on-action);
 }
 
 .btn--secondary {

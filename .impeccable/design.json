@@ -1,22 +1,22 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-08T14:24:23+08:00",
+  "generatedAt": "2026-11-08T16:28:04+08:00",
   "title": "Design System: Service Day",
   "extensions": {
     "colorMeta": {
       "canvas": {
         "role": "neutral",
-        "displayName": "Linen Canvas",
-        "canonical": "#F4F3F1",
+        "displayName": "Cool Canvas",
+        "canonical": "#F1F3F2",
         "tonalRamp": [
-          "#3D3D3C",
-          "#6E6D6C",
-          "#9F9E9D",
-          "#CFCFCD",
-          "#F7F6F4",
-          "#FAF9F8",
-          "#FCFCFC",
-          "#FEFEFE"
+          "#111211",
+          "#282929",
+          "#474847",
+          "#686968",
+          "#919292",
+          "#B6B8B7",
+          "#D7D8D7",
+          "#F1F2F2"
         ]
       },
       "surface": {
@@ -24,179 +24,224 @@
         "displayName": "Paper White",
         "canonical": "#FFFFFF",
         "tonalRamp": [
-          "#404040",
-          "#737373",
-          "#A6A6A6",
-          "#D9D9D9",
-          "#FFFFFF",
-          "#FFFFFF",
-          "#FFFFFF",
-          "#FFFFFF"
+          "#121212",
+          "#292929",
+          "#484848",
+          "#696969",
+          "#929292",
+          "#B7B7B7",
+          "#D7D7D7",
+          "#F2F2F2"
         ]
       },
       "surface-sunken": {
         "role": "neutral",
-        "displayName": "Sunken Linen",
-        "canonical": "#F7F6F4",
+        "displayName": "Sunken Paper",
+        "canonical": "#F6F7F6",
         "tonalRamp": [
-          "#3E3E3D",
-          "#6F6F6E",
-          "#A1A09F",
-          "#D2D1CF",
-          "#F9F8F7",
-          "#FBFAFA",
-          "#FDFDFC",
-          "#FEFEFE"
+          "#111211",
+          "#292929",
+          "#474847",
+          "#686968",
+          "#929292",
+          "#B7B7B7",
+          "#D7D7D7",
+          "#F1F2F1"
         ]
       },
       "hairline": {
         "role": "neutral",
         "displayName": "Hairline",
-        "canonical": "#ECEAE6",
+        "canonical": "#E5E8E6",
         "tonalRamp": [
-          "#3B3A3A",
-          "#6A6967",
-          "#999896",
-          "#C9C7C4",
-          "#F1EFEC",
-          "#F6F4F2",
-          "#FAFAF9",
-          "#FDFDFC"
+          "#111211",
+          "#282928",
+          "#464847",
+          "#676A68",
+          "#919391",
+          "#B6B8B7",
+          "#D6D8D7",
+          "#F1F2F1"
         ]
       },
       "hairline-strong": {
         "role": "neutral",
         "displayName": "Strong Hairline",
-        "canonical": "#DCD9D3",
+        "canonical": "#D2D7D4",
         "tonalRamp": [
-          "#373635",
-          "#63625F",
-          "#8F8D89",
-          "#BBB8B3",
-          "#E5E2DE",
-          "#EEECE9",
-          "#F6F6F4",
-          "#FCFBFB"
+          "#111211",
+          "#272928",
+          "#454847",
+          "#666A68",
+          "#8F9391",
+          "#B5B8B6",
+          "#D6D8D7",
+          "#F1F2F1"
         ]
       },
       "control-border": {
         "role": "neutral",
         "displayName": "Field Edge",
-        "canonical": "#8F8C86",
+        "canonical": "#838A86",
         "tonalRamp": [
-          "#242322",
-          "#403F3C",
-          "#5D5B57",
-          "#7A7772",
-          "#ABA9A4",
-          "#C7C6C2",
-          "#E3E2E1",
-          "#F4F4F3"
+          "#101211",
+          "#272A28",
+          "#444946",
+          "#646B67",
+          "#8E9490",
+          "#B4B8B6",
+          "#D5D8D6",
+          "#F0F2F1"
         ]
       },
       "ink": {
         "role": "neutral",
         "displayName": "Ink",
-        "canonical": "#1C1B19",
+        "canonical": "#151917",
         "tonalRamp": [
-          "#070706",
-          "#0D0C0B",
-          "#121210",
-          "#181715",
-          "#555452",
-          "#8E8D8C",
-          "#C6C6C6",
-          "#E8E8E8"
+          "#111211",
+          "#272928",
+          "#454947",
+          "#656A68",
+          "#8F9391",
+          "#B5B8B6",
+          "#D6D8D7",
+          "#F1F2F1"
         ]
       },
       "ink-muted": {
         "role": "neutral",
         "displayName": "Muted Ink",
-        "canonical": "#6B6965",
+        "canonical": "#5C635F",
         "tonalRamp": [
-          "#1B1A19",
-          "#302F2D",
-          "#464442",
-          "#5B5956",
-          "#908E8C",
-          "#B5B4B2",
-          "#DADAD8",
-          "#F0F0F0"
+          "#101211",
+          "#272A28",
+          "#444946",
+          "#646B67",
+          "#8E9490",
+          "#B4B9B6",
+          "#D5D8D6",
+          "#F0F2F1"
         ]
       },
       "ink-faint": {
         "role": "neutral",
         "displayName": "Faint Ink",
-        "canonical": "#73716C",
+        "canonical": "#69706C",
         "tonalRamp": [
-          "#1D1C1B",
-          "#343331",
-          "#4B4946",
-          "#62605C",
-          "#969491",
-          "#B9B8B6",
-          "#DCDCDA",
-          "#F1F1F0"
+          "#101211",
+          "#272A28",
+          "#444946",
+          "#646B67",
+          "#8E9490",
+          "#B4B9B6",
+          "#D5D8D6",
+          "#F0F2F1"
+        ]
+      },
+      "action": {
+        "role": "secondary",
+        "displayName": "Roster Ink",
+        "canonical": "#151917",
+        "tonalRamp": [
+          "#111211",
+          "#272928",
+          "#454947",
+          "#656A68",
+          "#8F9391",
+          "#B5B8B6",
+          "#D6D8D7",
+          "#F1F2F1"
+        ]
+      },
+      "action-hover": {
+        "role": "secondary",
+        "displayName": "Soft Ink",
+        "canonical": "#2E3531",
+        "tonalRamp": [
+          "#101211",
+          "#262A28",
+          "#444946",
+          "#646B67",
+          "#8D9490",
+          "#B4B9B6",
+          "#D5D8D6",
+          "#F0F2F1"
+        ]
+      },
+      "on-action": {
+        "role": "secondary",
+        "displayName": "On Action",
+        "canonical": "#FFFFFF",
+        "tonalRamp": [
+          "#121212",
+          "#292929",
+          "#484848",
+          "#696969",
+          "#929292",
+          "#B7B7B7",
+          "#D7D7D7",
+          "#F2F2F2"
         ]
       },
       "accent": {
         "role": "primary",
-        "displayName": "Morning Terracotta",
-        "canonical": "#E8692C",
+        "displayName": "Pine",
+        "canonical": "#2D6E58",
         "tonalRamp": [
-          "#3A1A0B",
-          "#682F14",
-          "#97441D",
-          "#C55925",
-          "#EE8E61",
-          "#F4B496",
-          "#F9DACA",
-          "#FDF0EA"
+          "#06150F",
+          "#132F25",
+          "#265142",
+          "#3B7661",
+          "#6D9F8B",
+          "#9DC1B2",
+          "#C5DED4",
+          "#E6F6EF"
         ]
       },
       "accent-strong": {
         "role": "primary",
-        "displayName": "Fired Clay",
-        "canonical": "#B24D19",
+        "displayName": "Deep Pine",
+        "canonical": "#1E5442",
         "tonalRamp": [
-          "#2C1306",
-          "#50230B",
-          "#743210",
-          "#974115",
-          "#C57A52",
-          "#D8A68C",
-          "#ECD2C6",
-          "#F7EDE8"
+          "#081510",
+          "#172E26",
+          "#2D5043",
+          "#437562",
+          "#739D8C",
+          "#A1C0B3",
+          "#C8DDD4",
+          "#E8F6F0"
         ]
       },
       "accent-strong-hover": {
         "role": "primary",
-        "displayName": "Fired Clay, pressed",
-        "canonical": "#973F12",
+        "displayName": "Deep Pine Hover",
+        "canonical": "#153D30",
         "tonalRamp": [
-          "#261004",
-          "#441C08",
-          "#62290C",
-          "#80360F",
-          "#B16F4D",
-          "#CB9F88",
-          "#E5CFC4",
-          "#F5ECE7"
+          "#0A1410",
+          "#1C2D27",
+          "#334E44",
+          "#4D7264",
+          "#7A9B8E",
+          "#A6BEB4",
+          "#CBDCD5",
+          "#EAF5F0"
         ]
       },
       "accent-soft": {
         "role": "primary",
-        "displayName": "Apricot Wash",
-        "canonical": "#FDEDE4",
+        "displayName": "Pine Wash",
+        "canonical": "#E2EEE8",
         "tonalRamp": [
-          "#3F3B39",
-          "#726B67",
-          "#A49A94",
-          "#D7C9C2",
-          "#FEF2EB",
-          "#FEF6F2",
-          "#FEFAF8",
-          "#FFFDFC"
+          "#101211",
+          "#262A28",
+          "#434A46",
+          "#626C67",
+          "#8C9590",
+          "#B3B9B6",
+          "#D4D9D6",
+          "#EFF3F1"
         ]
       },
       "on-accent": {
@@ -204,239 +249,239 @@
         "displayName": "On Accent",
         "canonical": "#FFFFFF",
         "tonalRamp": [
-          "#404040",
-          "#737373",
-          "#A6A6A6",
-          "#D9D9D9",
-          "#FFFFFF",
-          "#FFFFFF",
-          "#FFFFFF",
-          "#FFFFFF"
+          "#121212",
+          "#292929",
+          "#484848",
+          "#696969",
+          "#929292",
+          "#B7B7B7",
+          "#D7D7D7",
+          "#F2F2F2"
         ]
       },
       "success": {
-        "role": "status",
-        "displayName": "Field Green",
-        "canonical": "#1A7B45",
+        "role": "semantic",
+        "displayName": "Leaf Green",
+        "canonical": "#4A7616",
         "tonalRamp": [
-          "#061F11",
-          "#0C371F",
-          "#11502D",
-          "#16693B",
-          "#539C74",
-          "#8CBDA2",
-          "#C6DED0",
-          "#E8F2EC"
+          "#0A1502",
+          "#1C2F08",
+          "#345213",
+          "#4D7721",
+          "#7AA05A",
+          "#A6C28F",
+          "#CBDFBC",
+          "#EAF7E0"
         ]
       },
       "success-soft": {
-        "role": "status",
-        "displayName": "Field Green wash",
-        "canonical": "#E5F4EA",
+        "role": "semantic",
+        "displayName": "Leaf Wash",
+        "canonical": "#EEF5E1",
         "tonalRamp": [
-          "#393D3A",
-          "#676E69",
-          "#959F98",
-          "#C3CFC7",
-          "#ECF7EF",
-          "#F2FAF4",
-          "#F8FCFA",
-          "#FCFEFD"
+          "#11120E",
+          "#272A23",
+          "#464A3E",
+          "#666C5B",
+          "#909586",
+          "#B5B9AE",
+          "#D6D9D1",
+          "#F1F3ED"
         ]
       },
       "warning": {
-        "role": "status",
+        "role": "semantic",
         "displayName": "Harvest Amber",
         "canonical": "#986000",
         "tonalRamp": [
-          "#261800",
-          "#442B00",
-          "#633E00",
-          "#815200",
-          "#B28840",
-          "#CCB080",
-          "#E5D7BF",
-          "#F5EFE6"
+          "#1C0E00",
+          "#3B2301",
+          "#643E03",
+          "#905C07",
+          "#B78850",
+          "#D4B088",
+          "#ECD3B7",
+          "#FFEFDD"
         ]
       },
       "warning-soft": {
-        "role": "status",
-        "displayName": "Harvest Amber wash",
+        "role": "semantic",
+        "displayName": "Amber Wash",
         "canonical": "#FBF1DC",
         "tonalRamp": [
-          "#3F3C37",
-          "#716C63",
-          "#A39D8F",
-          "#D5CDBB",
-          "#FCF4E5",
-          "#FDF8EE",
-          "#FEFCF6",
-          "#FFFEFC"
+          "#13110D",
+          "#2C2820",
+          "#4D473B",
+          "#706857",
+          "#999182",
+          "#BCB7AB",
+          "#DBD7CF",
+          "#F4F1EC"
         ]
       },
       "danger": {
-        "role": "status",
+        "role": "semantic",
         "displayName": "Brick Red",
         "canonical": "#C2352C",
         "tonalRamp": [
-          "#300D0B",
-          "#571814",
-          "#7E221D",
-          "#A52D25",
-          "#D16861",
-          "#E09A96",
-          "#F0CCCA",
-          "#F9EBEA"
+          "#260403",
+          "#4D100C",
+          "#7F211A",
+          "#B6332A",
+          "#DC6C5F",
+          "#F39D92",
+          "#FFC6BD",
+          "#FFE7E1"
         ]
       },
       "danger-hover": {
-        "role": "status",
-        "displayName": "Brick Red, pressed",
+        "role": "semantic",
+        "displayName": "Brick Red Hover",
         "canonical": "#A52B23",
         "tonalRamp": [
-          "#290B09",
-          "#4A1310",
-          "#6B1C17",
-          "#8C251E",
-          "#BC605A",
-          "#D29591",
-          "#E8CAC8",
-          "#F6EAE9"
+          "#240604",
+          "#491510",
+          "#7A2821",
+          "#AF3D33",
+          "#D57165",
+          "#EDA196",
+          "#FFC8C0",
+          "#FFE8E3"
         ]
       },
       "danger-soft": {
-        "role": "status",
-        "displayName": "Brick Red wash",
+        "role": "semantic",
+        "displayName": "Brick Wash",
         "canonical": "#FBE9E7",
         "tonalRamp": [
-          "#3F3A3A",
-          "#716968",
-          "#A39796",
-          "#D5C6C4",
-          "#FCEEED",
-          "#FDF4F3",
-          "#FEFAF9",
-          "#FFFDFD"
+          "#141110",
+          "#2E2726",
+          "#4F4544",
+          "#736563",
+          "#9C8F8D",
+          "#BFB5B4",
+          "#DDD6D5",
+          "#F5F0F0"
         ]
       },
       "info": {
-        "role": "status",
+        "role": "semantic",
         "displayName": "Clear Blue",
         "canonical": "#2F5FC4",
         "tonalRamp": [
-          "#0C1831",
-          "#152B58",
-          "#1F3E7F",
-          "#2851A7",
-          "#6387D3",
-          "#97AFE2",
-          "#CBD7F0",
-          "#EAEFF9"
+          "#051029",
+          "#112652",
+          "#224388",
+          "#3563C2",
+          "#6690E4",
+          "#96B7F6",
+          "#C0D8FF",
+          "#E3F3FF"
         ]
       },
       "info-soft": {
-        "role": "status",
-        "displayName": "Clear Blue wash",
+        "role": "semantic",
+        "displayName": "Blue Wash",
         "canonical": "#E8EFFB",
         "tonalRamp": [
-          "#3A3C3F",
-          "#686C71",
-          "#979BA3",
-          "#C5CBD5",
-          "#EEF3FC",
-          "#F4F7FD",
-          "#F9FBFE",
-          "#FDFDFF"
-        ]
-      },
-      "tint-apricot": {
-        "role": "tertiary",
-        "displayName": "Apricot tint",
-        "canonical": "#FDEDE4",
-        "tonalRamp": [
-          "#3F3B39",
-          "#726B67",
-          "#A49A94",
-          "#D7C9C2",
-          "#FEF2EB",
-          "#FEF6F2",
-          "#FEFAF8",
-          "#FFFDFC"
+          "#101214",
+          "#26292D",
+          "#44484F",
+          "#646973",
+          "#8D929B",
+          "#B4B8BE",
+          "#D5D8DC",
+          "#F0F2F5"
         ]
       },
       "tint-sage": {
         "role": "tertiary",
-        "displayName": "Sage tint",
-        "canonical": "#E6F0E4",
+        "displayName": "Sage",
+        "canonical": "#E4EFE5",
         "tonalRamp": [
-          "#3A3C39",
-          "#676C67",
-          "#969C94",
-          "#C4CCC2",
-          "#ECF4EB",
-          "#F2F8F2",
-          "#F9FBF8",
-          "#FCFEFC"
-        ]
-      },
-      "tint-sand": {
-        "role": "tertiary",
-        "displayName": "Sand tint",
-        "canonical": "#F2ECE2",
-        "tonalRamp": [
-          "#3C3B38",
-          "#6D6A66",
-          "#9D9993",
-          "#CEC9C0",
-          "#F5F1E9",
-          "#F8F6F0",
-          "#FCFAF8",
-          "#FEFDFC"
+          "#101210",
+          "#262A26",
+          "#434A44",
+          "#636C64",
+          "#8D958D",
+          "#B3B9B4",
+          "#D4D9D5",
+          "#F0F3F0"
         ]
       },
       "tint-sky": {
         "role": "tertiary",
-        "displayName": "Sky tint",
-        "canonical": "#E6EEF7",
+        "displayName": "Sky",
+        "canonical": "#E2ECF6",
         "tonalRamp": [
-          "#3A3C3E",
-          "#676B6F",
-          "#969BA1",
-          "#C4CAD2",
-          "#ECF2F9",
-          "#F2F6FB",
-          "#F9FBFD",
-          "#FCFDFE"
+          "#101214",
+          "#26292D",
+          "#43484E",
+          "#626A72",
+          "#8C939A",
+          "#B2B8BE",
+          "#D4D8DC",
+          "#EFF2F5"
         ]
       },
-      "tint-rose": {
+      "tint-clay": {
         "role": "tertiary",
-        "displayName": "Rose tint",
-        "canonical": "#F8E7E7",
+        "displayName": "Clay",
+        "canonical": "#F3E5DC",
         "tonalRamp": [
-          "#3E3A3A",
-          "#706868",
-          "#A19696",
-          "#D3C4C4",
-          "#FAEDED",
-          "#FCF3F3",
-          "#FDF9F9",
-          "#FEFDFD"
+          "#14110F",
+          "#2D2824",
+          "#4E4641",
+          "#72665F",
+          "#9A9089",
+          "#BDB6B1",
+          "#DCD6D3",
+          "#F5F1EF"
         ]
       },
       "tint-butter": {
         "role": "tertiary",
-        "displayName": "Butter tint",
-        "canonical": "#F8F0D6",
+        "displayName": "Butter",
+        "canonical": "#F5EED4",
         "tonalRamp": [
-          "#3E3C36",
-          "#706C60",
-          "#A19C8B",
-          "#D3CCB6",
-          "#FAF4E0",
-          "#FCF8EA",
-          "#FDFBF5",
-          "#FEFEFB"
+          "#13120C",
+          "#2C291F",
+          "#4C4838",
+          "#6F6954",
+          "#97927F",
+          "#BBB7A9",
+          "#DAD8CD",
+          "#F4F2EB"
+        ]
+      },
+      "tint-rose": {
+        "role": "tertiary",
+        "displayName": "Rose",
+        "canonical": "#F4E3E7",
+        "tonalRamp": [
+          "#141011",
+          "#2D2728",
+          "#4F4547",
+          "#736568",
+          "#9B8E91",
+          "#BEB4B7",
+          "#DCD5D7",
+          "#F5F0F1"
+        ]
+      },
+      "tint-lilac": {
+        "role": "tertiary",
+        "displayName": "Lilac",
+        "canonical": "#EBE7F2",
+        "tonalRamp": [
+          "#121113",
+          "#29282C",
+          "#49464D",
+          "#6A6770",
+          "#939099",
+          "#B8B6BC",
+          "#D8D6DB",
+          "#F2F1F4"
         ]
       }
     },
@@ -528,7 +573,7 @@
       "refersTo": "button-primary",
       "description": "The one main action in a card: Register, Save changes, Send now.",
       "html": "<button class=\"ds-btn ds-btn-primary\">Register</button>",
-      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; font-weight: 500; cursor: pointer; transition: background-color 150ms cubic-bezier(0.22,1,0.36,1), color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn:focus-visible { outline: 2px solid var(--accent-strong, #B24D19); outline-offset: 2px; } .ds-btn-primary { background: var(--accent-strong, #B24D19); color: var(--on-accent, #FFFFFF); } .ds-btn-primary:hover { background: var(--accent-strong-hover, #973F12); }"
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; font-weight: 500; cursor: pointer; transition: background-color 150ms cubic-bezier(0.22,1,0.36,1), color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn:focus-visible { outline: 2px solid var(--accent-strong, #1E5442); outline-offset: 2px; } .ds-btn-primary { background: var(--action, #151917); color: var(--on-action, #FFFFFF); } .ds-btn-primary:hover { background: var(--action-hover, #2E3531); }"
     },
     {
       "name": "Secondary Button",
@@ -536,7 +581,7 @@
       "refersTo": "button-secondary",
       "description": "Second action, or a lone action that isn't the main one.",
       "html": "<button class=\"ds-btn2\">Switch activity</button>",
-      "css": ".ds-btn2 { display: inline-flex; align-items: center; min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--surface-sunken, #F7F6F4); box-shadow: inset 0 0 0 1px var(--hairline-strong, #DCD9D3); color: var(--ink, #1C1B19); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; font-weight: 500; cursor: pointer; transition: background-color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn2:hover { background: var(--hairline, #ECEAE6); } .ds-btn2:focus-visible { outline: 2px solid var(--accent-strong, #B24D19); outline-offset: 2px; }"
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--surface-sunken, #F6F7F6); box-shadow: inset 0 0 0 1px var(--hairline-strong, #D2D7D4); color: var(--ink, #151917); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; font-weight: 500; cursor: pointer; transition: background-color 150ms cubic-bezier(0.22,1,0.36,1); } .ds-btn2:hover { background: var(--hairline, #E5E8E6); } .ds-btn2:focus-visible { outline: 2px solid var(--accent-strong, #1E5442); outline-offset: 2px; }"
     },
     {
       "name": "Ghost Button",
@@ -544,7 +589,7 @@
       "refersTo": "button-ghost",
       "description": "Quiet actions: Cancel, Edit in a table row, All.",
       "html": "<button class=\"ds-btn3\">Cancel</button>",
-      "css": ".ds-btn3 { display: inline-flex; align-items: center; min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: transparent; color: var(--ink-muted, #6B6965); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; font-weight: 500; cursor: pointer; } .ds-btn3:hover { background: var(--surface-sunken, #F7F6F4); color: var(--ink, #1C1B19); } .ds-btn3:focus-visible { outline: 2px solid var(--accent-strong, #B24D19); outline-offset: 2px; }"
+      "css": ".ds-btn3 { display: inline-flex; align-items: center; min-height: 40px; padding: 0 20px; border: 0; border-radius: 999px; background: transparent; color: var(--ink-muted, #5C635F); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; font-weight: 500; cursor: pointer; } .ds-btn3:hover { background: var(--surface-sunken, #F6F7F6); color: var(--ink, #151917); } .ds-btn3:focus-visible { outline: 2px solid var(--accent-strong, #1E5442); outline-offset: 2px; }"
     },
     {
       "name": "Text Field",
@@ -552,7 +597,7 @@
       "refersTo": "input",
       "description": "Every typed value; the 1px Field Edge meets 3:1.",
       "html": "<label class=\"ds-field\"><span>Title</span><input class=\"ds-input\" value=\"Reading Buddies\"></label>",
-      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 13px; font-weight: 500; color: var(--ink, #1C1B19); } .ds-input { min-height: 40px; padding: 0 16px; border: 1px solid var(--control-border, #8F8C86); border-radius: 12px; background: var(--surface-sunken, #F7F6F4); color: var(--ink, #1C1B19); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; } .ds-input:hover { border-color: var(--ink-muted, #6B6965); } .ds-input:focus-visible { border-color: var(--accent-strong, #B24D19); outline: 2px solid var(--accent-strong, #B24D19); outline-offset: 0; }"
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 13px; font-weight: 500; color: var(--ink, #151917); } .ds-input { min-height: 40px; padding: 0 16px; border: 1px solid var(--control-border, #838A86); border-radius: 12px; background: var(--surface-sunken, #F6F7F6); color: var(--ink, #151917); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; } .ds-input:hover { border-color: var(--ink-muted, #5C635F); } .ds-input:focus-visible { border-color: var(--accent-strong, #1E5442); outline: 2px solid var(--accent-strong, #1E5442); outline-offset: 0; }"
     },
     {
       "name": "Status Pills",
@@ -560,7 +605,7 @@
       "refersTo": "status-pill",
       "description": "The shared status vocabulary on cards, tables and detail pages.",
       "html": "<span class=\"ds-pill ds-ok\"><i></i>Open</span> <span class=\"ds-pill ds-warn\"><i></i>Last slots</span> <span class=\"ds-pill ds-bad\"><i></i>Full</span> <span class=\"ds-pill\"><i></i>Closed</span> <span class=\"ds-pill ds-info\"><i></i>Draft</span>",
-      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 2px 10px; border-radius: 999px; background: var(--surface-sunken, #F7F6F4); color: var(--ink-muted, #6B6965); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 12px; font-weight: 500; } .ds-pill i { width: 6px; height: 6px; border-radius: 999px; background: currentColor; } .ds-ok { background: var(--success-soft, #E5F4EA); color: var(--success, #1A7B45); } .ds-warn { background: var(--warning-soft, #FBF1DC); color: var(--warning, #986000); } .ds-bad { background: var(--danger-soft, #FBE9E7); color: var(--danger, #C2352C); } .ds-info { background: var(--info-soft, #E8EFFB); color: var(--info, #2F5FC4); }"
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 6px; min-height: 24px; padding: 2px 10px; border-radius: 999px; background: var(--surface-sunken, #F6F7F6); color: var(--ink-muted, #5C635F); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 12px; font-weight: 500; } .ds-pill i { width: 6px; height: 6px; border-radius: 999px; background: currentColor; } .ds-ok { background: var(--success-soft, #EEF5E1); color: var(--success, #4A7616); } .ds-warn { background: var(--warning-soft, #FBF1DC); color: var(--warning, #986000); } .ds-bad { background: var(--danger-soft, #FBE9E7); color: var(--danger, #C2352C); } .ds-info { background: var(--info-soft, #E8EFFB); color: var(--info, #2F5FC4); }"
     },
     {
       "name": "Filter Pill",
@@ -568,7 +613,7 @@
       "refersTo": "filter-pill",
       "description": "Service-type and inbox filters with counts.",
       "html": "<button class=\"ds-fpill\" aria-pressed=\"true\">All types <b>4</b></button> <button class=\"ds-fpill\" aria-pressed=\"false\">Education <b>1</b></button>",
-      "css": ".ds-fpill { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--surface-sunken, #F7F6F4); box-shadow: inset 0 0 0 1px var(--hairline-strong, #DCD9D3); color: var(--ink-muted, #6B6965); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 13px; font-weight: 500; cursor: pointer; } .ds-fpill b { font-weight: 500; font-variant-numeric: tabular-nums; } .ds-fpill:hover { background: var(--hairline, #ECEAE6); color: var(--ink, #1C1B19); } .ds-fpill[aria-pressed='true'] { background: var(--accent-soft, #FDEDE4); box-shadow: inset 0 0 0 1px var(--accent, #E8692C); color: var(--accent-strong, #B24D19); } .ds-fpill:focus-visible { outline: 2px solid var(--accent-strong, #B24D19); outline-offset: 2px; }"
+      "css": ".ds-fpill { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 16px; border: 0; border-radius: 999px; background: var(--surface-sunken, #F6F7F6); box-shadow: inset 0 0 0 1px var(--hairline-strong, #D2D7D4); color: var(--ink-muted, #5C635F); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 13px; font-weight: 500; cursor: pointer; } .ds-fpill b { font-weight: 500; font-variant-numeric: tabular-nums; } .ds-fpill:hover { background: var(--hairline, #E5E8E6); color: var(--ink, #151917); } .ds-fpill[aria-pressed='true'] { background: var(--action, #151917); box-shadow: none; color: var(--on-action, #FFFFFF); } .ds-fpill:focus-visible { outline: 2px solid var(--accent-strong, #1E5442); outline-offset: 2px; }"
     },
     {
       "name": "Sidebar Navigation",
@@ -576,7 +621,7 @@
       "refersTo": "nav-item",
       "description": "Roomy nav with the 3px terracotta marker on the active item.",
       "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-item is-active\">Overview</a><a href=\"#\" class=\"ds-nav-item\">Activities</a><a href=\"#\" class=\"ds-nav-item\">NGOs</a></nav>",
-      "css": ".ds-nav { display: flex; flex-direction: column; gap: 4px; width: 232px; padding: 16px; border-radius: 20px; background: var(--surface, #FFFFFF); } .ds-nav-item { position: relative; display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 14px; color: var(--ink, #1C1B19); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; text-decoration: none; } .ds-nav-item:hover { background: var(--surface-sunken, #F7F6F4); } .ds-nav-item.is-active { background: var(--accent-soft, #FDEDE4); font-weight: 500; } .ds-nav-item.is-active::before { content: ''; position: absolute; left: 0; top: 50%; width: 3px; height: 20px; transform: translateY(-50%); border-radius: 999px; background: var(--accent, #E8692C); } .ds-nav-item:focus-visible { outline: 2px solid var(--accent-strong, #B24D19); outline-offset: 2px; }"
+      "css": ".ds-nav { display: flex; flex-direction: column; gap: 4px; width: 232px; padding: 16px; border-radius: 20px; background: var(--surface, #FFFFFF); } .ds-nav-item { position: relative; display: flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 14px; color: var(--ink, #151917); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 15px; text-decoration: none; } .ds-nav-item:hover { background: var(--hairline, #E5E8E6); } .ds-nav-item.is-active { background: var(--action, #151917); color: var(--on-action, #FFFFFF); font-weight: 500; } .ds-nav-item:focus-visible { outline: 2px solid var(--accent-strong, #1E5442); outline-offset: 2px; }"
     },
     {
       "name": "Slot Meter",
@@ -584,7 +629,7 @@
       "refersTo": "slot-meter",
       "description": "Signature: one segment per slot plus the tabular count.",
       "html": "<div class=\"ds-meter\"><div class=\"ds-track\"><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i class=\"on\"></i><i></i><i></i><i></i></div><span>3 of 12 left</span></div>",
-      "css": ".ds-meter { display: flex; flex-direction: column; gap: 8px; width: 220px; font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 13px; color: var(--ink-muted, #6B6965); font-variant-numeric: tabular-nums; } .ds-track { display: flex; gap: 3px; height: 8px; } .ds-track i { flex: 1; border-radius: 999px; background: var(--hairline-strong, #DCD9D3); } .ds-track i.on { background: var(--accent, #E8692C); }"
+      "css": ".ds-meter { display: flex; flex-direction: column; gap: 8px; width: 220px; font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); font-size: 13px; color: var(--ink-muted, #5C635F); font-variant-numeric: tabular-nums; } .ds-track { display: flex; gap: 3px; height: 8px; } .ds-track i { flex: 1; border-radius: 999px; background: var(--hairline-strong, #D2D7D4); } .ds-track i.on { background: var(--accent, #2D6E58); }"
     },
     {
       "name": "Card",
@@ -592,28 +637,33 @@
       "refersTo": "card",
       "description": "White sheet on the canvas: 20px corners, flat at rest.",
       "html": "<article class=\"ds-card\"><p class=\"ds-card-label\">Slots taken</p><p class=\"ds-card-value\">50</p><p class=\"ds-card-foot\"><b>+17</b> in the last 7 days</p></article>",
-      "css": ".ds-card { width: 240px; padding: 24px; border-radius: 20px; background: var(--surface, #FFFFFF); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); } .ds-card-label { margin: 0; font-size: 15px; color: var(--ink-muted, #6B6965); } .ds-card-value { margin: 16px 0 8px; font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--ink, #1C1B19); } .ds-card-foot { margin: 0; font-size: 13px; color: var(--ink-muted, #6B6965); } .ds-card-foot b { font-weight: 500; color: var(--success, #1A7B45); }"
+      "css": ".ds-card { width: 240px; padding: 24px; border-radius: 20px; background: var(--surface, #FFFFFF); font-family: var(--font-sans, 'Instrument Sans Variable', system-ui, sans-serif); } .ds-card-label { margin: 0; font-size: 15px; color: var(--ink-muted, #5C635F); } .ds-card-value { margin: 16px 0 8px; font-size: 40px; line-height: 44px; font-weight: 500; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; color: var(--ink, #151917); } .ds-card-foot { margin: 0; font-size: 13px; color: var(--ink-muted, #5C635F); } .ds-card-foot b { font-weight: 500; color: var(--success, #4A7616); }"
     }
   ],
   "narrative": {
-    "northStar": "Morning of Service Day",
-    "overview": "The light just before volunteers head out: a warm, quiet room, everything prepared, one clear thing to do next. Service Day sits on a warm light-grey canvas with white cards laid on it like sheets on a table: large soft corners, almost no lines, no shadows at rest. A single terracotta accent shows up the way morning sun does, on a few things only: the active place in the navigation, the bars of a chart, a KPI that matters. Everything else is ink on white.\n\nThis is a working dashboard (Operate). Ambition shows as precision and restraint: confident numbers set large in tabular figures, medium-weight headings, small muted labels, and generous but never empty spacing. Pill-shaped controls and thin line icons keep the surface soft without making it cute. Taste and typography follow `docs/reference/dashboard-reference.png`; its content, layout specifics and orange-on-everything usage do not carry over.\n\nThe scene that sets the theme: office staff at a desk in daylight, and on the day itself a phone outdoors. So the default is light and warm. A dark theme is planned as an equal alternative, not a restyle; until it lands, every value here is the light theme.",
+    "northStar": "The Volunteer Roster",
+    "overview": "A clean roster on a cool desk on the morning of Service Day: names, places, deadlines, all in ink, and one green mark beside whatever is filling up. Service Day sits on a cool, faintly green-grey canvas with white cards laid on it like sheets: large soft corners, almost no lines, no shadows at rest. Ink does the acting: the primary button, the page you are on, the filter you chose. Pine does the counting: slot meters, chart bars, the participation gauge. Everything else is ink on white.\n\nThis is a working dashboard (Operate). Ambition shows as precision and restraint: confident numbers set large in tabular figures, medium-weight headings, small muted labels, and generous but never empty spacing. Pill-shaped controls and thin line icons keep the surface soft without making it cute. Typography follows `docs/reference/dashboard-reference.png`; the colour mood (ink selection, pale cool canvas, muted pastels for categories) was chosen with the student from a second reference, without its decorative backdrop.\n\nThe scene that sets the theme: office staff at a desk in daylight, and on the day itself a phone outdoors, so the default is light. Every value here is the light theme; a dark theme is not part of this build.",
     "keyCharacteristics": [
-      "Warm light-grey canvas, white cards, flat at rest; depth only on overlays.",
-      "One accent, used sparingly and only for large marks; text in the accent always uses the stronger tone.",
+      "Cool light canvas, white cards, flat at rest; depth only on overlays.",
+      "Ink for action and selection; pine for marks that count. Neither is used as decoration.",
       "Large tabular numerals for anything counted: slots, participation, days left.",
-      "Status is shown with the same small vocabulary everywhere (open, last slots, closing soon, full, closed, cancelled, draft).",
-      "Signature details carry the identity: the segmented **slot meter**, the relative + absolute **cut-off label**, the bar-built **participation gauge**, and **initials avatars** on deterministic soft tints for NGOs."
+      "Status is shown with the same small vocabulary everywhere (open, last slots, closing soon, full, closed, cancelled, draft), always with a label.",
+      "Signature details carry the identity: the segmented **slot meter**, the relative + absolute **cut-off label**, the bar-built **participation gauge**, and **initials avatars** on deterministic muted tints for NGOs."
     ],
     "rules": [
       {
-        "name": "The Morning Sun Rule",
-        "body": "The accent appears on a few large marks per screen, never as a fill behind content areas. If more than one card on a screen is dominated by terracotta, remove it from all but the most important.",
+        "name": "The One Dark Item Rule",
+        "body": "In any group (navigation, filters, tabs, a card's actions) at most one element is filled with Ink: the current or primary one. Hover never fills with Ink; it uses Hairline or Sunken Paper, so the current item stays unmistakable.",
         "section": "colors"
       },
       {
-        "name": "The Strong Tone Rule",
-        "body": "Any text that wants to be terracotta uses `accent-strong`, never `accent`. Every text/background pair in this palette is at least 4.5:1; keep it that way when adding tokens.",
+        "name": "The Pine Counts Rule",
+        "body": "Pine appears on marks that measure something (places, participation, fill), never as a fill behind content areas or as decoration. Success keeps its own leaf-green hue so \"open\" never reads as \"pine\".",
+        "section": "colors"
+      },
+      {
+        "name": "The Contrast Rule",
+        "body": "Every text/background pair in this palette is at least 4.5:1 and every control edge at least 3:1; keep it that way when adding tokens.",
         "section": "colors"
       },
       {
@@ -653,24 +703,24 @@
       }
     ],
     "dos": [
-      "**Do** keep the accent on large marks and use `accent-strong` (never `accent`) for any terracotta text.",
-      "**Do** give every data view a loading skeleton, an empty state that says what to do next, and an error state.",
-      "**Do** explain every disabled action in a sentence (\"Registration closed on 18 Nov, 17:00\").",
-      "**Do** show deadlines relative and absolute together: \"Closes in 2 days · 18 Nov, 17:00\".",
-      "**Do** let card sizes follow their content and importance; a KPI row and a chart card are not the same weight.",
-      "**Do** keep a visible `:focus-visible` ring on every interactive element.",
-      "**Do** give text fields the Field Edge (`control-border`) and keep every interactive target at least 24px.",
-      "**Do** put the number in tabular figures and the meaning in a muted label next to it (\"50 of 64 staff have a place\")."
+      "keep Ink for action and selection, Pine for marks that count, and use `accent-strong` for any pine-coloured text.",
+      "give every data view a loading skeleton, an empty state that says what to do next, and an error state.",
+      "explain every disabled action in a sentence (\"Registration closed on 18 Nov, 17:00\").",
+      "show deadlines relative and absolute together: \"Closes in 2 days · 18 Nov, 17:00\".",
+      "let card sizes follow their content and importance; a KPI row and a chart card are not the same weight.",
+      "keep a visible `:focus-visible` ring on every interactive element.",
+      "give text fields the Field Edge (`control-border`) and keep every interactive target at least 24px.",
+      "put the number in tabular figures and the meaning in a muted label next to it (\"50 of 64 staff have a place\")."
     ],
     "donts": [
-      "**Don't** use decorative gradients, glassmorphism or blur panels, or purple-blue palettes.",
-      "**Don't** use emoji as icons, heavy drop shadows, or decorative illustrations that carry no information.",
-      "**Don't** fill screens with identical cards in a uniform grid, or center everything.",
-      "**Don't** use all-caps headings or put an icon on every heading.",
-      "**Don't** use lorem ipsum or placeholder names (\"Activity 1\", \"John Doe\"); seed content is specific and fictional.",
-      "**Don't** reproduce the look of a Bootstrap admin template or Material defaults.",
-      "**Don't** cut names, titles or places off with an ellipsis; let them wrap.",
-      "**Don't** line up a column of red \"Delete\" buttons; destructive actions go in the row's ⋯ menu and through a confirm dialog."
+      "use decorative gradients, glassmorphism or blur panels, or purple-blue palettes.",
+      "use emoji as icons, heavy drop shadows, or decorative illustrations that carry no information.",
+      "fill screens with identical cards in a uniform grid, or center everything.",
+      "use all-caps headings or put an icon on every heading.",
+      "use lorem ipsum or placeholder names (\"Activity 1\", \"John Doe\"); seed content is specific and fictional.",
+      "reproduce the look of a Bootstrap admin template or Material defaults.",
+      "cut names, titles or places off with an ellipsis; let them wrap.",
+      "line up a column of red \"Delete\" buttons; destructive actions go in the row's ⋯ menu and through a confirm dialog."
     ]
   }
 }

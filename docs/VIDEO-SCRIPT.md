@@ -6,9 +6,9 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 
 1. Stop any running servers, then `npm run db:reset` and `npm run dev` (dates are relative to today; the reset makes "today", "closing soon" and "last place" correct). Record **before 14:15** if you want Marcus's check-in to show "On time" (Memory Lane Afternoon starts at 14:00).
 2. Open three browser windows at about 1440 px wide, each in its own profile or private window so the sessions don't mix:
-   - **Window A — Admin**: signed in as Nadia Halim (`admin@halden.co` / `Admin#2026`).
-   - **Window B — Priya**: signed out at `http://localhost:4200/login`.
-   - **Window C — Daniel**: signed in as Daniel Koh (`daniel.koh@halden.co` / `Volunteer#1`), on **Opportunities → Reading Buddies**.
+   - **Window A — Admin**: signed in as Masato Kaneko (`masato@kaneko.co` / `Admin#2026`).
+   - **Window B — Komang**: signed out at `http://localhost:4200/login`.
+   - **Window C — Daniel**: signed in as Daniel Koh (`daniel.koh@kaneko.co` / `Volunteer#1`), on **Opportunities → Reading Buddies**.
 3. Keep a fourth tab ready for Aisha and Marcus (sign in with the Demo accounts panel).
 4. Turn on screen recording with system audio off and microphone on. Hide notifications.
 
@@ -19,15 +19,15 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 | # | Scene | Window / account | Time |
 |---|---|---|---|
 | 0 | Intro | — (title, then the sign-in page) | 0:30 |
-| 1 | Sign in and register (Priya takes the last place) | B · Priya | 1:10 |
+| 1 | Sign in and register (Komang takes the last place) | B · Komang | 1:10 |
 | 2 | Live update in a second window | C · Daniel | 0:30 |
 | 3 | Switch | C · Daniel | 0:45 |
 | 4 | Locked after the cut-off | tab · Aisha | 0:30 |
 | 5 | Withdraw | C · Daniel | 0:30 |
-| 6 | Admin: create, publish, validate | A · Nadia | 1:20 |
-| 7 | Monitoring and reminders | A · Nadia | 1:00 |
-| 8 | Notifications: schedule and broadcast | A · Nadia | 0:50 |
-| 9 | QR check-in and attendance | tab · Marcus + A · Nadia | 1:00 |
+| 6 | Admin: create, publish, validate | A · Masato | 1:20 |
+| 7 | Monitoring and reminders | A · Masato | 1:00 |
+| 8 | Notifications: schedule and broadcast | A · Masato | 0:50 |
+| 9 | QR check-in and attendance | tab · Marcus + A · Masato | 1:00 |
 | 10 | New employee account + responsive layout | B (signed out) | 0:40 |
 | 11 | Outro | — | 0:30 |
 | | **Total** | | **≈ 9:15** |
@@ -39,15 +39,15 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 **Show:** a title card "Service Day — BIT306 Assignment 1", then Window B with the sign-in page.
 
 **Say:**
-> This is Service Day, a web app for Halden & Co.'s corporate volunteering day.
+> This is Service Day, a web app for Kaneko.co's corporate volunteering day.
 > Employees pick one NGO activity, can change it until a cut-off, and check in on the day with a QR code.
 > Administrators manage NGOs and activities, follow participation, send notices and record attendance.
 > I'll show the employee module first, then the administrator module.
 
-## Scene 1 — Sign in and register (1:10) · Window B · Priya
+## Scene 1 — Sign in and register (1:10) · Window B · Komang
 
-**Click:** open **Demo accounts** → **Use** next to Priya Menon → **Sign in**.
-**Say:** "I sign in as Priya. She hasn't picked an activity yet, and Home tells her how many places are still open."
+**Click:** open **Demo accounts** → **Use** next to Komang Masato → **Sign in**.
+**Say:** "I sign in as Komang. She hasn't picked an activity yet, and Home tells her how many places are still open."
 
 **Click:** **Opportunities** → the **Education** pill.
 **Say:** "Each card shows the NGO, the status, a slot meter and the cut-off. The filters live in the address bar."
@@ -86,7 +86,7 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 **Click:** **My registrations** → **Withdraw** → **Withdraw**.
 **Say:** "Withdrawing is a destructive action, so the dialog warns that the place will be released. The slot goes back to Lunch Service straight away, and the history says Withdrawn."
 
-## Scene 6 — Admin: create, publish, validate (1:20) · Window A · Nadia
+## Scene 6 — Admin: create, publish, validate (1:20) · Window A · Masato
 
 **Click:** **Activities**.
 **Say:** "Now the administrator module. The activities table lists every activity of the season, including drafts and cancelled ones."
@@ -104,7 +104,7 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 **Say:** "The form checks the API: max slots can't go below the eleven people already registered. The same rule blocks deleting an activity that has participants and offers to cancel it instead."
 **Click:** **Cancel** (leave the form; confirm leaving without saving).
 
-## Scene 7 — Monitoring and reminders (1:00) · Window A · Nadia
+## Scene 7 — Monitoring and reminders (1:00) · Window A · Masato
 
 **Click:** **Overview**.
 **Say:**
@@ -115,7 +115,7 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 **Click:** **Participation** → tick three people under "people have no place yet" → **Send reminder** → **Send reminder**.
 **Say:** "Here I can see who hasn't signed up. I select three people and send them a reminder. It lands in each of their inboxes immediately."
 
-## Scene 8 — Notifications: schedule and broadcast (0:50) · Window A · Nadia
+## Scene 8 — Notifications: schedule and broadcast (0:50) · Window A · Masato
 
 **Click:** **Notifications** → **Schedule** → add **10** days, remove **1** day.
 **Say:** "The reminder schedule. When I change the days, the preview of the next reminders updates before I save. In this version reminders are previewed, not sent by a scheduler."
@@ -140,8 +140,8 @@ Target length: **about 9 minutes** (8–10 allowed). Style: a user manual on scr
 ## Scene 10 — New account and responsive layout (0:40) · Window B signed out
 
 **Click:** sign out → **Create an account** → type a Gmail address and a short password → **Create account**.
-**Say:** "Sign-up is for Halden & Co. staff only. The form explains each problem: the email must end in halden dot co, the password needs eight characters and a number."
-**Fill:** a `@halden.co` email and a valid password → **Create account**.
+**Say:** "Sign-up is for Kaneko.co staff only. The form explains each problem: the email must end in kaneko dot co, the password needs eight characters and a number."
+**Fill:** a `@kaneko.co` email and a valid password → **Create account**.
 **Say:** "With valid details the new employee lands on Home."
 
 **Show:** narrow the window to phone width (or use the browser's device toolbar) → open the menu.

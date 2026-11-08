@@ -116,11 +116,11 @@ The seed script (`mock-api/seed.mjs`) writes realistic, fictional data: 7 NGOs, 
 
 | Name | Email | Password | Role | Prepared situation |
 |---|---|---|---|---|
-| Nadia Halim | `admin@halden.co` | `Admin#2026` | Admin | Manages everything in the admin area |
-| Aisha Rahman | `aisha.rahman@halden.co` | `Volunteer#1` | Employee | Registered for an activity whose cut-off has passed (changes locked); 3 unread notices |
-| Daniel Koh | `daniel.koh@halden.co` | `Volunteer#1` | Employee | Registered for an open activity (can switch or withdraw) |
-| Priya Menon | `priya.menon@halden.co` | `Volunteer#1` | Employee | Not registered (can take the last place on *Reading Buddies*) |
-| Marcus Tan | `marcus.tan@halden.co` | `Volunteer#1` | Employee | Registered for today's activity (check-in code `EQPC2U3D`) |
+| Masato Kaneko | `masato@kaneko.co` | `Admin#2026` | Admin | Manages everything in the admin area |
+| Aisha Rahman | `aisha.rahman@kaneko.co` | `Volunteer#1` | Employee | Registered for an activity whose cut-off has passed (changes locked); 3 unread notices |
+| Daniel Koh | `daniel.koh@kaneko.co` | `Volunteer#1` | Employee | Registered for an open activity (can switch or withdraw) |
+| Komang Masato | `komangmasato@kaneko.co` | `Volunteer#1` | Employee | Not registered (can take the last place on *Reading Buddies*) |
+| Marcus Tan | `marcus.tan@kaneko.co` | `Volunteer#1` | Employee | Registered for today's activity (check-in code `EQPC2U3D`) |
 
 The same list is available on the sign-in page under **Demo accounts**, with a **Use** button that fills the form.
 

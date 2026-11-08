@@ -1,6 +1,6 @@
 <header class="auth-form__header">
   <h1>Create your account</h1>
-  <p class="text-muted">For Halden &amp; Co. employees. Admin accounts are set up by People &amp; Culture.</p>
+  <p class="text-muted">For Kaneko.co employees. Admin accounts are set up by People &amp; Culture.</p>
 </header>
 
 <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
@@ -26,7 +26,7 @@
       class="input"
       type="email"
       autocomplete="email"
-      placeholder="firstname.lastname@halden.co"
+      placeholder="firstname.lastname@kaneko.co"
       formControlName="email"
       [attr.aria-invalid]="error('email') ? 'true' : null"
       [attr.aria-describedby]="error('email') ? 'register-email-error' : 'register-email-status'"
@@ -35,7 +35,7 @@
       <p class="field__error" id="register-email-error"><svg lucideIcon="circle-exclamation-point" [size]="16"></svg>{{ message }}</p>
     } @else {
       <p class="field__hint" id="register-email-status" aria-live="polite">
-        {{ form.controls.email.pending ? 'Checking this email…' : 'Must end in @halden.co.' }}
+        {{ form.controls.email.pending ? 'Checking this email…' : 'Must end in @kaneko.co.' }}
       </p>
     }
   </div>

@@ -11,9 +11,9 @@ export interface DemoAccount {
 }
 
 export const DEMO_ACCOUNTS: readonly DemoAccount[] = [
-  { name: 'Nadia Halim', email: 'admin@halden.co', password: 'Admin#2026', role: 'Admin', situation: 'Runs Service Day for People & Culture' },
-  { name: 'Aisha Rahman', email: 'aisha.rahman@halden.co', password: 'Volunteer#1', role: 'Employee', situation: 'Registered; cut-off has passed, so changes are locked' },
-  { name: 'Daniel Koh', email: 'daniel.koh@halden.co', password: 'Volunteer#1', role: 'Employee', situation: 'Registered for an open activity; can switch or withdraw' },
-  { name: 'Priya Menon', email: 'priya.menon@halden.co', password: 'Volunteer#1', role: 'Employee', situation: 'Not registered yet; can take the last slot' },
-  { name: 'Marcus Tan', email: 'marcus.tan@halden.co', password: 'Volunteer#1', role: 'Employee', situation: "Registered for today's activity; can check in" },
+  { name: 'Masato Kaneko', email: 'masato@kaneko.co', password: 'Admin#2026', role: 'Admin', situation: 'Runs Service Day for People & Culture' },
+  { name: 'Aisha Rahman', email: 'aisha.rahman@kaneko.co', password: 'Volunteer#1', role: 'Employee', situation: 'Registered; cut-off has passed, so changes are locked' },
+  { name: 'Daniel Koh', email: 'daniel.koh@kaneko.co', password: 'Volunteer#1', role: 'Employee', situation: 'Registered for an open activity; can switch or withdraw' },
+  { name: 'Komang Masato', email: 'komangmasato@kaneko.co', password: 'Volunteer#1', role: 'Employee', situation: 'Not registered yet; can take the last slot' },
+  { name: 'Marcus Tan', email: 'marcus.tan@kaneko.co', password: 'Volunteer#1', role: 'Employee', situation: "Registered for today's activity; can check in" },
 ];

@@ -89,17 +89,17 @@ const EMPLOYEE_PASSWORD = 'Volunteer#1';
 const slug = (name) => name.toLowerCase().replace(/[^a-z]+/g, '-').replace(/(^-|-$)/g, '');
 const emailFor = (name) => {
   const [first, ...rest] = name.toLowerCase().split(' ');
-  return `${first}.${rest.join('')}@halden.co`.replace(/[^a-z.@]/g, '');
+  return `${first}.${rest.join('')}@kaneko.co`.replace(/[^a-z.@]/g, '');
 };
 
 function makeUser(name, role, department, password, email = emailFor(name)) {
   return { id: `u-${slug(name)}`, name, email, password, role, department, createdAt: iso(sometime(-90, -45)) };
 }
 
-const admin = makeUser('Nadia Halim', 'admin', 'People & Culture', 'Admin#2026', 'admin@halden.co');
+const admin = makeUser('Masato Kaneko', 'admin', 'People & Culture', 'Admin#2026', 'masato@kaneko.co');
 const aisha = makeUser('Aisha Rahman', 'employee', 'Finance', EMPLOYEE_PASSWORD);
 const daniel = makeUser('Daniel Koh', 'employee', 'Engineering', EMPLOYEE_PASSWORD);
-const priya = makeUser('Priya Menon', 'employee', 'Marketing', EMPLOYEE_PASSWORD);
+const komang = makeUser('Komang Masato', 'employee', 'Marketing', EMPLOYEE_PASSWORD, 'komangmasato@kaneko.co');
 const marcus = makeUser('Marcus Tan', 'employee', 'Operations', EMPLOYEE_PASSWORD);
 
 const FIRST_NAMES = [
@@ -114,7 +114,7 @@ const LAST_NAMES = [
 ];
 
 const others = [];
-const usedNames = new Set([admin, aisha, daniel, priya, marcus].map((u) => u.name));
+const usedNames = new Set([admin, aisha, daniel, komang, marcus].map((u) => u.name));
 while (others.length < 60) {
   const name = `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`;
   if (usedNames.has(name)) continue;
@@ -122,7 +122,7 @@ while (others.length < 60) {
   others.push(makeUser(name, 'employee', DEPARTMENTS[others.length % DEPARTMENTS.length], EMPLOYEE_PASSWORD));
 }
 
-const employees = [aisha, daniel, priya, marcus, ...others];
+const employees = [aisha, daniel, komang, marcus, ...others];
 const users = [admin, ...employees];
 
 // ---------------------------------------------------------------------------
@@ -434,7 +434,7 @@ notice({
 notice({
   type: 'broadcast', audience: 'ngo', ngoId: A.ngoId, sentBy: admin.id, at: at(-2, 15, 0),
   title: `Volunteer numbers for ${dayLabel(at(SERVICE_DAY))}`,
-  message: `Hi Farid, ${A.title} has ${byKey.A.taken} Halden & Co. volunteers confirmed so far. We'll send the final list after the cut-off on ${cutoffLabel(new Date(A.cutoffAt))}.`,
+  message: `Hi Farid, ${A.title} has ${byKey.A.taken} Kaneko.co volunteers confirmed so far. We'll send the final list after the cut-off on ${cutoffLabel(new Date(A.cutoffAt))}.`,
 });
 
 // ---------------------------------------------------------------------------

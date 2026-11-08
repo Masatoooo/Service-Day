@@ -20,7 +20,7 @@ const MESSAGES: Record<Field, Record<string, string>> = {
     minlength: 'Add a little more (at least 20 characters).',
     maxlength: `Keep the description under ${TEXT_LIMITS.ngoDescription} characters.`,
   },
-  contactName: { required: 'Who should Halden & Co. contact?', maxlength: `Keep the name under ${TEXT_LIMITS.personName} characters.` },
+  contactName: { required: 'Who should Kaneko.co contact?', maxlength: `Keep the name under ${TEXT_LIMITS.personName} characters.` },
   contactEmail: {
     required: 'Enter a contact email.',
     email: 'Enter an email address like name@organisation.org.',

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-/** Small words that should not become an initial ("Halden & Co." → "HC"). */
+/** Small words that should not become an initial ("Kaneko.co" → "HC"). */
 const SKIP = new Set(['&', 'and', 'of', 'the', 'for']);
 
 /** "Riverbank Food Collective" → "RF", "Daniel Koh" → "DK". */

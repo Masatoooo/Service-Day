@@ -23,8 +23,8 @@ const MESSAGES: Record<Field, Record<string, string>> = {
   name: { required: 'Enter your full name.', minlength: 'Enter your full name.', maxlength: `Keep your name under ${TEXT_LIMITS.personName} characters.` },
   email: {
     required: 'Enter your work email.',
-    email: 'Enter an email address like aisha.rahman@halden.co.',
-    workEmail: 'Use your Halden & Co. email, ending in @halden.co.',
+    email: 'Enter an email address like aisha.rahman@kaneko.co.',
+    workEmail: 'Use your Kaneko.co email, ending in @kaneko.co.',
     emailTaken: 'An account with this email already exists. Sign in instead.',
   },
   department: { required: 'Choose your department.' },

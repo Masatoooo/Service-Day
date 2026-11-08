@@ -1,30 +1,35 @@
 /* ==========================================================================
    tokens.css — design tokens as CSS custom properties
-   Source of truth: DESIGN.md frontmatter / PLAN §8. Light theme only (dark: Phase 10).
+   Source of truth: DESIGN.md frontmatter / PLAN §8. Light theme only. Palette: "Ink + Pine".
    Component CSS uses only these variables: no hex values, font sizes or radii.
    ========================================================================== */
 
 :root {
-  /* ---- Colour: neutrals ---- */
-  --canvas: #f4f3f1;          /* app background behind every card */
+  /* ---- Colour: neutrals (cool, faintly green-grey) ---- */
+  --canvas: #f1f3f2;          /* app background behind every card */
   --surface: #ffffff;         /* cards, sidebar, top bar */
-  --surface-sunken: #f7f6f4;  /* inputs, table headers, inner tiles */
-  --hairline: #eceae6;        /* dividers only */
-  --hairline-strong: #dcd9d3; /* segment gaps, quiet pill outlines */
-  --control-border: #8f8c86;  /* form field edges: 3.35:1 on white, 3.10:1 on sunken (WCAG 1.4.11) */
-  --ink: #1c1b19;             /* primary text */
-  --ink-muted: #6b6965;       /* secondary text, labels */
-  --ink-faint: #73716c;       /* placeholders, axis labels (surface / sunken only) */
+  --surface-sunken: #f6f7f6;  /* inputs, table headers, inner tiles */
+  --hairline: #e5e8e6;        /* dividers only */
+  --hairline-strong: #d2d7d4; /* segment gaps, quiet pill outlines */
+  --control-border: #838a86;  /* form field edges: 3.53:1 on white, 3.29:1 on sunken (WCAG 1.4.11) */
+  --ink: #151917;             /* primary text (17.8:1 on white) */
+  --ink-muted: #5c635f;       /* secondary text, labels (5.5:1 on canvas) */
+  --ink-faint: #69706c;       /* placeholders, axis labels (surface / sunken only, ≥ 4.7:1) */
 
-  /* ---- Colour: accent (Morning Terracotta) ---- */
-  --accent: #e8692c;          /* large marks only: charts, icons, active marker */
-  --accent-strong: #b24d19;   /* any accent text, links, filled buttons (≥ 4.5:1) */
-  --accent-strong-hover: #973f12;
-  --accent-soft: #fdede4;     /* active nav, icon tiles, selected pill */
+  /* ---- Colour: action (Ink) — filled primary buttons, the selected nav item, pill and tab ---- */
+  --action: var(--ink);
+  --action-hover: #2e3531;
+  --on-action: #ffffff;
 
-  /* ---- Colour: status ---- */
-  --success: #1a7b45;
-  --success-soft: #e5f4ea;
+  /* ---- Colour: accent (Pine) — marks, links, focus ---- */
+  --accent: #2d6e58;          /* marks: charts, gauge, slot meter, icons (6.0:1 on white) */
+  --accent-strong: #1e5442;   /* accent text, links, focus ring, badges (8.7:1 on white, 7.3:1 on soft) */
+  --accent-strong-hover: #153d30;
+  --accent-soft: #e2eee8;     /* icon tiles, selected choice, offset chips */
+
+  /* ---- Colour: status (success is leaf green, a different hue from pine; always labelled) ---- */
+  --success: #4a7616;
+  --success-soft: #eef5e1;
   --warning: #986000;
   --warning-soft: #fbf1dc;
   --danger: #c2352c;
@@ -33,16 +38,16 @@
   --info: #2f5fc4;
   --info-soft: #e8effb;
 
-  /* ---- Colour: deterministic NGO avatar tints (initials stay --ink) ---- */
-  --tint-1: #fdede4; /* apricot */
-  --tint-2: #e6f0e4; /* sage */
-  --tint-3: #f2ece2; /* sand */
-  --tint-4: #e6eef7; /* sky */
-  --tint-5: #f8e7e7; /* rose */
-  --tint-6: #f8f0d6; /* butter */
+  /* ---- Colour: deterministic NGO avatar tints, muted (initials stay --ink, ≥ 14:1) ---- */
+  --tint-1: #e4efe5; /* sage */
+  --tint-2: #e2ecf6; /* sky */
+  --tint-3: #f3e5dc; /* clay */
+  --tint-4: #f5eed4; /* butter */
+  --tint-5: #f4e3e7; /* rose */
+  --tint-6: #ebe7f2; /* lilac */
 
-  --on-accent: #ffffff;       /* text on filled accent / danger buttons */
-  --scrim: rgb(28 27 25 / 0.32);
+  --on-accent: #ffffff;       /* text on filled pine / danger */
+  --scrim: rgb(21 25 23 / 0.36);
 
   /* ---- Type (Instrument Sans Variable, weights 400/500/600) ---- */
   --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -92,7 +97,7 @@
   --focus-width: 2px;
 
   /* ---- Elevation: overlays only ---- */
-  --shadow-overlay: 0 12px 32px rgb(28 27 25 / 0.1);
+  --shadow-overlay: 0 12px 32px rgb(21 25 23 / 0.1);
 
   /* ---- Motion ---- */
   --duration-fast: 150ms;

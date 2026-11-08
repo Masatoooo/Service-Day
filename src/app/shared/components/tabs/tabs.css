@@ -5,7 +5,7 @@
   scrollbar-width: none;
 }
 
-/* Flexbox: a segmented pill; the selected tab is a white pill inside the sunken track. */
+/* Flexbox: a segmented pill; the selected tab is an Ink pill inside the sunken track. */
 .tabs {
   display: inline-flex;
   gap: var(--space-1);
@@ -36,9 +36,8 @@
 }
 
 .tab[aria-selected='true'] {
-  background: var(--surface);
-  color: var(--ink);
-  box-shadow: 0 0 0 var(--border-width) var(--hairline-strong);
+  background: var(--action);
+  color: var(--on-action);
 }
 
 .tab__count {
@@ -51,6 +50,6 @@
 }
 
 .tab[aria-selected='true'] .tab__count {
-  background: var(--accent-soft);
-  color: var(--accent-strong);
+  background: var(--action-hover);
+  color: var(--on-action);
 }

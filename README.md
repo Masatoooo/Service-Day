@@ -1,6 +1,6 @@
 # Service Day
 
-Service Day is a web application for Halden & Co.'s annual corporate volunteering day. Employees choose one NGO activity, can switch or withdraw until the activity's cut-off, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor participation, send reminders and broadcasts, and record attendance.
+Service Day is a web application for Kaneko.co's annual corporate volunteering day. Employees choose one NGO activity, can switch or withdraw until the activity's cut-off, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor participation, send reminders and broadcasts, and record attendance.
 
 Built for BIT306 Web Technologies, Assignment 1 (front-end): **Angular 22** with NgModules, plain CSS with Flexbox, and a **json-server** mock REST API. Assignment 2 adds an Express/MongoDB back-end behind the same front-end.
 
@@ -23,7 +23,7 @@ Built for BIT306 Web Technologies, Assignment 1 (front-end): **Angular 22** with
 - Notification centre: reminder schedule with preview, broadcasts, history
 - Check-ins: QR code and printable poster, live arrivals (5 s), attendance CSV export
 
-**Both:** sign in, employee self-registration (`@halden.co` emails only), responsive layout down to 390 px, keyboard and screen-reader support (WCAG 2.2 AA).
+**Both:** sign in, employee self-registration (`@kaneko.co` emails only), responsive layout down to 390 px, keyboard and screen-reader support (WCAG 2.2 AA).
 
 ## Quick start
 
@@ -42,8 +42,8 @@ Demo accounts (also listed on the sign-in page):
 
 | Account | Password | Role |
 |---|---|---|
-| `admin@halden.co` | `Admin#2026` | Admin |
-| `aisha.rahman@halden.co`, `daniel.koh@halden.co`, `priya.menon@halden.co`, `marcus.tan@halden.co` | `Volunteer#1` | Employees |
+| `masato@kaneko.co` | `Admin#2026` | Admin |
+| `aisha.rahman@kaneko.co`, `daniel.koh@kaneko.co`, `komangmasato@kaneko.co`, `marcus.tan@kaneko.co` | `Volunteer#1` | Employees |
 
 To start again with fresh demonstration data (dates are relative to today): stop `npm run dev`, run `npm run db:reset`, then `npm run dev` again.
 

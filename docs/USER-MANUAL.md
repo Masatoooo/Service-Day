@@ -1,6 +1,6 @@
 # Service Day — User Manual
 
-Service Day is Halden & Co.'s web application for its annual corporate volunteering day. Employees choose one NGO activity, keep or change their place until the activity's cut-off, and check in on the day. Administrators manage NGOs and activities, monitor participation, send notices, and record attendance.
+Service Day is Kaneko.co's web application for its annual corporate volunteering day. Employees choose one NGO activity, keep or change their place until the activity's cut-off, and check in on the day. Administrators manage NGOs and activities, monitor participation, send notices, and record attendance.
 
 This manual is organised by module, matching the application's structure:
 
@@ -35,10 +35,10 @@ The steps use the demonstration accounts listed in `docs/SETUP.md` §5 (password
 
 **Steps.**
 1. On the sign-in page select **Create an account**.
-2. Enter your full name, your work email (it must end in `@halden.co`), your department, and a password of at least 8 characters that contains a number. Type the password again to confirm it.
+2. Enter your full name, your work email (it must end in `@kaneko.co`), your department, and a password of at least 8 characters that contains a number. Type the password again to confirm it.
 3. Select **Create account**.
 
-**Expected result.** You are signed in and taken to the employee Home page. Each field explains a problem in its own words, for example "Use your Halden & Co. email, ending in @halden.co.", "Add at least one number." or "An account with this email already exists. Sign in instead." (checked against the server while you type).
+**Expected result.** You are signed in and taken to the employee Home page. Each field explains a problem in its own words, for example "Use your Kaneko.co email, ending in @kaneko.co.", "Add at least one number." or "An account with this email already exists. Sign in instead." (checked against the server while you type).
 
 ![Create account](screenshots/register.png)
 ![Validation messages](screenshots/register-errors.png)
@@ -111,7 +111,7 @@ The application currently ships with the light theme only. A dark theme was plan
 **Purpose.** Take a place. Each employee holds one place per Service Day.
 
 **Steps.**
-1. Sign in as Priya Menon, open **Opportunities**, select **Reading Buddies** (1 place left).
+1. Sign in as Komang Masato, open **Opportunities**, select **Reading Buddies** (1 place left).
 2. Read the details, the NGO block and **How registration works**.
 3. Select **Register**. The dialog summarises the date, time, place and the cut-off.
 4. Select **Register** in the dialog.
@@ -183,7 +183,7 @@ The application currently ships with the light theme only. A dark theme was plan
 
 ## Part C — Administrator module
 
-Sign in as Nadia Halim (`admin@halden.co` / `Admin#2026`) for every step in this part.
+Sign in as Masato Kaneko (`masato@kaneko.co` / `Admin#2026`) for every step in this part.
 
 ### C1. Overview (UC4)
 
@@ -321,11 +321,11 @@ All screenshots are in `docs/screenshots/` and were captured at 1440 × 900 (pho
 | `login-demo-accounts.png` | `/login` | signed out | "Demo accounts" opened |
 | `register.png` | `/register` | signed out | empty form |
 | `register-errors.png` | `/register` | signed out | name filled, `lina@gmail.com`, password `short`, Create account pressed |
-| `employee-home-no-place.png` | `/app` | Priya Menon | not registered |
-| `opportunities.png` | `/app/opportunities` | Priya Menon | default filters |
-| `opportunities-filtered.png` | `/app/opportunities?type=Education` | Priya Menon | Education pill |
-| `activity-detail-register.png` | `/app/opportunities/act-reading-buddies` | Priya Menon | 1 of 12 left |
-| `register-confirm.png` | same | Priya Menon | Register dialog open (not confirmed) |
+| `employee-home-no-place.png` | `/app` | Komang Masato | not registered |
+| `opportunities.png` | `/app/opportunities` | Komang Masato | default filters |
+| `opportunities-filtered.png` | `/app/opportunities?type=Education` | Komang Masato | Education pill |
+| `activity-detail-register.png` | `/app/opportunities/act-reading-buddies` | Komang Masato | 1 of 12 left |
+| `register-confirm.png` | same | Komang Masato | Register dialog open (not confirmed) |
 | `employee-home.png` | `/app` | Daniel Koh | registered for Pack & Deliver |
 | `switch-confirm.png` | `/app/opportunities/act-lunch-service` | Daniel Koh | Switch dialog open |
 | `my-registrations.png` | `/app/registrations` | Daniel Koh | current place + history |
@@ -333,29 +333,29 @@ All screenshots are in `docs/screenshots/` and were captured at 1440 × 900 (pho
 | `activity-detail-locked.png` | `/app/opportunities/act-kennel-refresh` | Aisha Rahman | cut-off passed |
 | `inbox.png` | `/app/inbox` | Aisha Rahman | 3 unread |
 | `bell-dropdown.png` | `/app` | Aisha Rahman | bell opened |
-| `admin-overview.png` | `/admin` | Nadia Halim | full page |
-| `admin-activities.png` | `/admin/activities` | Nadia Halim | full page |
-| `admin-activity-menu.png` | `/admin/activities` | Nadia Halim | ⋯ menu of Beach Cleanup Sprint |
-| `admin-delete-blocked.png` | `/admin/activities` | Nadia Halim | Delete… on Reading Buddies |
-| `admin-activity-form.png` | `/admin/activities/new` | Nadia Halim | empty form |
-| `admin-activity-form-errors.png` | `/admin/activities/act-reading-buddies/edit` | Nadia Halim | max slots 5, end 08:00 |
-| `admin-activity-detail.png` | `/admin/activities/act-memory-lane` | Nadia Halim | 6 participants, 2 checked in |
-| `admin-ngos.png` | `/admin/ngos` | Nadia Halim | — |
-| `admin-ngo-drawer.png` | `/admin/ngos` | Nadia Halim | New NGO panel open |
-| `admin-participation.png` | `/admin/participation` | Nadia Halim | full page |
-| `admin-reminder-confirm.png` | `/admin/participation` | Nadia Halim | 3 people selected, confirm open |
-| `admin-schedule.png` | `/admin/notifications?tab=schedule` | Nadia Halim | default schedule |
-| `admin-broadcast.png` | `/admin/notifications?tab=broadcast&preset=last-slots&activityId=act-reading-buddies` | Nadia Halim | prefilled "last places" broadcast |
-| `admin-history.png` | `/admin/notifications?tab=history` | Nadia Halim | — |
-| `admin-check-ins.png` | `/admin/check-ins` | Nadia Halim | Memory Lane Afternoon, 2 arrived |
+| `admin-overview.png` | `/admin` | Masato Kaneko | full page |
+| `admin-activities.png` | `/admin/activities` | Masato Kaneko | full page |
+| `admin-activity-menu.png` | `/admin/activities` | Masato Kaneko | ⋯ menu of Beach Cleanup Sprint |
+| `admin-delete-blocked.png` | `/admin/activities` | Masato Kaneko | Delete… on Reading Buddies |
+| `admin-activity-form.png` | `/admin/activities/new` | Masato Kaneko | empty form |
+| `admin-activity-form-errors.png` | `/admin/activities/act-reading-buddies/edit` | Masato Kaneko | max slots 5, end 08:00 |
+| `admin-activity-detail.png` | `/admin/activities/act-memory-lane` | Masato Kaneko | 6 participants, 2 checked in |
+| `admin-ngos.png` | `/admin/ngos` | Masato Kaneko | — |
+| `admin-ngo-drawer.png` | `/admin/ngos` | Masato Kaneko | New NGO panel open |
+| `admin-participation.png` | `/admin/participation` | Masato Kaneko | full page |
+| `admin-reminder-confirm.png` | `/admin/participation` | Masato Kaneko | 3 people selected, confirm open |
+| `admin-schedule.png` | `/admin/notifications?tab=schedule` | Masato Kaneko | default schedule |
+| `admin-broadcast.png` | `/admin/notifications?tab=broadcast&preset=last-slots&activityId=act-reading-buddies` | Masato Kaneko | prefilled "last places" broadcast |
+| `admin-history.png` | `/admin/notifications?tab=history` | Masato Kaneko | — |
+| `admin-check-ins.png` | `/admin/check-ins` | Masato Kaneko | Memory Lane Afternoon, 2 arrived |
 | `mobile-home.png` | `/app` (390 px) | Daniel Koh | — |
 | `mobile-menu.png` | `/app` (390 px) | Daniel Koh | menu drawer open |
 | `mobile-opportunities.png` | `/app/opportunities` (390 px) | Daniel Koh | — |
-| `mobile-admin-activities.png` | `/admin/activities` (390 px) | Nadia Halim | — |
+| `mobile-admin-activities.png` | `/admin/activities` (390 px) | Masato Kaneko | — |
 | `employee-home-check-in.png` | `/app` | Marcus Tan | today's activity, Check in button |
 | `check-in-code.png` | `/app/check-in` | Marcus Tan | empty code field |
 | `check-in-success.png` | `/app/check-in/EQPC2U3D` | Marcus Tan | **writes** the check-in |
 | `check-in-already.png` | `/app/check-in/EQPC2U3D` | Marcus Tan | second attempt |
-| `admin-check-ins-arrived.png` | `/admin/check-ins` | Nadia Halim | 3 arrived (after the next 5 s poll) |
+| `admin-check-ins-arrived.png` | `/admin/check-ins` | Masato Kaneko | 3 arrived (after the next 5 s poll) |
 
 To capture them again, reset the data, start `npm run dev`, and follow the table from top to bottom.
