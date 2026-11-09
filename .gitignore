@@ -52,3 +52,6 @@ dist/
 
 # Submission bundle (built by git archive, not tracked)
 submission/
+
+# Report generator dependencies
+docs/report/build/node_modules/
