@@ -1,6 +1,6 @@
 ---
 name: Service Day
-description: Halden & Co.'s volunteering-day dashboard — warm, calm, and exact about slots and deadlines.
+description: Kaneko.Co's volunteering-day dashboard — warm, calm, and exact about slots and deadlines.
 colors:
   canvas: "#F4F3F1"
   surface: "#FFFFFF"
@@ -140,11 +140,9 @@ components:
     backgroundColor: "{colors.surface-sunken}"
     rounded: "{rounded.tile}"
     padding: "16px"
-  status-pill:
-    typography: "{typography.micro}"
-    rounded: "{rounded.control}"
-    padding: "2px 10px"
-    height: "24px"
+  status-text:
+    typography: "{typography.small}"
+    fontWeight: 500
   filter-pill:
     backgroundColor: "{colors.surface-sunken}"
     textColor: "{colors.ink-muted}"
@@ -247,7 +245,7 @@ Six soft tints (**Apricot, Sage, Sand, Sky, Rose, Butter**) behind initials avat
 - **H3** (500, 16/24px): sub-sections, table titles.
 - **Body** (400, 15/22px): default text; keep long descriptions to about 70ch.
 - **Small** (400, 13/18px): labels, meta, captions, helper text.
-- **Micro** (500, 12/16px): status pills, deltas, the "Urgent" label and badge counts.
+- **Micro** (500, 12/16px): deltas, the "Urgent" label and badge counts.
 
 Text inside form fields is 15px, rising to 16px on phones so iOS Safari doesn't zoom when a field gets focus. The top bar holds the page's only h1; card titles are h2 and sections inside cards h3, with visually hidden h2s where a list has no visible heading.
 
@@ -314,7 +312,7 @@ Refined and restrained: soft pills and sheets, one filled colour for the primary
 - **Focus:** a 2px Fired Clay ring, 2px offset, on every interactive element.
 
 ### Chips and pills
-- **Status pill** (24px, micro type, soft tint with a 6px dot in the status colour): open, last slots, closing soon, full, closed, cancelled (danger outline), draft; also On time, Late, Not arrived, Verified, Checked in.
+- **Status text** (small type, weight 500, coloured text only: no pill background, no dot): open (success), last slots and closing soon (warning), full and cancelled (danger), closed (muted), draft (info); also On time, Late, Not arrived, Verified, Checked in. The word is always there, so status never depends on colour alone. Rendered by `app-status-pill` (name kept so templates did not change).
 - **Filter pill** (36px): Sunken Linen with a Strong Hairline outline; selected turns Apricot Wash with a Morning Terracotta outline and Fired Clay text. Counts sit inside in tabular figures.
 - **Offset chip** (Schedule tab): Apricot Wash with Fired Clay text and a small remove button.
 
@@ -353,6 +351,11 @@ Initials in Ink on one of the six NGO tints, chosen from the id. Round for peopl
 ### Notice
 A row with a 32px icon tile (Apricot Wash when unread, Brick Red tint when urgent), the title (heavier when unread), an optional muted message, the time, and an 8px unread dot. The same row is used in the inbox, the bell dropdown, the broadcast preview and the admin history.
 
+### Sign-in and sign-up
+A split screen: the Kaneko.Co / Service Day wordmark and the form on the left (white), an inset panel with 20px corners on the right holding abstract "silk fold" art (`public/images/auth-silk.svg`, built from the terracotta palette on a dark `--auth-panel` ground), the headline "Welcome." in display type, one lede sentence and the live season numbers with a slot meter. Inside the panel the accent, warning, danger and track tokens are re-pointed to their `*-on-dark` versions so the shared slot meter reads on the dark ground. Below 900px the panel sits on top at a compact height; below 600px only the headline remains.
+
+**The Auth Art Exception.** The abstract art is the one place where soft colour blending is allowed. It is an image asset, used only on the login and register pages, and never a CSS gradient on UI surfaces.
+
 ### Empty, loading and error states
 Empty states sit start-aligned with a 44px icon tile, a heading, one sentence that says what to do next, and an action. Loading uses skeleton lines in the shape of the content. Error states name the problem and say the page retries on its own (or offer "Try again"); toasts appear once, not on every failed poll.
 
@@ -369,7 +372,8 @@ Empty states sit start-aligned with a 44px icon tile, a heading, one sentence th
 - **Do** put the number in tabular figures and the meaning in a muted label next to it ("50 of 64 staff have a place").
 
 ### Don't:
-- **Don't** use decorative gradients, glassmorphism or blur panels, or purple-blue palettes.
+- **Don't** use decorative gradients, glassmorphism or blur panels, or purple-blue palettes (the only exception is the abstract art image on login and register; see The Auth Art Exception).
+- **Don't** wrap statuses in tinted pills or badges; status is coloured text.
 - **Don't** use emoji as icons, heavy drop shadows, or decorative illustrations that carry no information.
 - **Don't** fill screens with identical cards in a uniform grid, or center everything.
 - **Don't** use all-caps headings or put an icon on every heading.

@@ -9,8 +9,8 @@ interface SeasonView extends SeasonSummary {
 }
 
 /**
- * Split layout for sign-in and sign-up: a calm brand panel with live season
- * numbers on the left, the form card (router outlet) on the right.
+ * Split layout for sign-in and sign-up: the form (router outlet) on the left,
+ * an abstract art panel with live season numbers on the right.
  */
 @Component({
   selector: 'app-auth-layout',

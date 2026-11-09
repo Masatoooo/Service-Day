@@ -1,24 +1,29 @@
-/* Flexbox split: brand panel (left) and form column (right), each flex: 1.
-   Box model: the page padding is the same 16px inset as the app shell. */
+/* Flexbox split: form column (left) and abstract art panel (right).
+   Box model: the page padding is the same 16px inset as the app shell; the panel is an inset rounded card. */
 .auth {
   display: flex;
   gap: var(--shell-inset);
   min-height: 100dvh;
   padding: var(--shell-inset);
+  background: var(--surface);
 }
 
-.auth__brand {
+/* ---------- Left: wordmark + form ---------- */
+.auth__main {
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
   gap: var(--space-8);
-  max-width: 640px;
-  padding: var(--space-7) var(--space-8);
+  min-width: 0;
+  max-width: 560px;
+  padding: var(--space-6) var(--space-7);
+  outline: none;
 }
 
 .auth__wordmark {
   display: flex;
   align-items: center;
+  align-self: flex-start;
   gap: var(--space-3);
   color: var(--ink);
   text-decoration: none;
@@ -55,31 +60,69 @@
   color: var(--ink-muted);
 }
 
-/* margin-block: auto centres the pitch vertically between wordmark and season numbers. */
-.auth__pitch {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+/* margin-block: auto centres the form vertically under the wordmark. */
+.auth__card {
+  width: min(420px, 100%);
   margin-block: auto;
 }
 
+/* ---------- Right: abstract art panel ---------- */
+.auth__panel {
+  position: relative;
+  display: flex;
+  flex: 1.5 1 0;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--space-9);
+  border-radius: var(--radius-card);
+  background: var(--auth-panel);
+  color: var(--on-dark);
+
+  /* Tokens re-pointed for the dark panel, so the shared slot meter and skeleton read on it unchanged. */
+  --accent: var(--accent-on-dark);
+  --warning: var(--warning-on-dark);
+  --danger: var(--danger-on-dark);
+  --hairline-strong: var(--on-dark-track);
+  --ink-muted: var(--on-dark-muted);
+  --ink-faint: var(--on-dark-muted);
+  --surface-sunken: var(--on-dark-track);
+}
+
+/* The art is an image (public/images/auth-silk.svg): object-fit covers the panel at any size. */
+.auth__art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.auth__pitch {
+  position: relative; /* above the art */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 440px;
+}
+
+/* The one oversized headline on the page, like the reference's "Welcome." */
 .auth__headline {
-  max-width: 14ch;
-  font: var(--text-kpi);
+  font: var(--text-display);
+  font-weight: var(--weight-strong);
   letter-spacing: var(--tracking-tight);
-  text-wrap: balance;
 }
 
 .auth__lede {
-  max-width: 46ch;
-  color: var(--ink-muted);
+  color: var(--on-dark-muted);
 }
 
 .auth__season {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  max-width: 420px;
 }
 
 .auth__season-line {
@@ -87,69 +130,55 @@
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0 var(--space-1);
-  color: var(--ink-muted);
+  color: var(--on-dark-muted);
 }
 
 .auth__season-line strong {
-  color: var(--ink);
+  color: var(--on-dark);
   font-weight: var(--weight-medium);
 }
 
 .auth__season-date {
   flex-basis: 100%;
-  color: var(--ink);
+  color: var(--on-dark);
 }
 
-/* The form column centres the card; the card is the only white surface on the page. */
-.auth__main {
-  display: flex;
-  flex: 1 1 0;
-  align-items: center;
-  justify-content: center;
-  outline: none;
-}
-
-.auth__card {
-  width: min(460px, 100%);
-  padding: var(--space-8);
-  border-radius: var(--radius-card);
-  background: var(--surface);
-}
-
-/* Tablet and phone: brand on top (compact), form below. */
+/* Tablet and phone: compact art panel on top, form below. */
 @media (max-width: 899px) {
   .auth {
     flex-direction: column;
   }
 
-  .auth__brand {
+  .auth__panel {
     flex: none;
-    gap: var(--space-5);
-    max-width: none;
-    padding: var(--space-4) var(--space-2) 0;
-  }
-
-  .auth__pitch {
-    margin-block: 0;
+    order: -1;
+    min-height: 260px;
+    padding: var(--space-6);
   }
 
   .auth__headline {
-    max-width: 22ch;
-    font: var(--text-h1);
+    font: var(--text-kpi);
+    font-weight: var(--weight-strong);
   }
 
   .auth__main {
-    align-items: flex-start;
+    max-width: none;
+    padding: var(--space-4) var(--space-2);
+    gap: var(--space-6);
+  }
+
+  .auth__card {
+    margin-block: 0;
   }
 }
 
 @media (max-width: 599px) {
+  .auth__panel {
+    min-height: 180px;
+  }
+
   .auth__lede,
   .auth__season {
     display: none;
-  }
-
-  .auth__card {
-    padding: var(--card-padding);
   }
 }

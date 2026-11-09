@@ -44,6 +44,15 @@
   --on-accent: #ffffff;       /* text on filled accent / danger buttons */
   --scrim: rgb(28 27 25 / 0.32);
 
+  /* ---- Colour: auth panel (login / register only) — dark ground under the abstract art ---- */
+  --auth-panel: #3a1a0a;      /* same as the art's base, shown while the image loads */
+  --on-dark: #ffffff;         /* 16.6:1 on --auth-panel */
+  --on-dark-muted: rgb(255 255 255 / 0.82);
+  --on-dark-track: rgb(255 255 255 / 0.22); /* empty slot-meter segments on the panel */
+  --accent-on-dark: #f59a66;  /* filled slot-meter segments on the panel */
+  --warning-on-dark: #f2c46b;
+  --danger-on-dark: #ff9b8f;
+
   /* ---- Type (Instrument Sans Variable, weights 400/500/600) ---- */
   --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --text-display: 500 64px/1 var(--font-sans); /* the date tile on the employee home only */

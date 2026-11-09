@@ -57,7 +57,7 @@ Ketik `/impeccable init` lalu paste teks berikut di pesan yang sama:
 ```text
 /impeccable init
 
-Product: "Service Day" by Halden & Co. (fictional company). An internal web dashboard for the company's annual CSR Service Day. Employees browse NGO volunteering activities, register for one, switch or withdraw before a cut-off, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor slot utilisation and staff participation, send reminders and broadcasts, and track check-ins.
+Product: "Service Day" by Kaneko.Co (fictional company). An internal web dashboard for the company's annual CSR Service Day. Employees browse NGO volunteering activities, register for one, switch or withdraw before a cut-off, and check in on the day with a QR code. Administrators manage NGOs and activities, monitor slot utilisation and staff participation, send reminders and broadcasts, and track check-ins.
 
 Users: (1) Employees — office staff, 1–3 short visits per season, mostly desktop, sometimes phone on the day. Goal: find a suitable activity quickly and know exactly where they stand. (2) Administrators — CSR/People team, several sessions per week during the season, desktop. Goal: keep activities balanced, avoid overbooking, nudge people who haven't signed up.
 
@@ -126,9 +126,9 @@ Phase 3 — Login, register, session and guards.
 
 Read CLAUDE.md, docs/PLAN.md (§2, §3 Public, §7.4), docs/PROGRESS.md, DESIGN.md.
 
-1. AuthModule (lazy) with auth-layout (split layout: left a calm brand panel with the wordmark "Service Day — by Halden & Co." and 2–3 lines on what Service Day is, using live numbers from the API such as "9 activities from 6 NGOs this season"; right the form card). No stock images.
+1. AuthModule (lazy) with auth-layout (split layout: left a calm brand panel with the wordmark "Service Day — by Kaneko.Co" and 2–3 lines on what Service Day is, using live numbers from the API such as "9 activities from 6 NGOs this season"; right the form card). No stock images.
 2. Login: reactive form, email + password, show/hide password, specific errors ("We couldn't find an account with that email" vs "That password doesn't match"), loading state on the button, collapsible "Demo accounts" panel listing the seeded accounts with a "Use" button that fills the form.
-3. Register: full name, work email (custom validator: must end with @halden.co), department select, password (min 8, at least one number) + confirm (cross-field validator), and an ASYNC validator that checks email availability through UserService (debounced). Creates an employee via POST /users, signs in, goes to /app.
+3. Register: full name, work email (custom validator: must end with @kaneko.co), department select, password (min 8, at least one number) + confirm (cross-field validator), and an ASYNC validator that checks email availability through UserService (debounced). Creates an employee via POST /users, signs in, goes to /app.
 4. AuthService: login/register/logout, session$ (BehaviorSubject or signal) restored from localStorage on start, never stores the password. Guards: authGuard (with returnUrl), guestGuard, roleGuard(role). Root redirect by role. Sign out in the sidebar bottom (accent-strong colour). Topbar greeting "Hi, {firstName}. Welcome back." with a small role-specific subtitle.
 5. Wire AppRoutingModule: /login, /register, /app (EmployeeModule placeholder home), /admin (AdminModule placeholder overview), ** not-found. Placeholder pages show the shell with a page header only.
 6. Test all five demo accounts, a wrong password, a taken email, a new registration, refreshing the page while signed in, and an employee trying to open /admin. Check at 1440 and 390 px.

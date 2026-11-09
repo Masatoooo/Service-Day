@@ -95,8 +95,8 @@ export const PREVIEW_EMPLOYEE: Session = {
 };
 
 export const PREVIEW_ADMIN: Session = {
-  userId: 'u-nadia-halim',
-  name: 'Nadia Halim',
+  userId: 'u-masato-kaneko',
+  name: 'Masato Kaneko',
   role: 'admin',
   department: 'People & Culture',
 };

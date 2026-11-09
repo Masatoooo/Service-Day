@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+  <!-- Abstract "silk folds" for the login / register panel only (DESIGN.md: auth panel exception).
+       Built from the terracotta palette: wide blurred curves for shadows, narrow lighter curves for ridges. -->
+  <defs>
+    <filter id="soft-xl" filterUnits="userSpaceOnUse" x="-600" y="-600" width="2200" height="2200"><feGaussianBlur stdDeviation="95"/></filter>
+    <filter id="soft-l" filterUnits="userSpaceOnUse" x="-600" y="-600" width="2200" height="2200"><feGaussianBlur stdDeviation="55"/></filter>
+    <filter id="soft-s" filterUnits="userSpaceOnUse" x="-600" y="-600" width="2200" height="2200"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0"/>
+    </filter>
+  </defs>
+
+  <rect width="1000" height="1000" fill="#3a1a0a"/>
+
+  <g fill="none" stroke-linecap="round">
+    <!-- deep folds -->
+    <path d="M-200 50 C350 550 550 -150 1200 350" stroke="#170904" stroke-opacity="0.95" stroke-width="550" filter="url(#soft-xl)"/>
+    <path d="M-200 700 C300 350 700 1000 1200 850" stroke="#170904" stroke-opacity="0.9" stroke-width="600" filter="url(#soft-xl)"/>
+    <!-- light ridges beside the folds -->
+    <path d="M-100 350 C300 800 550 100 1100 550" stroke="#b24d19" stroke-opacity="0.75" stroke-width="160" filter="url(#soft-l)"/>
+    <path d="M-100 420 C320 880 580 180 1100 620" stroke="#f3a67a" stroke-opacity="0.5" stroke-width="50" filter="url(#soft-s)"/>
+    <path d="M150 -100 C250 300 600 200 950 -50" stroke="#b24d19" stroke-opacity="0.5" stroke-width="120" filter="url(#soft-l)"/>
+    <path d="M400 1100 C550 550 850 750 1150 200" stroke="#e8692c" stroke-opacity="0.32" stroke-width="100" filter="url(#soft-l)"/>
+    <!-- keep the lower-right corner dark so the white headline stays readable -->
+    <path d="M550 1050 C750 950 950 850 1150 800" stroke="#170904" stroke-opacity="0.85" stroke-width="550" filter="url(#soft-xl)"/>
+  </g>
+
+  <!-- fine grain stops colour banding in the soft areas -->
+  <rect width="1000" height="1000" filter="url(#grain)"/>
+</svg>

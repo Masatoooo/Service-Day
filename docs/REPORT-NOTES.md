@@ -222,7 +222,7 @@ All requests are made with Angular `HttpClient` inside `src/app/core/services/`;
 
 - **Polling.** `ActivityService.snapshot$` (`core/services/activity-service.ts`) re-fetches activities, NGOs, registrations and settings every **10 s** with `timer(0, POLL_MS)` and `switchMap`, and shares one request between all views with `shareReplay({ bufferSize: 1, refCount: true })`. The inbox and the notification bell share one **15 s** poll (`NotificationService.inboxView$`), and the admin arrivals list polls every **5 s** (`CheckInService.arrivals$`).
 - **Refresh after every mutation.** Services call `refresh()` after each write (`tap`/`finalize`), which restarts the poll immediately, so the changed data appears at once on the page that made the change.
-- **Demonstration.** With two browser windows (Priya and Daniel), Priya takes the last place on *Reading Buddies*; Daniel's window switches the activity to **Full** within 10 seconds without reloading (verified in testing, see `docs/PROGRESS.md`, Phase 5).
+- **Demonstration.** With two browser windows (Komang and Daniel), Komang takes the last place on *Reading Buddies*; Daniel's window switches the activity to **Full** within 10 seconds without reloading (verified in testing, see `docs/PROGRESS.md`, Phase 5).
 - **Failures do not stop polling.** A failed poll is skipped and the next one retries; pages show an error state while the server is down and recover by themselves (tested by stopping json-server, §6).
 
 ### 4.3 Interceptors (`src/app/core/interceptors/`)

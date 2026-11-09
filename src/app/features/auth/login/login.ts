@@ -72,7 +72,7 @@ export class Login {
     if (!control.errors || !(control.touched || this.submitted())) return null;
     if (control.errors['server']) return control.errors['server'];
     if (control.errors['required']) return field === 'email' ? 'Enter your work email.' : 'Enter your password.';
-    if (control.errors['email']) return 'Enter an email address like aisha.rahman@halden.co.';
+    if (control.errors['email']) return 'Enter an email address like aisha.rahman@kaneko.co.';
     return null;
   }
 

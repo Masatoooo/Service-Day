@@ -6,7 +6,7 @@ At the start of every session, read this file, then `docs/PLAN.md` (the blueprin
 
 - **Course:** BIT306 Web Technologies, **Assignment 1 (35%)**, front-end only. Due 1 Dec 2026, 17:00.
 - **Case study:** "Service Day Dashboard" for corporate CSR volunteering (6 use cases, see PLAN §1).
-- **Product name:** **Service Day** · **Company (fictional):** **Halden & Co.** · **UI language:** English.
+- **Product name:** **Service Day** · **Company (fictional):** **Kaneko.Co** · **UI language:** English.
 - **Solo student** (lecturer approved). The report frames work as *Admin module* and *Employee module*.
 - **Assignment 2** later adds Node.js/Express/MongoDB behind this same front-end. Switching from the mock API to the real API must only require changing `environment.apiUrl` (plus auth token handling).
 
@@ -38,7 +38,8 @@ At the start of every session, read this file, then `docs/PLAN.md` (the blueprin
 - **Tokens** live in `src/styles/tokens.css` as CSS custom properties (PLAN §8). Component CSS never hard-codes hex values, font sizes or radii; it uses tokens.
 - **Font:** Instrument Sans Variable (self-hosted via `@fontsource-variable/instrument-sans`). Weights 400 / 500 / 600 only. Numbers use `font-variant-numeric: tabular-nums`.
 - **Accent contrast:** `--accent` (#E8692C) is for large marks only (charts, icons, active indicators, KPI accents). Text and filled buttons with white text use `--accent-strong` (#B24D19) to meet 4.5:1 (also on `--accent-soft`).
-- **Bans (anti AI-slop):** gradients as decoration, glassmorphism/blur panels, purple-blue palettes, emoji used as icons, heavy drop shadows, lorem ipsum or placeholder names ("Activity 1", "John Doe"), every card identical in size and weight, centered-everything layouts, all-caps shouting headings, an icon on every heading, decorative illustrations that carry no information.
+- **Bans (anti AI-slop):** gradients as decoration, glassmorphism/blur panels, purple-blue palettes, emoji used as icons, heavy drop shadows, lorem ipsum or placeholder names ("Activity 1", "John Doe"), every card identical in size and weight, centered-everything layouts, all-caps shouting headings, an icon on every heading, decorative illustrations that carry no information. **One approved exception:** the abstract "silk fold" art image on the login and register pages only (`public/images/auth-silk.svg`, see DESIGN.md "The Auth Art Exception").
+- **Status is coloured text, not a badge:** no tinted pill or dot behind status labels (open, full, late…).
 - **States are part of the design:** every data view has loading (skeleton), empty, and error states. Every disabled action says why (e.g. "Registration closed on 18 Nov, 17:00").
 - **Responsive:** verify at 1440, 1024, 768 and 390 px wide. No horizontal page scroll. Below 900 px the sidebar becomes an off-canvas drawer; tables become stacked rows.
 - **Accessibility:** semantic landmarks (`header`, `nav`, `main`, `section`, `article`, `aside`, `footer`), a label for every input, visible `:focus-visible` ring, 4.5:1 text contrast, `aria-live="polite"` for toasts, buttons are `<button>`, links are `<a>`.

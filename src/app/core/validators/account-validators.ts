@@ -6,7 +6,7 @@ import { UserService } from '../services/user-service';
 /** Wait this long after the last keystroke before asking the API. */
 const EMAIL_CHECK_DEBOUNCE_MS = 400;
 
-/** Custom validator: the email must end with @halden.co. → { workEmail: true } */
+/** Custom validator: the email must end with @kaneko.co. → { workEmail: true } */
 export const workEmailValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const value = String(control.value ?? '').trim().toLowerCase();
   return !value || value.endsWith(WORK_EMAIL_DOMAIN) ? null : { workEmail: true };
