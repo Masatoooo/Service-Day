@@ -17,7 +17,7 @@ interface Bar {
 }
 
 /**
- * Participation gauge (PLAN §8.5): a semicircle built from short rounded bars.
+ * Participation gauge: a semicircle built from short rounded bars.
  * The number of filled bars is proportional to `value` (0–100).
  * The geometry is presentation only, so it lives here and not in core/rules.
  */

@@ -26,7 +26,7 @@ export class ReminderSettingsService {
       .pipe(tap(() => this.activities.refresh()));
   }
 
-  /** The next reminders the schedule would send (PLAN §5 rule 9). Pass unsaved settings to preview them. */
+  /** The next reminders the schedule would send. Pass unsaved settings to preview them. */
   upcoming(limit = 10, settings?: ReminderSettings): Observable<ReminderPreview[]> {
     return forkJoin({ saved: settings ? of(settings) : this.get(), activities: this.activities.list() }).pipe(
       map(({ saved, activities }) => upcomingReminders(activities, saved, this.clock.now(), limit)),

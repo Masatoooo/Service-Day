@@ -8,7 +8,7 @@ import { UserService } from './user-service';
 
 /** Below this share of slots taken, an open activity "needs attention"… */
 const LOW_FILL = 0.25;
-/** …but only while there is still time to fill it (PLAN §3: "> 7 days left"). */
+/** …but only while there is still time to fill it (more than 7 days left). */
 const LOW_FILL_MIN_DAYS = 7;
 
 export interface Kpis {

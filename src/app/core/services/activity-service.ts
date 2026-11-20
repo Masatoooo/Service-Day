@@ -21,7 +21,7 @@ import { ApiUrlService } from './api-url-service';
 import { ClockService } from './clock-service';
 import { NgoService } from './ngo-service';
 
-/** How often availability re-polls the API (PLAN §6.4). */
+/** How often availability re-polls the API. */
 const POLL_MS = 10_000;
 
 export type NewActivity = Omit<Activity, 'id' | 'createdAt' | 'updatedAt' | 'checkInCode'>;

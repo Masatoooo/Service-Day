@@ -3,7 +3,7 @@ import { Availability } from '../../../core/models';
 
 export type PillTone = 'success' | 'warning' | 'danger' | 'danger-outline' | 'neutral' | 'info' | 'accent';
 
-/** Status pill mapping from PLAN §8.1. */
+/** Status colour for each availability state. */
 const TONE_BY_AVAILABILITY: Record<Availability, PillTone> = {
   open: 'success',
   'last-slots': 'warning',

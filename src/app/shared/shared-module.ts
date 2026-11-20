@@ -67,7 +67,7 @@ const PIPES = [ActivityDatePipe, AvailabilityLabelPipe, CutoffLabelPipe, Initial
   exports: [CommonModule, RouterModule, LucideDynamicIcon, ...COMPONENTS, ...DIRECTIVES, ...PIPES],
   providers: [
     provideLucideIcons(...APP_ICONS),
-    // Thin line icons (PLAN §8.6): stroke 1.75, 18px by default.
+    // Thin line icons: stroke 1.75, 18px by default.
     provideLucideConfig({ strokeWidth: 1.75, size: 18 }),
   ],
 })

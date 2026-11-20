@@ -2,7 +2,7 @@ import { setHours, setMinutes, subDays } from 'date-fns';
 import { Activity, ReminderSettings } from '../models';
 
 /**
- * Model: reminder preview (PLAN §5 rule 9). Lists the reminders the schedule
+ * Model: reminder preview. Lists the reminders the schedule
  * *would* send, so UC5 is demonstrable without a real scheduler.
  */
 

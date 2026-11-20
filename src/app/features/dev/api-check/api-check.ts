@@ -9,7 +9,7 @@ import { NotificationService } from '../../../core/services/notification-service
 import { ParticipationStatsService } from '../../../core/services/participation-stats-service';
 import { ReminderSettingsService } from '../../../core/services/reminder-settings-service';
 
-/** What the seed promises for scenarios A–I (PLAN §6.3), to compare with the live result. */
+/** What the seed promises for scenarios A–I, to compare with the live result. */
 const EXPECTED: Record<string, Availability> = {
   'act-pack-deliver': 'open',
   'act-reading-buddies': 'last-slots',

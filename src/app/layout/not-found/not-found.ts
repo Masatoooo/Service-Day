@@ -4,7 +4,7 @@ import { AuthService } from '../../core/services/auth-service';
 
 /**
  * Shown for any unknown URL (route `**`): inside the shell when signed in,
- * as a standalone card when signed out (PLAN §3).
+ * as a standalone card when signed out.
  */
 @Component({
   selector: 'app-not-found',

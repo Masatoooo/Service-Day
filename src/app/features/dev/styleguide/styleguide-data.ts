@@ -2,7 +2,7 @@ import { Session } from '../../../core/models';
 import { PillOption } from '../../../shared/components/pill-filter/pill-filter';
 import { TabItem } from '../../../shared/components/tabs/tabs';
 
-/** Dev-only sample data for the styleguide. Names match the planned seed (PLAN §2, §6.3). */
+/** Dev-only sample data for the styleguide. Names match the planned seed. */
 
 export interface TokenSwatch {
   token: string;

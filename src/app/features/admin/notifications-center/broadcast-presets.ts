@@ -14,7 +14,7 @@ export interface BroadcastPreset {
 }
 
 /**
- * Specific, human copy for each follow-up (PLAN §5 rule 8 style): names the
+ * Specific, human copy for each follow-up: names the
  * activity, the date, the numbers and the deadline. Pure function: no HTTP, no DOM.
  */
 export function broadcastPreset(kind: AttentionKind, view: ActivityView): BroadcastPreset {

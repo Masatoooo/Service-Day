@@ -11,7 +11,7 @@ export interface NavItem {
   exact: boolean;
 }
 
-/** Employee area (PLAN §3). */
+/** Employee area. */
 export const EMPLOYEE_NAV: readonly NavItem[] = [
   { label: 'Home', path: '/app', icon: 'house', exact: true },
   { label: 'Opportunities', path: '/app/opportunities', icon: 'compass', exact: false },
@@ -20,7 +20,7 @@ export const EMPLOYEE_NAV: readonly NavItem[] = [
   { label: 'Check in', path: '/app/check-in', icon: 'scan-qr-code', exact: false },
 ];
 
-/** Admin area (PLAN §3). */
+/** Admin area. */
 export const ADMIN_NAV: readonly NavItem[] = [
   { label: 'Overview', path: '/admin', icon: 'layout-dashboard', exact: true },
   { label: 'Activities', path: '/admin/activities', icon: 'calendar-days', exact: false },

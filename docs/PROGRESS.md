@@ -19,7 +19,7 @@ Claude Code appends to this file at the end of every phase. Newest entry at the 
 | 9 | Quality pass | done | fix: audit findings…; fix: harden…; style: final polish pass |
 | 10 | Dark mode | skipped for now (student's decision, 2026-11-08) | |
 | 11 | Documentation | done | docs: setup guide, user manual, report notes and video script |
-| 12 | Final verification | not started | |
+| 12 | Final verification | done | fix(core): let multi-request writes finish when the page is left |
 
 ## Decisions
 

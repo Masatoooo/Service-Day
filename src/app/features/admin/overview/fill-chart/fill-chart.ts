@@ -10,7 +10,7 @@ function token(name: string): string {
 /**
  * "Fill by NGO" (UC4): one horizontal bar per NGO. The capacity bar is a quiet
  * track (--hairline) and the taken bar is drawn over it in --accent, so
- * each row reads like a fill gauge. chart.js via ng2-charts (PLAN §8.7).
+ * each row reads like a fill gauge. chart.js via ng2-charts.
  */
 @Component({
   selector: 'app-fill-chart',

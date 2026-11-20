@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { format, formatDistanceStrict, isBefore } from 'date-fns';
 
 /**
- * Cut-off label, relative and absolute together (PLAN §8.5):
+ * Cut-off label, relative and absolute together:
  *   before → "Closes in 2 days · 18 Nov, 17:00"
  *   after  → "Closed 18 Nov, 17:00"
  */

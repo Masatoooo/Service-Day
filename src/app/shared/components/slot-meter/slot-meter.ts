@@ -4,7 +4,7 @@ import { Component, computed, input } from '@angular/core';
 const MAX_SEGMENTS = 20;
 
 /**
- * Signature slot meter (PLAN §8.5): a thin segmented bar + "3 of 12 left".
+ * Signature slot meter: a thin segmented bar + "3 of 12 left".
  * Last slots turn warning, full turns danger. Pure presentation of two numbers.
  */
 @Component({

@@ -4,7 +4,7 @@ import { activityStart } from './availability.rules';
 import { ALLOWED, RuleResult, blocked } from './rule-result';
 
 /**
- * Model: QR check-in rules (PLAN §5 rule 7). Pure functions, `now` as a parameter.
+ * Model: QR check-in rules. Pure functions, `now` as a parameter.
  */
 
 export const CHECK_IN_CODE_LENGTH = 8;

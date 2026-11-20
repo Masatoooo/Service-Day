@@ -18,7 +18,7 @@ import { ApiUrlService } from './api-url-service';
 import { ClockService } from './clock-service';
 import { UserService } from './user-service';
 
-/** The admin arrivals list re-polls this often (PLAN §6.4). */
+/** The admin arrivals list re-polls this often. */
 const ARRIVALS_POLL_MS = 5_000;
 
 export interface CheckInResult {
@@ -150,7 +150,7 @@ export class CheckInService {
   }
 
   /**
-   * Attendance export (PLAN §3): one row per registered volunteer. UTF-8 with a BOM and
+   * Attendance export: one row per registered volunteer. UTF-8 with a BOM and
    * CRLF line ends, so Excel and Numbers open names and dashes correctly.
    */
   toCsv(view: ArrivalsView): string {

@@ -53,10 +53,6 @@ To start again with fresh demonstration data (dates are relative to today): stop
 |---|---|
 | [docs/SETUP.md](docs/SETUP.md) | Installation and configuration manual, LAN mode for phone scanning, troubleshooting, switching to the Assignment 2 API |
 | [docs/USER-MANUAL.md](docs/USER-MANUAL.md) | Step-by-step use of the employee and administrator modules, with screenshots |
-| [docs/REPORT-NOTES.md](docs/REPORT-NOTES.md) | Technologies, MVC mapping, front-end, AJAX and modules evidence for the report |
-| [docs/VIDEO-SCRIPT.md](docs/VIDEO-SCRIPT.md) | Scene-by-scene script for the demonstration video |
-| [docs/PLAN.md](docs/PLAN.md) · [docs/PROGRESS.md](docs/PROGRESS.md) | Build plan and development log |
-| [DESIGN.md](DESIGN.md) · [PRODUCT.md](PRODUCT.md) | Visual design system and product context |
 
 ## Scripts
 

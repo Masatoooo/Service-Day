@@ -9,7 +9,7 @@ import { HOME_BY_ROLE, INBOX_BY_ROLE, NAV_BY_ROLE } from '../nav-config';
 const DESKTOP_QUERY = '(min-width: 900px)';
 
 /**
- * App shell (PLAN §8.4): sidebar + main column (top bar, then page content).
+ * App shell: sidebar + main column (top bar, then page content).
  * The page is projected as content, so the shell works with <router-outlet>
  * and in the styleguide preview. The nav list is chosen by the session role.
  */

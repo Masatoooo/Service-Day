@@ -5,7 +5,7 @@ import { isCutoffBeforeStart, isEndAfterStart } from '../rules';
 import { ActivityAdminService } from '../services/activity-admin-service';
 
 /**
- * Validators for the admin activity form (PLAN §5 rule 6). The checks themselves
+ * Validators for the admin activity form. The checks themselves
  * are the pure rule functions; these only connect them to form controls.
  */
 

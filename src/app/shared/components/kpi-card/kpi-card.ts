@@ -3,7 +3,7 @@ import { Component, input } from '@angular/core';
 export type KpiTone = 'accent' | 'success' | 'warning' | 'info';
 
 /**
- * One key number with its label and an icon tile (PLAN §8.4 KPI row).
+ * One key number with its label and an icon tile.
  * A footnote (delta, context) is projected as content.
  */
 @Component({

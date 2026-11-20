@@ -3,7 +3,7 @@ import { Activity, Availability } from '../models';
 import { ALLOWED, RuleResult, blocked } from './rule-result';
 
 /**
- * Model: business rules for slots, cut-offs and registrations (PLAN §5, rules 1–4 and 6).
+ * Model: business rules for slots, cut-offs and registrations.
  * Pure functions: no HTTP, no DOM, and `now` is always a parameter (from ClockService),
  * so every rule can be unit-tested with fixed dates.
  */
@@ -133,7 +133,7 @@ export function canUnpublish(taken: number): RuleResult {
   return ALLOWED;
 }
 
-/** An NGO that still has activities can't be deleted (PLAN §3, /admin/ngos). */
+/** An NGO that still has activities can't be deleted. */
 export function canDeleteNgo(activityCount: number): RuleResult {
   if (activityCount > 0) {
     const what = activityCount === 1 ? '1 activity' : `${activityCount} activities`;

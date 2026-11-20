@@ -179,4 +179,4 @@ All configuration lives in `src/environments/`:
 2. Register the prepared `AuthInterceptor` (`src/app/core/interceptors/auth-interceptor.ts`, currently a placeholder) in `CoreModule` so it adds the authentication token to each request, and let `AuthService` call the server's login endpoint instead of comparing passwords in the browser.
 3. Remove `npm run api` / `json-server` from the `dev` script.
 
-No component, template or business rule needs to change, because components never call `HttpClient` directly (see `docs/REPORT-NOTES.md`, MVC section).
+Components and templates do not need to change, because they never call `HttpClient` directly: all requests go through the services in `src/app/core/services/`. Those services are adapted so that the server, rather than the browser, checks passwords, enforces the slot and cut-off rules and records check-ins.

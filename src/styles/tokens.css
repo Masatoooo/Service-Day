@@ -1,6 +1,6 @@
 /* ==========================================================================
    tokens.css — design tokens as CSS custom properties
-   Source of truth: DESIGN.md frontmatter / PLAN §8. Light theme only (dark: Phase 10).
+   Single source of truth for colours, type, spacing and radii. Light theme only.
    Component CSS uses only these variables: no hex values, font sizes or radii.
    ========================================================================== */
 
@@ -113,7 +113,7 @@
   --z-toast: 100;
 }
 
-/* Smaller screens: tighter card padding and gaps (PLAN §8.3). */
+/* Smaller screens: tighter card padding and gaps. */
 @media (max-width: 599px) {
   :root {
     --card-padding: var(--space-5);

@@ -49,7 +49,7 @@ function violation(result: Extract<RuleResult, { ok: false }>): Observable<never
 
 /**
  * Register / switch / withdraw (UC3).
- * Overbooking guard (PLAN §5 rule 5): every action re-fetches activities and
+ * Overbooking guard: every action re-fetches activities and
  * registrations right before writing and re-runs the rule; only then it writes.
  * After every action (success or failure) live views refresh without a reload.
  */

@@ -1,7 +1,7 @@
 // Seeds the json-server mock database (mock-api/db.json) for Service Day.
 //
 // Every date is relative to the day the script runs (T = today), so the demo
-// scenarios in PLAN §6.3 (A–I) stay valid whenever the seed is run. Apart from
+// scenarios (activities A–I) stay valid whenever the seed is run. Apart from
 // dates, the output is deterministic: a seeded PRNG picks names and assignments.
 //
 // Usage:
@@ -80,7 +80,7 @@ const cutoffLabel = (d) => `${d.getDate()} ${MONTHS[d.getMonth()]}, ${pad(d.getH
 const sometime = (fromDay, toDay) => at(between(fromDay, toDay), between(9, 17), pick([0, 10, 20, 30, 40, 50]));
 
 // ---------------------------------------------------------------------------
-// Users: 1 admin, 4 demo employees (PLAN §2), 60 more across 7 departments
+// Users: 1 admin, 4 demo employees, 60 more across 7 departments
 // ---------------------------------------------------------------------------
 
 const DEPARTMENTS = ['Finance', 'Engineering', 'Marketing', 'People & Culture', 'Operations', 'Legal', 'Customer Success'];
@@ -196,7 +196,7 @@ const ngos = [
 ];
 
 // ---------------------------------------------------------------------------
-// Activities A–I (PLAN §6.3). Service Day is T+14.
+// Activities A–I. Service Day is T+14.
 // ---------------------------------------------------------------------------
 
 const CHECK_IN_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
@@ -314,7 +314,7 @@ function register(user, act, status = 'registered', extra = {}) {
   return row;
 }
 
-// Demo accounts first (PLAN §2): Aisha on D (locked), Daniel on A (open), Marcus on F (today).
+// Demo accounts first: Aisha on D (locked), Daniel on A (open), Marcus on F (today).
 register(aisha, byKey.D);
 register(daniel, byKey.A);
 register(marcus, byKey.F);
@@ -369,7 +369,7 @@ function notice(spec) {
   return row;
 }
 
-/** Stores the original once, then one audience 'user' copy per recipient (PLAN §6.2 inbox rule). */
+/** Stores the original once, then one audience 'user' copy per recipient. */
 function broadcastTo(recipients, spec, readers = []) {
   const original = notice(spec);
   for (const userId of recipients) {
@@ -453,7 +453,7 @@ const db = {
 
 writeFileSync(dbPath, JSON.stringify(db, null, 2) + '\n');
 
-/** Same order as core/rules getAvailability (PLAN §5 rule 1). */
+/** Same order as core/rules getAvailability. */
 function expectedAvailability(a, taken) {
   if (a.status === 'cancelled') return 'cancelled';
   if (a.status === 'draft') return 'draft';

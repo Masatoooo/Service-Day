@@ -1,5 +1,5 @@
 /**
- * Seeded demo accounts (PLAN §2), listed on the sign-in page for the demo.
+ * Seeded demo accounts, listed on the sign-in page for the demo.
  * Mock only: these passwords exist in mock-api/db.json in plain text.
  */
 export interface DemoAccount {

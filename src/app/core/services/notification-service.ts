@@ -10,7 +10,7 @@ import { ClockService } from './clock-service';
 import { UserService } from './user-service';
 import { runToCompletion } from './run-to-completion';
 
-/** The bell re-polls the inbox this often (PLAN §6.4). */
+/** The bell re-polls the inbox this often. */
 const INBOX_POLL_MS = 15_000;
 
 export interface NewNotification {
@@ -112,7 +112,7 @@ export class NotificationService {
     return this.http.post<AppNotification>(this.api.url('notifications'), body).pipe(tap(() => this.refresh()));
   }
 
-  // ---- System notices (PLAN §5 rule 8): specific, human messages ----
+  // ---- System notices: specific, human messages ----
 
   notifyRegistered(userId: string, activity: Activity, ngo: Ngo): Observable<AppNotification> {
     return this.toUser(userId, 'registration', activity, `You're in: ${activity.title}`, `You're in: ${describe(activity, ngo)}.`);

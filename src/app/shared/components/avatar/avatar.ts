@@ -3,7 +3,7 @@ import { Component, computed, input } from '@angular/core';
 const TINT_COUNT = 6;
 
 /**
- * Initials avatar on a soft tint (PLAN §8.5). The tint is chosen
+ * Initials avatar on a soft tint. The tint is chosen
  * deterministically from `seed` (e.g. the NGO id), so the same NGO always
  * gets the same colour and cards stay distinguishable without stock images.
  */
